@@ -93,9 +93,6 @@ const Footer: React.FC = () => {
 
         <div className="footer__bottom">
           <p>© {currentYear} KAYAL Multispeciality Dental Care. All Rights Reserved.</p>
-          <p className="footer__bottom-links">
-            <Link to="/admin/login">Admin</Link>
-          </p>
         </div>
       </div>
     </footer>

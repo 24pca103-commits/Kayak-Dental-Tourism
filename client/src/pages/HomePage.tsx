@@ -226,22 +226,10 @@ const HomePage: React.FC = () => {
       <section className="section why-us-v4" style={{ background: '#ffffff' }}>
         <div className="container">
           <div className="why-us-v4__grid">
-            {/* Left Column: Real Doctor Image + Circular Badge */}
+            {/* Left Column: Real Doctor Image */}
             <div className="why-us-v4__visual">
               <div className="why-us-v4__img-box">
                 <img src="/assets/why-us-doctor-real.jpg" alt="Kayal Dental Specialist" className="why-us-v4__doc-img" style={{ borderRadius: '24px', width: '100%', height: 'auto', objectFit: 'contain' }} />
-                {/* 15+ Years Experience Circular Badge */}
-                <div className="why-us-v4__circle-badge">
-                  <svg viewBox="0 0 140 140" fill="none" className="why-us-v4__badge-svg">
-                    <circle cx="70" cy="70" r="66" fill="#24E0E1" />
-                    <circle cx="70" cy="70" r="46" fill="#451271" />
-                    {/* Badge Inner Logo & Text */}
-                    <text x="70" y="62" fill="#ffffff" fontSize="11" fontWeight="800" textAnchor="middle" fontFamily="Comfortaa">KAYAL</text>
-                    <text x="70" y="74" fill="#24E0E1" fontSize="7" fontWeight="600" textAnchor="middle" fontFamily="Comfortaa">DENTAL CARE</text>
-                    <text x="70" y="90" fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="Comfortaa">15+ YEARS</text>
-                    <text x="70" y="100" fill="#ffffff" fontSize="7" fontWeight="500" textAnchor="middle" fontFamily="Comfortaa">EXPERIENCE</text>
-                  </svg>
-                </div>
               </div>
             </div>
 

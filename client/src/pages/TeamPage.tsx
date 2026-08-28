@@ -36,8 +36,8 @@ const TeamPage: React.FC = () => {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '1.75rem' }}>
             {list.map(doc => (
-              <div key={doc._id} style={{ background: 'white', border: '1.5px solid var(--gray-100)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', transition: 'var(--transition)' }} className="card">
-                <div style={{ height: 200, background: 'linear-gradient(135deg,var(--purple-50),var(--cyan-50))', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+              <div key={doc._id} style={{ background: 'white', border: '1.5px solid var(--gray-100)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', transition: 'var(--transition)', display: 'flex', flexDirection: 'column', height: '100%' }} className="card">
+                <div style={{ height: 200, background: 'linear-gradient(135deg,var(--purple-50),var(--cyan-50))', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', flexShrink: 0 }}>
                   {doc.image ? (
                     <img src={doc.image} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
@@ -47,25 +47,27 @@ const TeamPage: React.FC = () => {
                     {doc.specialization.split(' ')[0]}
                   </div>
                 </div>
-                <div style={{ padding: '1.5rem' }}>
-                  <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)' }}>{doc.name}</h2>
-                  <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--purple-600)', margin: '0.2rem 0' }}>{doc.specialization}</p>
-                  <p style={{ fontSize: '0.775rem', color: 'var(--gray-500)', marginBottom: '0.75rem' }}>{doc.qualification}</p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.775rem', color: 'var(--cyan-600)', fontWeight: 600, marginBottom: '0.75rem' }}>
-                    <Award size={13} />{doc.experience} years experience
-                  </div>
-                  {doc.description && <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)', lineHeight: 1.6, marginBottom: '1rem' }}>{doc.description}</p>}
-                  {doc.availability.length > 0 && (
-                    <div>
-                      <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', marginBottom: '0.4rem' }}>Available:</p>
-                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                        {doc.availability.map(d => (
-                          <span key={d} style={{ padding: '0.2rem 0.5rem', background: 'var(--purple-50)', color: 'var(--purple-600)', fontSize: '0.7rem', fontWeight: 600, borderRadius: '4px' }}>{d.slice(0,3)}</span>
-                        ))}
-                      </div>
+                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <div style={{ flexGrow: 1 }}>
+                    <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)' }}>{doc.name}</h2>
+                    <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--purple-600)', margin: '0.2rem 0' }}>{doc.specialization}</p>
+                    <p style={{ fontSize: '0.775rem', color: 'var(--gray-500)', marginBottom: '0.75rem' }}>{doc.qualification}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.775rem', color: 'var(--cyan-600)', fontWeight: 600, marginBottom: '0.75rem' }}>
+                      <Award size={13} />{doc.experience} years experience
                     </div>
-                  )}
-                  <button className="btn btn-primary btn-sm w-full" style={{ marginTop: '1.25rem' }} onClick={() => setShowModal(true)}>
+                    {doc.description && <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)', lineHeight: 1.6, marginBottom: '1rem' }}>{doc.description}</p>}
+                    {doc.availability.length > 0 && (
+                      <div style={{ marginBottom: '1.25rem' }}>
+                        <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', marginBottom: '0.4rem' }}>Available:</p>
+                        <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                          {doc.availability.map(d => (
+                            <span key={d} style={{ padding: '0.2rem 0.5rem', background: 'var(--purple-50)', color: 'var(--purple-600)', fontSize: '0.7rem', fontWeight: 600, borderRadius: '4px' }}>{d.slice(0,3)}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <button className="btn btn-primary btn-sm w-full" style={{ marginTop: 'auto' }} onClick={() => setShowModal(true)}>
                     Book with {doc.name.split(' ')[1]}
                   </button>
                 </div>

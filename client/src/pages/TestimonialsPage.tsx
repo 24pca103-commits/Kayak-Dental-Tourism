@@ -50,16 +50,16 @@ const TestimonialsPage: React.FC = () => {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: '1.5rem' }}>
             {list.map((t, i) => (
-              <div key={t._id || i} style={{ background: 'linear-gradient(135deg,var(--purple-800),var(--purple-700))', borderRadius: 'var(--radius-lg)', padding: '1.75rem', transition: 'transform 0.3s' }}
+              <div key={t._id || i} style={{ background: 'linear-gradient(135deg,var(--purple-800),var(--purple-700))', borderRadius: 'var(--radius-lg)', padding: '1.75rem', transition: 'transform 0.3s', display: 'flex', flexDirection: 'column', height: '100%' }}
                 onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-4px)')}
                 onMouseLeave={e => (e.currentTarget.style.transform = '')}>
                 <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '1rem' }}>
                   {Array.from({ length: t.rating }).map((_, j) => <Star key={j} size={14} fill="#fbbf24" color="#fbbf24" />)}
                 </div>
-                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', lineHeight: 1.75, fontStyle: 'italic', marginBottom: '1.25rem' }}>
+                <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', lineHeight: 1.75, fontStyle: 'italic', marginBottom: '1.25rem', flexGrow: 1 }}>
                   "{t.review}"
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: 'auto' }}>
                   <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,var(--cyan-500),var(--cyan-400))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1rem', color: 'white', flexShrink: 0 }}>
                     {t.patientName.charAt(0)}
                   </div>

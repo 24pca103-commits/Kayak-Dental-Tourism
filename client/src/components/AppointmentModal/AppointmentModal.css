@@ -1,0 +1,159 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.appointment-modal {
+  background: white;
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  animation: fadeInUp 0.3s ease;
+}
+
+.appointment-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid var(--gray-100);
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.appointment-modal__title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #451271;
+}
+
+.appointment-modal__subtitle {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  margin-top: 0.25rem;
+}
+
+.appointment-modal__close {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--gray-100);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-600);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.appointment-modal__close:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.appointment-modal__form {
+  padding: 1.5rem 2rem 2rem;
+}
+
+.appt-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+
+.appt-form__time-group {
+  grid-column: 1 / -1;
+}
+
+.appt-form__full {
+  grid-column: 1 / -1;
+}
+
+.appt-form__time-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.appt-form__time-btn {
+  padding: 0.4rem 0.25rem;
+  border-radius: 6px;
+  border: 1.5px solid var(--gray-200);
+  background: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.appt-form__time-btn:hover {
+  border-color: #451271;
+  color: #451271;
+  background: rgba(69,18,113,0.06);
+}
+
+.appt-form__time-btn--active {
+  background: #451271;
+  border-color: #451271;
+  color: white;
+}
+
+.appointment-modal__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  gap: 1rem;
+}
+
+.appointment-modal__success-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(69,18,113,0.1), rgba(36,224,225,0.15));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #24E0E1;
+  margin-bottom: 0.5rem;
+}
+
+.appointment-modal__success h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #451271;
+}
+
+.appointment-modal__success p {
+  color: var(--gray-600);
+  line-height: 1.7;
+  max-width: 400px;
+}
+
+@media (max-width: 600px) {
+  .appointment-modal { border-radius: var(--radius-lg); }
+  .appointment-modal__header { padding: 1.5rem 1.25rem 1rem; }
+  .appointment-modal__form { padding: 1rem 1.25rem 1.5rem; }
+  .appt-form__grid { grid-template-columns: 1fr; }
+  .appt-form__time-grid { grid-template-columns: repeat(3, 1fr); }
+}

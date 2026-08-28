@@ -50,7 +50,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      <section style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '4rem 1.5rem', textAlign: 'center' }}>
+      <section style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
         <div className="container">
           <div className="badge badge-white" style={{ marginBottom: '1rem' }}>Contact Us</div>
           <h1 className="section-title text-white">Get In Touch</h1>

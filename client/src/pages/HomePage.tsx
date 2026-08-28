@@ -175,7 +175,7 @@ const HomePage: React.FC = () => {
       {/* ── WHAT WE DO SECTION (Pure Vector Design Component) ── */}
       <section className="what-we-do-section">
         <div className="container">
-          <div className="text-center" style={{ marginBottom: '3.5rem' }}>
+          <div className="text-center" style={{ marginBottom: '2rem' }}>
             <h2 className="what-we-do__title">WHAT WE DO</h2>
             <p className="what-we-do__subtitle">Short, crisp, professional — modern dental clinic tone.</p>
           </div>
@@ -223,7 +223,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* ── WHY CHOOSE US SECTION (Pure Vector Design Component) ── */}
-      <section className="section why-us-v4" style={{ background: '#ffffff', padding: '5rem 0' }}>
+      <section className="section why-us-v4" style={{ background: '#ffffff' }}>
         <div className="container">
           <div className="why-us-v4__grid">
             {/* Left Column: Real Doctor Image + Circular Badge */}
@@ -271,9 +271,9 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* ── TESTIMONIALS (Matching Image 3 Layout) ── */}
-      <section className="testimonials-v3-section" style={{ padding: '4.5rem 1.5rem', background: '#ffffff' }}>
+      <section className="testimonials-v3-section" style={{ padding: '3rem 1.5rem', background: '#ffffff' }}>
         <div className="container" style={{ maxWidth: '1400px' }}>
-          <div className="testimonials-v3__inner" style={{ background: '#24E0E1', borderRadius: '28px', padding: '4rem 3.5rem', display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '4rem', alignItems: 'center' }}>
+          <div className="testimonials-v3__inner" style={{ background: '#24E0E1', borderRadius: '28px', padding: '3rem 2.5rem', display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '2.5rem', alignItems: 'center' }}>
             {/* Left Column: Heading & Paragraph */}
             <div className="testimonials-v3__left">
               <h2 style={{ fontFamily: 'Comfortaa', fontSize: 'clamp(32px, 3.5vw, 44px)', fontWeight: 800, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.02em', margin: 0, lineHeight: 1.2 }}>
@@ -312,7 +312,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* ── FREQUENTLY ASKED QUESTIONS (Matching Image 3 Layout) ── */}
-      <section className="section faq-section-v3" style={{ background: '#ffffff', padding: '5rem 0' }}>
+      <section className="section faq-section-v3" style={{ background: '#ffffff' }}>
         <div className="container" style={{ maxWidth: '1280px', padding: '0 2rem' }}>
           <div className="faq-v3__grid">
             {/* Left Column: 3D Tooth + Question Mark Image & Title */}

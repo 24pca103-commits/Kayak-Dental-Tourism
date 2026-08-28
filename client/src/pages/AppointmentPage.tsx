@@ -19,7 +19,7 @@ const AppointmentPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px', minHeight: '100vh', background: 'var(--gray-50)' }}>
-      <section style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '4rem 1.5rem', textAlign: 'center' }}>
+      <section style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
         <div className="container">
           <h1 className="section-title text-white">Book Your Appointment</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem' }}>Fill in the form below and our team will confirm your appointment shortly.</p>

@@ -1,0 +1,422 @@
+.dental-tourism-page {
+  padding-top: 70px; /* For navbar */
+  font-family: var(--font-main, 'Comfortaa', sans-serif);
+}
+
+.bg-light-gray {
+  background-color: #f9fafb;
+}
+
+/* 1. Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #240840 0%, #451271 60%, #350d58 100%);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #24E0E1;
+  font-family: var(--font-display, 'Comfortaa', sans-serif);
+}
+
+.stat-text {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  margin-top: 5px;
+}
+
+/* 2. Cost Comparison */
+.cost-chart-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.cost-row {
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+}
+
+.cost-treatment-name {
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #451271;
+}
+
+.cost-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cost-bar-group {
+  display: flex;
+  align-items: center;
+}
+
+.cost-label {
+  width: 60px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.bar {
+  height: 28px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  position: relative;
+  min-width: 50px;
+}
+
+.bar-india {
+  background-color: #24E0E1;
+  color: #111827;
+}
+
+.bar-usa, .bar-uk, .bar-uae {
+  background-color: #d1d5db;
+  color: #374151;
+}
+
+.bar-value {
+  white-space: nowrap;
+}
+
+/* 3. Journey Timeline */
+.timeline-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background-color: #e5e7eb;
+  top: 0;
+  border-radius: 2px;
+}
+
+.timeline-item {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 50%;
+  position: relative;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.timeline-item.right {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: 50%;
+}
+
+.timeline-circle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: #451271;
+  color: #24E0E1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  z-index: 10;
+  border: 4px solid #fff;
+  box-shadow: 0 0 0 4px #f9fafb;
+}
+
+.timeline-content {
+  width: 85%;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: left;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.timeline-item.left .timeline-content {
+  margin-right: 30px;
+}
+
+.timeline-item.right .timeline-content {
+  margin-left: 30px;
+}
+
+.timeline-icon-wrap {
+  color: #451271;
+  margin-bottom: 10px;
+  background: #f3e8ff;
+  display: inline-flex;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.timeline-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.timeline-desc {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* 4. Quality Standards */
+.standards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.standard-card {
+  text-align: center;
+  padding: 30px 20px;
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+  background: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.standard-card:hover {
+  box-shadow: 0 10px 25px rgba(69, 18, 113, 0.1);
+}
+
+.standard-icon {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.standard-title {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.standard-sub {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+/* 5. Testimonials */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background-color: #451271;
+  color: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(69, 18, 113, 0.2);
+}
+
+.testimonial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.testimonial-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.testimonial-country {
+  font-size: 0.85rem;
+  color: #d8b4fe;
+  margin-top: 2px;
+}
+
+.play-btn {
+  background: none;
+  border: none;
+  color: #24E0E1;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+}
+
+.testimonial-rating {
+  display: flex;
+  color: #fbbf24;
+  margin-bottom: 15px;
+}
+
+.testimonial-text {
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* 6. CTA Banner */
+.cta-banner {
+  background: linear-gradient(135deg, #451271 0%, #240840 100%);
+  color: white;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.cta-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.cta-content p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-outline-light {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background: white;
+  color: #451271;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
+  .timeline-line {
+    left: 20px;
+  }
+  
+  .timeline-item {
+    justify-content: flex-start;
+    padding-right: 0;
+    padding-left: 50px;
+    width: 100%;
+  }
+  
+  .timeline-item.right {
+    padding-left: 50px;
+  }
+  
+  .timeline-circle {
+    left: 20px;
+  }
+  
+  .timeline-content {
+    width: 100%;
+  }
+  
+  .timeline-item.left .timeline-content,
+  .timeline-item.right .timeline-content {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-stats {
+    gap: 20px;
+  }
+  
+  .cost-row {
+    padding: 15px;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}

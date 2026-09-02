@@ -1,0 +1,340 @@
+/* ─── ONLINE CONSULTATION PAGE ─────────────────── */
+
+.consultation-hero {
+  background: linear-gradient(135deg, #240840 0%, #451271 60%, #350d58 100%);
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.consultation-hero::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  right: -15%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(36,224,225,0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ── Form Grid ── */
+.consultation-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.consultation-form-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.consultation-form-header {
+  background: linear-gradient(135deg, var(--purple-600), var(--purple-700));
+  padding: 1.5rem 2rem;
+}
+
+.consultation-form-header h2 {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.consultation-form-header p {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.consultation-form {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.consultation-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ── Upload ── */
+.consultation-upload-area {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--gray-400);
+}
+
+.consultation-upload-area:hover {
+  border-color: #451271;
+  background: rgba(69,18,113,0.04);
+  color: #451271;
+}
+
+.consultation-upload-area p {
+  font-weight: 600;
+  margin-top: 0.5rem;
+  color: var(--gray-700);
+  font-size: 0.95rem;
+}
+
+.consultation-upload-area span {
+  font-size: 0.8rem;
+  color: var(--gray-400);
+}
+
+.consultation-files {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.consultation-file-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--gray-50);
+  font-size: 0.85rem;
+  color: var(--gray-700);
+}
+
+.consultation-file-item span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.consultation-file-item button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gray-400);
+  padding: 2px;
+  transition: color 0.2s;
+}
+
+.consultation-file-item button:hover {
+  color: #ef4444;
+}
+
+.consultation-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  margin-top: 0.5rem;
+}
+
+/* ── Success State ── */
+.consultation-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 2rem;
+  gap: 1rem;
+}
+
+.consultation-success-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(69,18,113,0.1), rgba(36,224,225,0.15));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #24E0E1;
+  margin-bottom: 0.5rem;
+}
+
+.consultation-success h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #451271;
+}
+
+.consultation-success p {
+  color: var(--gray-600);
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+/* ── Side Cards ── */
+.consultation-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.consultation-side-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--gray-100);
+}
+
+.consultation-side-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #451271;
+  margin-bottom: 1rem;
+}
+
+.consultation-side-card--accent {
+  background: linear-gradient(135deg, #24E0E1, #18b8b9);
+  border: none;
+}
+
+.consultation-side-card--accent h4 {
+  color: white;
+}
+
+.consultation-side-card--accent p {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.9rem;
+}
+
+.consultation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.consultation-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.consultation-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #451271;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.consultation-step strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--gray-800);
+  margin-bottom: 0.15rem;
+}
+
+.consultation-step p {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+/* ── What to Expect ── */
+.consultation-expect {
+  background: var(--gray-50);
+  padding: 3.5rem 1.5rem;
+}
+
+.consultation-expect-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.consultation-expect-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 1px solid var(--gray-100);
+}
+
+.consultation-expect-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(36,224,225,0.3);
+}
+
+.consultation-expect-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(69,18,113,0.1), rgba(36,224,225,0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #451271;
+  margin: 0 auto 1rem;
+}
+
+.consultation-expect-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 0.5rem;
+}
+
+.consultation-expect-card p {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+
+/* ── CTA ── */
+.consultation-cta {
+  background: linear-gradient(135deg, #240840, #451271);
+  padding: 3.5rem 1.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .consultation-grid {
+    grid-template-columns: 1fr;
+  }
+  .consultation-expect-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .consultation-form-row {
+    grid-template-columns: 1fr;
+  }
+  .consultation-expect-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .consultation-form {
+    padding: 1.25rem;
+  }
+  .consultation-form-header {
+    padding: 1.25rem;
+  }
+}

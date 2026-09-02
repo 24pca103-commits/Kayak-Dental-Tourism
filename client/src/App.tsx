@@ -11,6 +11,10 @@ import FAQsPage from './pages/FAQsPage';
 import ContactPage from './pages/ContactPage';
 import TestimonialsPage from './pages/TestimonialsPage';
 import AppointmentPage from './pages/AppointmentPage';
+import AboutPage from './pages/AboutPage';
+import DentalTourismPage from './pages/DentalTourismPage';
+import TravelVisaPage from './pages/TravelVisaPage';
+import PatientResourcesPage from './pages/PatientResourcesPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminAppointments from './pages/admin/AdminAppointments';
@@ -18,6 +22,20 @@ import AdminDoctors from './pages/admin/AdminDoctors';
 import AdminServices from './pages/admin/AdminServices';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminFAQs from './pages/admin/AdminFAQs';
+
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+/* ── Scroll To Top On Navigation ───────────────────── */
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+
+  return null;
+};
 
 /* ── Public Layout ────────────────────────────────── */
 const PublicLayout: React.FC = () => (
@@ -38,6 +56,7 @@ const RequireAuth: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const App: React.FC = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Toaster
         position="top-right"
         toastOptions={{
@@ -53,14 +72,18 @@ const App: React.FC = () => {
         {/* Public Routes */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/:slug" element={<ServiceDetailPage />} />
+          <Route path="/dental-tourism" element={<DentalTourismPage />} />
+          <Route path="/travel-visa" element={<TravelVisaPage />} />
+          <Route path="/patient-resources" element={<PatientResourcesPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/team/:id" element={<TeamPage />} />
           <Route path="/faqs" element={<FAQsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/testimonials" element={<TestimonialsPage />} />
+          <Route path="/online-consultation" element={<AppointmentPage />} />
           <Route path="/book-appointment" element={<AppointmentPage />} />
         </Route>
 

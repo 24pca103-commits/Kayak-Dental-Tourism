@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, ExternalLink } from 'lucide-react';
 import './Footer.css';
 
 const Footer: React.FC = () => {
@@ -11,11 +11,11 @@ const Footer: React.FC = () => {
         <div className="footer__grid">
           {/* Column 1 – Brand */}
           <div className="footer__col footer__col--brand">
-            <Link to="/" className="footer__logo">
+            <Link to="/" className="footer__logo" onClick={() => window.scrollTo(0, 0)}>
               <img src="/assets/kayal-brand-logo.png" alt="KAYAL Dental Care" style={{ height: '56px', width: 'auto', objectFit: 'contain' }} />
             </Link>
             <p className="footer__tagline">
-              Your trusted dental partner for complete family dentistry — gentle care, modern technology, and experienced specialists.
+              World-class dental care at a fraction of the cost. Trusted by 5,000+ international patients from 20+ countries. Your trusted dental tourism partner.
             </p>
             <div className="footer__social">
               <a href="#" aria-label="Facebook" className="footer__social-link"><ExternalLink size={16} /></a>
@@ -31,14 +31,15 @@ const Footer: React.FC = () => {
             <ul className="footer__links">
               {[
                 { label: 'Home', to: '/' },
-                { label: 'About', to: '/about' },
+                { label: 'About Us', to: '/about' },
                 { label: 'Services', to: '/services' },
+                { label: 'Dental Tourism', to: '/dental-tourism' },
                 { label: 'Our Team', to: '/team' },
-                { label: 'Testimonials', to: '/testimonials' },
+                { label: 'Online Consultation', to: '/online-consultation' },
                 { label: 'Contact', to: '/contact' },
               ].map((link) => (
                 <li key={link.to}>
-                  <Link to={link.to} className="footer__link">{link.label}</Link>
+                  <Link to={link.to} className="footer__link" onClick={() => window.scrollTo(0, 0)}>{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -49,15 +50,33 @@ const Footer: React.FC = () => {
             <h4 className="footer__heading">Our Services</h4>
             <ul className="footer__links">
               {[
-                { label: 'Teeth Alignment', slug: 'teeth-alignment' },
-                { label: 'Teeth Replacement', slug: 'teeth-replacement' },
-                { label: 'Smile Designing', slug: 'smile-designing' },
                 { label: 'Dental Implants', slug: 'dental-implants' },
-                { label: 'Teeth Whitening', slug: 'teeth-whitening' },
+                { label: 'Full Mouth Rehab', slug: 'full-mouth-rehabilitation' },
+                { label: 'Cosmetic Dentistry', slug: 'cosmetic-dentistry' },
+                { label: 'Crowns & Bridges', slug: 'crowns-and-bridges' },
+                { label: 'Orthodontics', slug: 'orthodontics' },
                 { label: 'Root Canal', slug: 'root-canal-treatment' },
               ].map((s) => (
                 <li key={s.slug}>
                   <Link to={`/services/${s.slug}`} className="footer__link">{s.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3b – For Tourists */}
+          <div className="footer__col">
+            <h4 className="footer__heading">For Tourists</h4>
+            <ul className="footer__links">
+              {[
+                { label: 'Why India?', to: '/dental-tourism' },
+                { label: 'Travel & Visa Info', to: '/travel-visa' },
+                { label: 'Patient Resources', to: '/patient-resources' },
+                { label: 'FAQs', to: '/faqs' },
+                { label: 'Testimonials', to: '/testimonials' },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="footer__link">{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -79,20 +98,26 @@ const Footer: React.FC = () => {
                 <Mail size={14} />
                 <a href="mailto:hello@kayaldental.com">hello@kayaldental.com</a>
               </li>
-              <li>
-                <Clock size={14} />
-                <span>Mon–Sat: 9:00 AM – 7:00 PM</span>
-              </li>
             </ul>
-            <div className="footer__emergency">
+            <a
+              href="https://wa.me/919876543210?text=Hello%20Kayal%20Dental%20Care,%20I%20need%20emergency%20dental%20assistance."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__emergency footer__emergency--clickable"
+              title="Click for Emergency Care on WhatsApp (+91 98765 43210)"
+            >
               <span className="footer__emergency-dot" />
               Emergency care available
-            </div>
+            </a>
           </div>
         </div>
 
         <div className="footer__bottom">
           <p>© {currentYear} KAYAL Multispeciality Dental Care. All Rights Reserved.</p>
+          <div className="footer__bottom-links">
+            <Link to="/privacy-policy" className="footer__bottom-link">Privacy Policy</Link>
+            <Link to="/terms" className="footer__bottom-link">Terms of Service</Link>
+          </div>
         </div>
       </div>
     </footer>

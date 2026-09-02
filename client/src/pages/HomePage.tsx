@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
-  ArrowRight, Star, CheckCircle, Activity
+  ArrowRight, Globe, Heart, Sparkles, Plane, Award, ShieldCheck
 } from 'lucide-react';
 import { servicesAPI, doctorsAPI } from '../services/api';
 import type { Service, Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
-import toothVideo from '../assets/34.mp4';
+
 import './HomePage.css';
 
 /* ── Stat counter ── */
@@ -18,12 +19,62 @@ const StatItem: React.FC<{ value: string; label: string }> = ({ value, label }) 
 );
 
 
+const ALL_TREATMENTS = [
+  {
+    title: 'Dental Implants',
+    desc: 'Permanent titanium tooth replacements that look, feel, and function 100% naturally.',
+    slug: 'dental-implants',
+    img: '/assets/treatment-1-implants.png',
+  },
+  {
+    title: 'Full Mouth Rehabilitation',
+    desc: 'Complete smile restoration combining implants, crowns, and digital 3D smile design.',
+    slug: 'full-mouth-rehabilitation',
+    img: '/assets/treatment-2-rehab.jpg',
+  },
+  {
+    title: 'Cosmetic Dentistry',
+    desc: 'Transform your smile with porcelain veneers, smile makeovers, and whitening.',
+    slug: 'cosmetic-dentistry',
+    img: '/assets/treatment-3-cosmetic.png',
+  },
+  {
+    title: 'Crowns & Bridges',
+    desc: 'Premium Zirconia and PFM restorations engineered for maximum strength.',
+    slug: 'crowns-and-bridges',
+    img: '/assets/treatment-4-crowns.jpg',
+  },
+  {
+    title: 'Root Canal Treatment',
+    desc: 'Painless single-visit endodontic therapy designed to save your natural teeth.',
+    slug: 'root-canal-treatment',
+    img: '/assets/treatment-5-root-canal.jpg',
+  },
+  {
+    title: 'Orthodontics',
+    desc: 'Straighten teeth discreetly using clear aligners or traditional ceramic braces.',
+    slug: 'orthodontics',
+    img: '/assets/treatment-6-orthodontics.jpg',
+  },
+  {
+    title: 'Oral & Maxillofacial Surgery',
+    desc: 'Expert surgical solutions for complex wisdom teeth, jaw, and facial conditions.',
+    slug: 'oral-surgery',
+    img: '/assets/treatment-7-oral-surgery.jpg',
+  },
+  {
+    title: 'Pediatric Dentistry',
+    desc: 'Gentle, painless, and fun dental care tailored specifically for children.',
+    slug: 'pediatric-dentistry',
+    img: '/assets/treatment-8-pediatric.jpg',
+  },
+];
+
 /* ═══════════════ HOME PAGE ═══════════════ */
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
-  const [openFaq, setOpenFaq] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -51,120 +102,165 @@ const HomePage: React.FC = () => {
           <div className="hero__content">
             <div className="hero__text">
               <div className="badge badge-white hero__badge">
-                <Activity size={12} />
-                Advanced Dental Care
+                <Sparkles size={14} />
+                Dental Excellence
               </div>
               <h1 className="hero__heading">
-                Healthy Teeth<br />
-                <span className="hero__heading-accent">Happy Life</span><br />
-                Start Here
+                Advanced Dentistry<br />
+                <span className="hero__heading-accent" style={{ whiteSpace: 'nowrap' }}>Global Standards</span><br />
+                Affordable Care
               </h1>
               <p className="hero__desc">
-                Experience gentle, advanced, and affordable dental care designed to keep your smile bright and your life healthier.
+                Experience world-class dental care at Kayal Multispeciality Dental — trusted by 5,000+ international patients from 20+ countries.
               </p>
               <div className="hero__actions">
-                <button className="btn btn-primary btn-lg" onClick={() => setShowModal(true)}>
-                  Book Appointment <ArrowRight size={16} />
+                <button className="btn btn-primary btn-lg" onClick={() => navigate('/online-consultation')}>
+                  Book Online Consultation <ArrowRight size={16} />
                 </button>
-                <button className="btn btn-secondary btn-lg" onClick={() => navigate('/services')}>
-                  Our Services
+                <button className="btn btn-secondary btn-lg" onClick={() => navigate('/dental-tourism')}>
+                  World Desk <Globe size={16} />
                 </button>
               </div>
               <div className="hero__stats">
                 <StatItem value="5000+" label="Happy Patients" />
                 <div className="hero__stat-divider" />
-                <StatItem value="10+" label="Expert Doctors" />
+                <StatItem value="15+" label="Expert Doctors" />
                 <div className="hero__stat-divider" />
-                <StatItem value="15+" label="Years Experience" />
+                <StatItem value="10+" label="Years Experience" />
               </div>
             </div>
-            {/* ── HERO VISUAL (3D Tooth image from Image 3) ── */}
+            {/* ── HERO VISUAL (User HD Dental Tourism Image with 4 Floating Badges) ── */}
             <div className="hero__visual">
               <div className="hero__visual-circle hero__visual-circle--outer" />
               <div className="hero__visual-circle hero__visual-circle--inner" />
               
-              <div className="hero-3d-wrapper">
+              <div className="hero-3d-wrapper hero-3d-wrapper--clickable" onClick={() => navigate('/dental-tourism')}>
                 <img
-                  src="/assets/hero-3d-tooth.jpg"
-                  alt="3D Dental Treatment"
+                  src="/assets/hero-dental-tourism-hd.jpg"
+                  alt="Kayal Dental Tourism Excellence"
                   className="hero-3d-img"
                 />
+                <div className="hero-flight-badge-overlay">
+                  <Plane size={20} className="hero-flight-icon" />
+                  <span>Fly for Your Perfect Smile ↗</span>
+                </div>
               </div>
 
-              {/* Floating Badges from Image 2 */}
+              {/* 4 Animated Floating Badges */}
               <div className="hero__badge-floating hero__badge-floating--tl">
-                <CheckCircle size={16} className="text-green" />
-                <span>Pain-Free Dentistry</span>
+                <Heart size={16} className="text-cyan" fill="#24E0E1" />
+                <span>Gentle Care</span>
+              </div>
+              <div className="hero__badge-floating hero__badge-floating--tr">
+                <Sparkles size={16} style={{ color: '#24E0E1' }} />
+                <span>SmileTech</span>
+              </div>
+              <div className="hero__badge-floating hero__badge-floating--bl">
+                <Globe size={16} className="text-cyan" />
+                <span>Global Care</span>
               </div>
               <div className="hero__badge-floating hero__badge-floating--br">
-                <Star size={16} fill="currentColor" style={{ color: '#fbbf24' }} />
-                <span>5-Star Rated</span>
+                <Award size={16} style={{ color: '#fbbf24' }} />
+                <span>Pure Precision</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SERVICE HIGHLIGHTS BAR (Animated Tooth Video) ── */}
+      {/* ── SERVICE HIGHLIGHTS BAR ── */}
       <section className="highlights">
         <div className="container">
           <div className="highlights__inner highlights__inner--v5">
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="highlight-item-v5">
-                <div className="highlight-item-v5__icon">
-                  <video
-                    src={toothVideo}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    disablePictureInPicture
-                    controlsList="nodownload nofullscreen noremoteplayback"
-                    className="highlight-item-v5__video"
-                  />
-                </div>
-                <div className="highlight-item-v5__content">
-                  <h3 className="highlight-item-v5__title">Dental Implants</h3>
-                  <p className="highlight-item-v5__desc">
-                    Dental implants are the closest you can get to healthy, beautiful and natural teeth.
-                  </p>
-                </div>
+            {/* 1 - World Class */}
+            <div className="highlight-item-v5">
+              <div className="highlight-item-v5__icon-wrap-img">
+                <Award size={36} className="highlight-item-v5__icon-svg-single" />
               </div>
-            ))}
+              <div className="highlight-item-v5__content">
+                <h3 className="highlight-item-v5__title">World Class</h3>
+                <p className="highlight-item-v5__desc">
+                  State-of-the-art dental care using premium international Swiss &amp; German materials.
+                </p>
+              </div>
+            </div>
+
+            {/* 2 - Accreditation (Normal Icon - No Blinking) */}
+            <div className="highlight-item-v5">
+              <div className="highlight-item-v5__icon-wrap-img">
+                <ShieldCheck size={36} className="highlight-item-v5__icon-svg-single" />
+              </div>
+              <div className="highlight-item-v5__content">
+                <h3 className="highlight-item-v5__title">Accreditation</h3>
+                <p className="highlight-item-v5__desc">
+                  ISO 9001 &amp; NABH certified facility following strict international safety protocols.
+                </p>
+              </div>
+            </div>
+
+            {/* 3 - Global Expert */}
+            <div className="highlight-item-v5">
+              <div className="highlight-item-v5__icon-wrap-img">
+                <Globe size={36} className="highlight-item-v5__icon-svg-single" />
+              </div>
+              <div className="highlight-item-v5__content">
+                <h3 className="highlight-item-v5__title">Global Expert</h3>
+                <p className="highlight-item-v5__desc">
+                  Internationally trained specialist surgeons creating confident smiles worldwide.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── WELCOME / ABOUT SECTION (Flipped Layout: Left Content, Right Image) ── */}
+      {/* ── ABOUT SECTION (Section 3: Single Line Mission & Full Width Visual) ── */}
       <section className="section welcome">
         <div className="container">
           <div className="welcome__grid">
             {/* Left Side: Content */}
             <div className="welcome__text">
-              <div className="badge badge-cyan" style={{ marginBottom: '1rem' }}>
+              <div className="badge badge-cyan" style={{ marginBottom: '0.75rem' }}>
                 About Us
               </div>
-              <h2 className="section-title">
-                Welcome to<br />
+
+              {/* Non-actionable Mission Pill/Banner (Enforced Single Line) */}
+              <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap' }}>
+                <Globe size={16} />
+                <span>About Kayal Dental Tourism : Mission - Creating Smiles Across the Globe.</span>
+              </div>
+
+              <h2 className="section-title" style={{ marginTop: '1rem' }}>
                 <span style={{ color: '#451271' }}>Kayal Multispeciality<br />Dental Care</span>
               </h2>
-              <p style={{ color: 'var(--gray-600)', marginTop: '1.25rem', lineHeight: 1.8, fontSize: '19px' }}>
-                Experience gentle, patient-focused dentistry designed for your comfort. Our team combines advanced technology with compassionate care to deliver healthy, confident smiles for every family.
+              <p style={{ color: 'var(--gray-600)', marginTop: '1rem', lineHeight: 1.8, fontSize: '18px' }}>
+                Experience gentle, patient-focused dentistry designed for your comfort. Our team combines advanced technology with compassionate care to deliver healthy, confident smiles across the globe.
               </p>
-              <div className="welcome__tags" style={{ marginTop: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                {['Digital X-Ray', 'Expert Specialists', 'Advanced Sterilization', 'Emergency Care'].map((tag) => (
-                  <span key={tag} className="welcome__tag-cyan-pill">{tag}</span>
-                ))}
+
+              {/* 2 Cyan Pill Buttons: Facility & Technology first, Our Dentists second */}
+              <div className="welcome__actions-row" style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <button className="btn btn-cyan-pill" onClick={() => navigate('/about')}>
+                  Facility &amp; Technology
+                </button>
+                <button className="btn btn-cyan-pill" onClick={() => navigate('/team')}>
+                  Our Dentists <ArrowRight size={16} />
+                </button>
               </div>
             </div>
 
-            {/* Right Side: Image (Image 4: White background 3D Tooth composition) */}
-            <div className="welcome__visual">
-              <div className="welcome__img-wrap-v4">
+            {/* Right Side: Image (Expanded to fill right column cleanly) */}
+            <div className="welcome__visual" style={{ width: '100%' }}>
+              <div 
+                className="welcome__img-wrap-v4 welcome__img-wrap--clickable"
+                onClick={() => navigate('/dental-tourism')}
+                title="Click to explore Dental Tourism"
+                style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(69,18,113,0.18)', border: '2.5px solid rgba(36,224,225,0.4)', background: '#ffffff', cursor: 'pointer', width: '100%' }}
+              >
                 <img
-                  src="/assets/about-3d-tooth.jpg"
-                  alt="Kayal Dental Care Facilities"
+                  src="/assets/dental-tourism-resort-hd.jpg"
+                  alt="Kayal Dental Tourism Resort & Care"
                   className="welcome__3d-img"
+                  style={{ width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
                 />
               </div>
             </div>
@@ -172,93 +268,91 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── WHAT WE DO SECTION (Pure Vector Design Component) ── */}
+      {/* ── WHAT WE DO / TREATMENTS SECTION (Clean Tooth-Only Procedure Images) ── */}
       <section className="what-we-do-section">
         <div className="container">
-          <div className="text-center" style={{ marginBottom: '2rem' }}>
+          <div className="text-center" style={{ marginBottom: '2.5rem' }}>
             <h2 className="what-we-do__title">WHAT WE DO</h2>
-            <p className="what-we-do__subtitle">Short, crisp, professional — modern dental clinic tone.</p>
+            <p className="what-we-do__subtitle">Comprehensive dental treatments delivered with world-class international standards.</p>
           </div>
-          <div className="what-we-do__grid">
-            {/* Card 1: Teeth Alignment */}
-            <div className="what-we-do__card">
-              <div className="what-we-do__card-img-wrap">
-                <img src="/assets/what-we-do-braces.png" alt="Teeth Alignment" className="what-we-do__card-img" />
-              </div>
-              <div className="what-we-do__card-body">
-                <h3 className="what-we-do__card-title">Teeth Alignment</h3>
-                <p className="what-we-do__card-desc">
-                  Correct misaligned teeth with braces or clear aligners for a balanced, confident smile.
-                </p>
-              </div>
-            </div>
 
-            {/* Card 2: Teeth Replacement */}
-            <div className="what-we-do__card">
-              <div className="what-we-do__card-img-wrap">
-                <img src="/assets/what-we-do-replacement.png" alt="Teeth Replacement" className="what-we-do__card-img" />
-              </div>
-              <div className="what-we-do__card-body">
-                <h3 className="what-we-do__card-title">Teeth Replacement</h3>
-                <p className="what-we-do__card-desc">
-                  Restore missing teeth using crowns, bridges, dentures, or advanced dental implants.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3: Smile Designing */}
-            <div className="what-we-do__card">
-              <div className="what-we-do__card-img-wrap">
-                <img src="/assets/what-we-do-smile.png" alt="Smile Designing" className="what-we-do__card-img" />
-              </div>
-              <div className="what-we-do__card-body">
-                <h3 className="what-we-do__card-title">Smile Designing</h3>
-                <p className="what-we-do__card-desc">
-                  Transform your smile using cosmetic procedures such as veneers, whitening, and reshaping.
-                </p>
-              </div>
-            </div>
+          <div className="treatments-vertical-grid">
+            {ALL_TREATMENTS.map((item, index) => (
+              <motion.div
+                key={index}
+                className="treatment-card-v"
+                onClick={() => navigate(`/services/${item.slug}`)}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: (index % 4) * 0.12 }}
+                whileHover={{ y: -10 }}
+              >
+                <div className="treatment-card-v__img-box">
+                  <img src={item.img} alt={item.title} className="treatment-card-v__img" />
+                </div>
+                <div className="treatment-card-v__body">
+                  <h3 className="treatment-card-v__title">{item.title}</h3>
+                  <p className="treatment-card-v__desc">{item.desc}</p>
+                  <div className="treatment-card-v__footer">
+                    <span>Learn More</span>
+                    <ArrowRight size={15} className="treatment-card-v__arrow" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── WHY CHOOSE US SECTION (Pure Vector Design Component) ── */}
+      {/* ── WHY INDIA FOR DENTAL CARE SECTION (Section 5) ── */}
       <section className="section why-us-v4" style={{ background: '#ffffff' }}>
         <div className="container">
           <div className="why-us-v4__grid">
-            {/* Left Column: Real Doctor Image */}
+            {/* Left Column: Real Clinic Doctor Checkup Photo Visual */}
             <div className="why-us-v4__visual">
-              <div className="why-us-v4__img-box">
-                <img src="/assets/why-us-doctor-real.jpg" alt="Kayal Dental Specialist" className="why-us-v4__doc-img" style={{ borderRadius: '24px', width: '100%', height: 'auto', objectFit: 'contain' }} />
+              <div className="why-us-v4__img-box" style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(69,18,113,0.18)', border: '2.5px solid rgba(36,224,225,0.4)', background: '#ffffff', cursor: 'pointer' }} onClick={() => navigate('/dental-tourism')}>
+                <img
+                  src="/assets/why-india-doctor-checkup.jpg"
+                  alt="Why India for Dental Care - Expert Dentist Checkup"
+                  className="why-us-v4__doc-img"
+                  style={{ borderRadius: '24px', width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
+                />
               </div>
             </div>
 
-            {/* Right Column: Content + 4 Cyan Pills + Purple CTA */}
+            {/* Right Column: Single Line Heading + Content + 2 Button Rows */}
             <div className="why-us-v4__content">
-              <h2 className="why-us-v4__title">WHY CHOOSE US</h2>
-              <h3 className="why-us-v4__subtitle">Your trusted dental partner for every family member</h3>
+              <h2 className="why-us-v4__title" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(20px, 2.7vw, 34px)', letterSpacing: '0.02em' }}>
+                WHY INDIA FOR DENTAL CARE
+              </h2>
+              <h3 className="why-us-v4__subtitle">World-class treatments at 70% lower cost</h3>
               <p className="why-us-v4__desc">
-                We offer complete dental care for patients of all ages — from children to seniors — ensuring healthy, confident smiles for your entire family. With experienced specialists, modern technology, and a caring approach, we make every visit comfortable and reassuring.
+                India is the leading destination for dental tourism. At Kayal Dental Care, we combine internationally trained specialists, advanced digital technology, and sterile hospital standards to deliver premium care.
               </p>
 
-              {/* 4 Cyan Pill Buttons */}
-              <div className="why-us-v4__pills">
-                <span className="why-us-v4__pill">Friendly Environment</span>
-                <span className="why-us-v4__pill">Experienced Dental</span>
-                <span className="why-us-v4__pill">Personalized Patient care</span>
-                <span className="why-us-v4__pill">Pain-Free Dentistry</span>
+              {/* Action Buttons: Line 1 = Patient Journey & Quality & Safety, Line 2 = Book Online Consultation */}
+              <div className="why-us-v4__cta-column" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.75rem' }}>
+                <div className="why-us-v4__cta-row-pills" style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap' }}>
+                  <button className="btn btn-cyan-pill" onClick={() => navigate('/dental-tourism')}>
+                    Patient Journey
+                  </button>
+                  <button className="btn btn-cyan-pill" onClick={() => navigate('/about')}>
+                    Quality &amp; Safety
+                  </button>
+                </div>
+                <div>
+                  <button className="btn btn-purple" onClick={() => navigate('/online-consultation')}>
+                    Book Online Consultation <ArrowRight size={16} />
+                  </button>
+                </div>
               </div>
-
-              {/* Purple Book An Appointment Button */}
-              <button className="btn why-us-v4__cta-btn" onClick={() => setShowModal(true)}>
-                Book An Appointment
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── TESTIMONIALS (Matching Image 3 Layout) ── */}
+      {/* ── TESTIMONIALS ── */}
       <section className="testimonials-v3-section" style={{ padding: '3rem 1.5rem', background: '#ffffff' }}>
         <div className="container" style={{ maxWidth: '1400px' }}>
           <div className="testimonials-v3__inner" style={{ background: '#24E0E1', borderRadius: '28px', padding: '3rem 2.5rem', display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '2.5rem', alignItems: 'center' }}>
@@ -299,49 +393,137 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── FREQUENTLY ASKED QUESTIONS (Matching Image 3 Layout) ── */}
-      <section className="section faq-section-v3" style={{ background: '#ffffff' }}>
-        <div className="container" style={{ maxWidth: '1280px', padding: '0 2rem' }}>
-          <div className="faq-v3__grid">
-            {/* Left Column: 3D Tooth + Question Mark Image & Title */}
-            <div className="faq-v3__left">
-              <div className="faq-v3__img-wrap">
-                <img src="/assets/faq-tooth-q.png" alt="Frequently Asked Questions" className="faq-v3__tooth-img" />
-              </div>
-              <h2 className="faq-v3__title">
-                FREQUENTLY<br />
-                ASKED<br />
-                QUESTIONS
-              </h2>
+      {/* ── INTERNATIONAL PATIENT TRAVEL DESK (Image-Rich Step Cards) ── */}
+      <section className="section travel-home-section" style={{ background: '#f8fafc', padding: '4.5rem 0' }}>
+        <div className="container">
+          <div className="text-center" style={{ marginBottom: '3.5rem' }}>
+            <div className="badge badge-cyan" style={{ marginBottom: '0.75rem' }}>
+              Global Dental Tourism Desk
             </div>
+            <h2 className="section-title" style={{ color: '#451271', fontSize: 'clamp(30px, 3.5vw, 42px)', fontWeight: 800 }}>
+              YOUR DENTAL VACATION IN 4 SIMPLE STEPS
+            </h2>
+            <p style={{ color: 'var(--gray-600)', fontSize: '18px', maxWidth: '750px', margin: '0.75rem auto 0', lineHeight: 1.6 }}>
+              Relax while our dedicated international team manages your visa invitation, private airport pickup, hotel stay, and guided sightseeing.
+            </p>
+          </div>
 
-            {/* Right Column: Light Cyan Accordion Box List */}
-            <div className="faq-v3__accordion-list">
-              {[
-                { id: '1', num: '1.', question: 'How often should I visit the dentist?', answer: 'We recommend a dental check-up every 6 months to maintain healthy teeth and gums.' },
-                { id: '2', num: '2.', question: 'Do dental treatments cause pain?', answer: 'Most treatments are performed using modern techniques and appropriate anesthesia to ensure complete patient comfort.' },
-                { id: '3', num: '3.', question: 'Do you offer braces and clear aligners?', answer: 'Yes. We provide comprehensive orthodontic solutions including traditional braces and invisible clear aligners based on individual needs.' },
-                { id: '4', num: '4.', question: 'How long does a dental implant procedure take?', answer: 'Implants typically take 2-4 months depending on healing, with temporary crowns provided during the process.' },
-                { id: '5', num: '5.', question: 'Is teeth whitening safe?', answer: 'Professional teeth whitening under dental supervision is 100% safe, effective, and preserves enamel integrity.' },
-                { id: '6', num: '6.', question: 'Do you provide emergency dental care?', answer: 'Yes. We offer prompt emergency dental appointments for acute pain, trauma, or broken restorations.' },
-              ].map((item) => {
-                const isOpen = openFaq === item.id || (openFaq === null && item.id === '1');
-                return (
-                  <div key={item.id} className={`faq-v3__box ${isOpen ? 'faq-v3__box--open' : ''}`}>
-                    <button
-                      className="faq-v3__box-question"
-                      onClick={() => setOpenFaq(isOpen && openFaq !== null ? '' : item.id)}
-                    >
-                      <span>{item.num} {item.question}</span>
-                    </button>
-                    {isOpen && (
-                      <div className="faq-v3__box-answer">
-                        <p>{item.answer}</p>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+          {/* 4 Image-Rich Step Cards */}
+          <div className="travel-timeline">
+            {/* Step 1: Online Consultation & E-Visa */}
+            <motion.div
+              className="travel-step-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ y: -8 }}
+              onClick={() => navigate('/travel-visa')}
+            >
+              <div className="travel-step-card__img-header">
+                <img src="/assets/travel-step-1-evisa.png" alt="Online Consultation & E-Visa" className="travel-step-card__top-img" />
+                <div className="travel-step-card__num">01</div>
+              </div>
+              <div className="travel-step-card__content">
+                <h3 className="travel-step-card__title" style={{ whiteSpace: 'nowrap' }}>1. Online Consult &amp; E-Visa</h3>
+                <p className="travel-step-card__desc">
+                  Receive your customized treatment plan &amp; official Indian E-Medical Visa invitation letter within 24 hours.
+                </p>
+                <span className="travel-step-card__tag">Fast 24h Letter</span>
+              </div>
+            </motion.div>
+
+            {/* Step 2: Airport Pickup & Hotel */}
+            <motion.div
+              className="travel-step-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ y: -8 }}
+              onClick={() => navigate('/travel-visa')}
+            >
+              <div className="travel-step-card__img-header">
+                <img src="/assets/travel-step-2-airport.jpg" alt="VIP Airport Pickup & Hotel Stay" className="travel-step-card__top-img" />
+                <div className="travel-step-card__num">02</div>
+              </div>
+              <div className="travel-step-card__content">
+                <h3 className="travel-step-card__title">2. Airport Pickup &amp; Hotel</h3>
+                <p className="travel-step-card__desc">
+                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to partner 3★–5★ hotels.
+                </p>
+                <span className="travel-step-card__tag">100% Free Transfer</span>
+              </div>
+            </motion.div>
+
+            {/* Step 3: World-Class Dental Care */}
+            <motion.div
+              className="travel-step-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              whileHover={{ y: -8 }}
+              onClick={() => navigate('/travel-visa')}
+            >
+              <div className="travel-step-card__img-header">
+                <img src="/assets/travel-step-3-care.png" alt="World-Class Dental Care" className="travel-step-card__top-img" />
+                <div className="travel-step-card__num">03</div>
+              </div>
+              <div className="travel-step-card__content">
+                <h3 className="travel-step-card__title">3. World-Class Dental Care</h3>
+                <p className="travel-step-card__desc">
+                  Painless procedures performed by certified specialists using Swiss &amp; German premium materials.
+                </p>
+                <span className="travel-step-card__tag">70% Cost Savings</span>
+              </div>
+            </motion.div>
+
+            {/* Step 4: Vacation & Recovery */}
+            <motion.div
+              className="travel-step-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ y: -8 }}
+              onClick={() => navigate('/travel-visa')}
+            >
+              <div className="travel-step-card__img-header">
+                <img src="/assets/travel-step-4-resort.jpg" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" />
+                <div className="travel-step-card__num">04</div>
+              </div>
+              <div className="travel-step-card__content">
+                <h3 className="travel-step-card__title">4. Vacation &amp; Sightseeing</h3>
+                <p className="travel-step-card__desc">
+                  Recover while exploring serene beach resorts, historic temples, and local shopping landmarks.
+                </p>
+                <span className="travel-step-card__tag">Vacation &amp; Recovery</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Travel Concierge Banner */}
+          <div className="travel-concierge-banner" style={{ marginTop: '3.5rem' }}>
+            <div className="travel-concierge-banner__inner">
+              <div className="travel-concierge-banner__text">
+                <h3 className="travel-concierge-banner__title">Need Assistance Planning Your Dental Trip?</h3>
+                <p className="travel-concierge-banner__desc">Our dedicated Patient Concierge handles flight dates, hotel bookings, and custom treatment schedules for free.</p>
+              </div>
+              <div className="travel-concierge-banner__actions">
+                <button className="btn btn-cyan-pill" onClick={() => navigate('/travel-visa')}>
+                  Plan My Dental Trip <ArrowRight size={16} />
+                </button>
+                <a
+                  href="https://wa.me/919876543210?text=Hello%20Kayal%20Dental%20Care,%20I%20need%20help%20planning%20my%20dental%20travel."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-purple"
+                  style={{ background: '#22c55e', borderColor: '#22c55e', color: '#ffffff' }}
+                >
+                  WhatsApp Travel Desk ↗
+                </a>
+              </div>
             </div>
           </div>
         </div>

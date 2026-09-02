@@ -123,7 +123,7 @@ const PatientResourcesPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="section bg-white">
+      <section id="faqs" className="section bg-white">
         <div className="container">
           <div className="text-center mb-5" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h2 className="section-title">Frequently Asked Questions</h2>
@@ -170,7 +170,7 @@ const PatientResourcesPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="section">
+      <section id="checklist" className="section">
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
             <h2 className="section-title">Pre-Treatment Checklist</h2>
@@ -217,7 +217,7 @@ const PatientResourcesPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="section bg-white">
+      <section id="care-guide" className="section bg-white">
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
             <h2 className="section-title">Post-Treatment Care Guide</h2>

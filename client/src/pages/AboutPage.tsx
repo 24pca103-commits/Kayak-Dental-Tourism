@@ -72,7 +72,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Our Story */}
-      <section className="section about-story">
+      <section id="story" className="section about-story">
         <div className="container">
           <div className="story-grid">
             <motion.div className="story-content" {...fadeInUp}>
@@ -96,7 +96,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Mission & Stats */}
-      <section className="section about-mission">
+      <section id="mission" className="section about-mission">
         <div className="container">
           <motion.div className="mission-header text-center" {...fadeInUp}>
             <Globe size={48} className="mission-icon mx-auto" />
@@ -122,7 +122,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Our Specialists */}
-      <section className="section about-doctors bg-light">
+      <section id="doctors" className="section about-doctors bg-light">
         <div className="container">
           <motion.div className="text-center mb-12" {...fadeInUp}>
             <div className="badge badge-purple mb-4">Our Team</div>
@@ -154,7 +154,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* Facility & Technology */}
-      <section className="section about-facility">
+      <section id="facilities" className="section about-facility">
         <div className="container">
           <motion.div className="text-center mb-12" {...fadeInUp}>
             <div className="badge badge-cyan mb-4">State-of-the-Art Clinic</div>

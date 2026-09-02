@@ -43,8 +43,8 @@ export default function Navbar() {
       subItems: [
         { label: 'About Us', path: '/about' },
         { label: 'Our Doctors', path: '/team' },
-        { label: 'Facilities', path: '/about' },
-        { label: 'Mission', path: '/about' },
+        { label: 'Facilities', path: '/about#facilities' },
+        { label: 'Mission', path: '/about#mission' },
       ],
     },
     {
@@ -65,45 +65,45 @@ export default function Navbar() {
       label: 'Patient Resources',
       path: '/patient-resources',
       subItems: [
-        { label: 'FAQs', path: '/patient-resources' },
-        { label: 'Checklists', path: '/patient-resources' },
-        { label: 'Care Guide', path: '/patient-resources' },
+        { label: 'FAQs', path: '/patient-resources#faqs' },
+        { label: 'Pre-Treatment Checklist', path: '/patient-resources#checklist' },
+        { label: 'Post-Treatment Care Guide', path: '/patient-resources#care-guide' },
       ],
     },
     {
       label: 'Dental Tourism',
       path: '/dental-tourism',
       subItems: [
-        { label: 'Why India', path: '/dental-tourism' },
-        { label: 'Cost Comparison', path: '/dental-tourism' },
-        { label: 'Patient Journey', path: '/dental-tourism' },
-        { label: 'Testimonials', path: '/testimonials' },
+        { label: 'Why Choose India', path: '/dental-tourism#why-india' },
+        { label: 'Cost Comparison', path: '/dental-tourism#cost-comparison' },
+        { label: 'Patient Journey', path: '/dental-tourism#journey' },
+        { label: 'Quality & Safety', path: '/dental-tourism#safety' },
+        { label: 'Patient Testimonials (Videos)', path: '/dental-tourism#testimonials' },
       ],
     },
     {
       label: 'Travel Info',
       path: '/travel-visa',
       subItems: [
-        { label: 'Visa', path: '/travel-visa' },
-        { label: 'Invitation Letter', path: '/travel-visa' },
-        { label: 'Airport Pickup', path: '/travel-visa' },
-        { label: 'Accommodation', path: '/travel-visa' },
-        { label: 'Travel Tips', path: '/travel-visa' },
+        { label: 'Medical Visa', path: '/travel-visa#visa' },
+        { label: 'Visa Invitation', path: '/travel-visa#invitation' },
+        { label: 'Airport Pickup', path: '/travel-visa#pickup' },
+        { label: 'Accommodation', path: '/travel-visa#hotels' },
+        { label: 'Local Travel Tips', path: '/travel-visa#tips' },
       ],
     },
   ];
 
   const consultationSubItems: SubMenuItem[] = [
-    { label: 'Free Consultation', path: '/online-consultation' },
-    { label: 'How It Works', path: '/online-consultation' },
-    { label: 'Treatment Plan', path: '/online-consultation' },
+    { label: 'Book Free Video Consultation', path: '/online-consultation#book-form' },
+    { label: 'What to Expect After Consultation', path: '/online-consultation#what-to-expect' },
   ];
 
   const contactSubItems: SubMenuItem[] = [
-    { label: 'Enquiry', path: '/contact' },
+    { label: 'Enquiry Form', path: '/contact#enquiry' },
     { label: 'WhatsApp', path: 'https://wa.me/919876543210', isExternal: true },
-    { label: 'Contact Details', path: '/contact' },
-    { label: 'Map', path: '/contact' },
+    { label: 'Phone & Email', path: '/contact#details' },
+    { label: 'Map / Location', path: '/contact#map' },
   ];
 
   if (isAdmin) return null;

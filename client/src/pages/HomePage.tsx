@@ -107,8 +107,8 @@ const HomePage: React.FC = () => {
               </div>
               <h1 className="hero__heading">
                 Advanced Dentistry<br />
-                <span className="hero__heading-accent" style={{ whiteSpace: 'nowrap' }}>Global Standards</span><br />
-                Affordable Care
+                <span className="hero__heading-accent" style={{ whiteSpace: 'nowrap' }}>International Standards</span><br />
+                Fraction of a Cost
               </h1>
               <p className="hero__desc">
                 Experience world-class dental care at Kayal Multispeciality Dental — trusted by 5,000+ international patients from 20+ countries.
@@ -133,7 +133,7 @@ const HomePage: React.FC = () => {
             <div className="hero__visual">
               <div className="hero__visual-circle hero__visual-circle--outer" />
               <div className="hero__visual-circle hero__visual-circle--inner" />
-              
+
               <div className="hero-3d-wrapper hero-3d-wrapper--clickable" onClick={() => navigate('/dental-tourism')}>
                 <img
                   src="/assets/hero-dental-tourism-hd.jpg"
@@ -250,7 +250,7 @@ const HomePage: React.FC = () => {
 
             {/* Right Side: Image (Expanded to fill right column cleanly) */}
             <div className="welcome__visual" style={{ width: '100%' }}>
-              <div 
+              <div
                 className="welcome__img-wrap-v4 welcome__img-wrap--clickable"
                 onClick={() => navigate('/dental-tourism')}
                 title="Click to explore Dental Tourism"

@@ -25,7 +25,7 @@ const TravelVisaPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="section visa-guide">
+      <section id="visa" className="section visa-guide">
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
             <h2 className="section-title">Indian Medical Visa Guide</h2>
@@ -81,7 +81,7 @@ const TravelVisaPage: React.FC = () => {
             </motion.div>
           </div>
 
-          <div className="invitation-section">
+          <div id="invitation" className="invitation-section">
             <div className="invitation-icon">
               <Mail size={60} />
             </div>
@@ -94,7 +94,7 @@ const TravelVisaPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="transport-section">
+      <section id="pickup" className="transport-section">
         <div className="container transport-content">
           <div className="transport-text">
             <h2>Airport Pickup & Transport</h2>
@@ -122,7 +122,7 @@ const TravelVisaPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="section" style={{ backgroundColor: '#f9f9f9' }}>
+      <section id="hotels" className="section" style={{ backgroundColor: '#f9f9f9' }}>
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
             <h2 className="section-title">Accommodation Partnerships</h2>
@@ -181,7 +181,7 @@ const TravelVisaPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="section">
+      <section id="tips" className="section">
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
             <h2 className="section-title">Local Travel Tips</h2>

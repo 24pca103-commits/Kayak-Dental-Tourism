@@ -54,7 +54,7 @@ const DentalTourismPage: React.FC = () => {
   return (
     <div className="dental-tourism-page">
       {/* 1. Hero */}
-      <section className="hero-section">
+      <section id="why-india" className="hero-section">
         <div className="container">
           <motion.div 
             className="hero-content"
@@ -83,7 +83,7 @@ const DentalTourismPage: React.FC = () => {
       </section>
 
       {/* 2. Cost Comparison */}
-      <section className="section bg-white">
+      <section id="cost-comparison" className="section bg-white">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="section-title font-display">Transparent Cost Comparison</h2>
@@ -159,7 +159,7 @@ const DentalTourismPage: React.FC = () => {
       </section>
 
       {/* 3. Patient Journey Timeline */}
-      <section className="section bg-light-gray">
+      <section id="journey" className="section bg-light-gray">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="section-title font-display">Your Journey With Us</h2>
@@ -194,7 +194,7 @@ const DentalTourismPage: React.FC = () => {
       </section>
 
       {/* 4. Quality & Safety Standards */}
-      <section className="section bg-white">
+      <section id="safety" className="section bg-white">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="section-title font-display">World-Class Quality & Safety</h2>
@@ -220,7 +220,7 @@ const DentalTourismPage: React.FC = () => {
       </section>
 
       {/* 5. Patient Testimonials */}
-      <section className="section bg-light-gray">
+      <section id="testimonials" className="section bg-light-gray">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="section-title font-display">Global Success Stories</h2>

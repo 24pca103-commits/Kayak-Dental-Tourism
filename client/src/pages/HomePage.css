@@ -2271,11 +2271,37 @@
   }
 }
 
-@media (max-width: 600px) {
-  .travel-timeline {
-    grid-template-columns: 1fr;
+@media (max-width: 768px) {
+  .hero__badge-floating {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    display: inline-flex !important;
+    margin: 0.25rem !important;
+    font-size: 0.72rem !important;
+    padding: 0.35rem 0.75rem !important;
   }
-  .travel-concierge-banner {
-    padding: 2rem 1.5rem;
+
+  .hero-3d-wrapper {
+    max-width: 100% !important;
+    margin: 1.5rem auto 0 !important;
+  }
+
+  .hero-3d-img {
+    height: 280px !important;
+  }
+
+  .welcome__mission-pill {
+    white-space: normal !important;
+    max-width: 100% !important;
+    font-size: 0.78rem !important;
+    padding: 0.5rem 0.85rem !important;
+    line-height: 1.35 !important;
+    border-radius: 16px !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
   }
 }

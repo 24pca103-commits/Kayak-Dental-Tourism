@@ -269,27 +269,27 @@
 
 @media (max-width: 768px) {
   .footer__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2rem 1.25rem !important;
   }
   .footer__col--brand {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1 !important;
   }
   .footer__col:nth-child(5) {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1 !important;
   }
 }
 
 @media (max-width: 600px) {
   .footer__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem 1.25rem;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem 1rem !important;
   }
   .footer__col--brand {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1 !important;
   }
   .footer__col:nth-child(5) {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1 !important;
   }
   .footer__bottom {
     flex-direction: column;

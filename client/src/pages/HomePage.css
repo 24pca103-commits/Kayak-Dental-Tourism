@@ -423,36 +423,7 @@
 }
 
 .highlight-item-v5__icon--looping {
-  animation: pulseHighlightIcon 2.2s ease-in-out infinite alternate;
   border-color: rgba(69, 18, 113, 0.4) !important;
-}
-
-.highlight-item-v5__icon--looping svg {
-  animation: pulseIconGlow 2.2s ease-in-out infinite alternate;
-}
-
-@keyframes pulseHighlightIcon {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 4px 15px rgba(69, 18, 113, 0.15);
-    background: rgba(255, 255, 255, 0.35);
-  }
-  100% {
-    transform: scale(1.12);
-    box-shadow: 0 12px 32px rgba(69, 18, 113, 0.45), 0 0 25px rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.75);
-  }
-}
-
-@keyframes pulseIconGlow {
-  0% {
-    transform: scale(1);
-    color: #451271;
-  }
-  100% {
-    transform: scale(1.15);
-    color: #240840;
-  }
 }
 
 .highlight-item-v5--clickable {

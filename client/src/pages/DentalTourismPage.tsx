@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Plane, 
-  MapPin, 
-  Award, 
-  ShieldCheck, 
-  CheckCircle2, 
-  Star, 
-  PlayCircle,
+import {
+  Plane,
+  MapPin,
+  Award,
+  ShieldCheck,
+  CheckCircle2,
   Video,
   FileText,
   Hospital,
   HeartPulse,
-  MessageCircle
+  MessageCircle,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import './DentalTourismPage.css';
+
+const VIDEO_TESTIMONIALS = [
+  { name: 'Priya S.', country: 'UK 🇬🇧', tag: 'Dental Implants', videoId: 'dQw4w9WgXcQ' },
+  { name: 'Karthik R.', country: 'UAE 🇦🇪', tag: 'Smile Makeover', videoId: 'dQw4w9WgXcQ' },
+  { name: 'Sarah M.', country: 'USA 🇺🇸', tag: 'Full Mouth Rehab', videoId: 'dQw4w9WgXcQ' },
+  { name: 'Ahmed K.', country: 'Qatar 🇶🇦', tag: 'Zirconia Crowns', videoId: 'dQw4w9WgXcQ' },
+  { name: 'Lisa W.', country: 'Australia 🇦🇺', tag: 'Veneers', videoId: 'dQw4w9WgXcQ' },
+];
 
 const costData = [
   { treatment: 'Single Implant', india: 500, usa: 3000, uk: 2500, uae: 2000, max: 3000 },
@@ -43,20 +52,51 @@ const qualityStandards = [
   { id: 6, title: '98% implant success rate', icon: <CheckCircle2 className="w-8 h-8 text-cyan-400" /> },
 ];
 
-const testimonials = [
-  { id: 1, name: 'James Wilson', country: 'UK', treatment: 'Full Mouth Implants', rating: 5, text: 'Saved 70% vs UK prices', hasVideo: true },
-  { id: 2, name: 'Sarah Mitchell', country: 'USA', treatment: 'Smile Makeover', rating: 5, text: 'Perfectly organized', hasVideo: false },
-  { id: 3, name: 'Ahmed Al-Rashid', country: 'UAE', treatment: 'Dental Implants', rating: 5, text: 'Painless and amazing', hasVideo: true },
-  { id: 4, name: 'Maria González', country: 'Spain', treatment: 'Zirconia Crowns', rating: 5, text: 'Stunning results', hasVideo: false },
-];
-
 const DentalTourismPage: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setVisibleCount(1);
+      } else if (window.innerWidth < 1024) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const maxSlide = Math.max(0, VIDEO_TESTIMONIALS.length - visibleCount);
+
+  // Auto sliding option every 3.5 seconds
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [isHovered, maxSlide]);
+
+  const handlePrev = () => {
+    setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
+  };
+
   return (
     <div className="dental-tourism-page">
       {/* 1. Hero */}
       <section id="why-india" className="hero-section">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="hero-content"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -70,7 +110,7 @@ const DentalTourismPage: React.FC = () => {
                 <span className="stat-text">Cost Savings</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">10k+</span>
+                <span className="stat-number">7 Lakh+</span>
                 <span className="stat-text">International Patients</span>
               </div>
               <div className="stat-item">
@@ -88,13 +128,26 @@ const DentalTourismPage: React.FC = () => {
           <div className="text-center mb-12">
             <h2 className="section-title font-display">Transparent Cost Comparison</h2>
             <p className="section-subtitle">See why thousands travel to India for their dental care</p>
-            <span className="badge badge-cyan mt-4 inline-block">Save up to 70%</span>
+            <p style={{
+              marginTop: '0.75rem',
+              fontSize: '0.85rem',
+              color: '#92400e',
+              fontStyle: 'italic',
+              background: '#fef3c7',
+              border: '1.5px solid #f59e0b',
+              borderRadius: '8px',
+              padding: '0.45rem 1rem',
+              display: 'inline-block',
+              fontWeight: 600,
+            }}>
+              ⚠️ # Approximate rates — actual cost may vary based on individual treatment plan.
+            </p>
           </div>
 
           <div className="cost-chart-container">
             {costData.map((item, index) => (
-              <motion.div 
-                key={index} 
+              <motion.div
+                key={index}
                 className="cost-row"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -105,8 +158,8 @@ const DentalTourismPage: React.FC = () => {
                 <div className="cost-bars">
                   <div className="cost-bar-group">
                     <span className="cost-label">India</span>
-                    <motion.div 
-                      className="bar bar-india" 
+                    <motion.div
+                      className="bar bar-india"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${(item.india / item.max) * 100}%` }}
                       viewport={{ once: true }}
@@ -117,8 +170,8 @@ const DentalTourismPage: React.FC = () => {
                   </div>
                   <div className="cost-bar-group">
                     <span className="cost-label">USA</span>
-                    <motion.div 
-                      className="bar bar-usa" 
+                    <motion.div
+                      className="bar bar-usa"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${(item.usa / item.max) * 100}%` }}
                       viewport={{ once: true }}
@@ -129,8 +182,8 @@ const DentalTourismPage: React.FC = () => {
                   </div>
                   <div className="cost-bar-group">
                     <span className="cost-label">UK</span>
-                    <motion.div 
-                      className="bar bar-uk" 
+                    <motion.div
+                      className="bar bar-uk"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${(item.uk / item.max) * 100}%` }}
                       viewport={{ once: true }}
@@ -141,8 +194,8 @@ const DentalTourismPage: React.FC = () => {
                   </div>
                   <div className="cost-bar-group">
                     <span className="cost-label">UAE</span>
-                    <motion.div 
-                      className="bar bar-uae" 
+                    <motion.div
+                      className="bar bar-uae"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${(item.uae / item.max) * 100}%` }}
                       viewport={{ once: true }}
@@ -169,8 +222,8 @@ const DentalTourismPage: React.FC = () => {
           <div className="timeline-container">
             <div className="timeline-line"></div>
             {journeySteps.map((step, index) => (
-              <motion.div 
-                key={step.id} 
+              <motion.div
+                key={step.id}
                 className={`timeline-item ${index % 2 === 0 ? 'left' : 'right'}`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -203,8 +256,8 @@ const DentalTourismPage: React.FC = () => {
 
           <div className="standards-grid">
             {qualityStandards.map((item) => (
-              <motion.div 
-                key={item.id} 
+              <motion.div
+                key={item.id}
                 className="standard-card card"
                 whileHover={{ y: -5 }}
               >
@@ -219,43 +272,82 @@ const DentalTourismPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Patient Testimonials */}
+      {/* 5. Patient Testimonials – Auto-Sliding Video Carousel (No Horizontal Scroller) */}
       <section id="testimonials" className="section bg-light-gray">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="section-title font-display">Global Success Stories</h2>
-            <p className="section-subtitle">Hear from our international patients</p>
+            <div className="badge badge-cyan" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>Patient Stories</div>
+            <h2 className="section-title font-display">Real Reviews From Real Patients</h2>
+            <p className="section-subtitle">Hear directly from our international patients who flew for their smile transformation</p>
           </div>
 
-          <div className="testimonials-grid">
-            {testimonials.map((testi, index) => (
-              <motion.div 
-                key={testi.id} 
-                className="testimonial-card"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+          {/* Auto-sliding Carousel Container */}
+          <div
+            className="video-auto-slider-container"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* Arrow Buttons */}
+            <button
+              className="slider-nav-btn slider-nav-btn--prev"
+              onClick={handlePrev}
+              aria-label="Previous Video Review"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              className="slider-nav-btn slider-nav-btn--next"
+              onClick={handleNext}
+              aria-label="Next Video Review"
+            >
+              <ChevronRight size={22} />
+            </button>
+
+            {/* Overflow Hidden Track Wrap – No Scroller Bar */}
+            <div className="video-auto-slider-wrap">
+              <div
+                className="video-auto-slider-track"
+                style={{
+                  transform: `translateX(-${currentSlide * (100 / visibleCount)}%)`,
+                }}
               >
-                <div className="testimonial-header">
-                  <div>
-                    <h3 className="testimonial-name">{testi.name}</h3>
-                    <p className="testimonial-country">{testi.country} • {testi.treatment}</p>
+                {VIDEO_TESTIMONIALS.map((v, i) => (
+                  <div
+                    key={i}
+                    className="video-auto-slider-item"
+                    style={{ flex: `0 0 ${100 / visibleCount}%` }}
+                  >
+                    <div className="video-slider-card">
+                      <div className="video-slider-iframe-wrap">
+                        <iframe
+                          src={``}
+                          title={`Patient Review – ${v.name}`}
+                          allow="encrypted-media"
+                          allowFullScreen
+                          className="video-slider-iframe"
+                        />
+                      </div>
+                      <div className="video-slider-meta">
+                        <span className="video-slider-name">{v.name} · {v.country}</span>
+                        <span className="video-slider-tag">{v.tag}</span>
+                      </div>
+                    </div>
                   </div>
-                  {testi.hasVideo && (
-                    <button className="play-btn" aria-label="Play video testimonial">
-                      <PlayCircle className="w-8 h-8" />
-                    </button>
-                  )}
-                </div>
-                <div className="testimonial-rating">
-                  {[...Array(testi.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-current" />
-                  ))}
-                </div>
-                <p className="testimonial-text">"{testi.text}"</p>
-              </motion.div>
-            ))}
+                ))}
+              </div>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="slider-dots">
+              {Array.from({ length: maxSlide + 1 }).map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`slider-dot ${currentSlide === idx ? 'slider-dot--active' : ''}`}
+                  onClick={() => setCurrentSlide(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -270,8 +362,8 @@ const DentalTourismPage: React.FC = () => {
               <Link to="/online-consultation" className="btn btn-primary">
                 Book Consultation
               </Link>
-              <a href="https://wa.me/1234567890" target="_blank" rel="noreferrer" className="btn btn-outline-light">
-                <MessageCircle className="w-5 h-5 mr-2 inline" />
+              <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="btn btn-outline-light" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                <WhatsAppIcon size={18} color="#25D366" />
                 WhatsApp Us
               </a>
             </div>

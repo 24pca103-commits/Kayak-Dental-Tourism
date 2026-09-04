@@ -31,7 +31,7 @@ const AdminLoginPage: React.FC = () => {
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
       <div style={{ background: 'white', borderRadius: 'var(--radius-xl)', padding: '3rem 2.5rem', width: '100%', maxWidth: 420, boxShadow: 'var(--shadow-xl)' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <img src="/assets/kayal-brand-logo.png" alt="KAYAL Multispeciality Dental Care" style={{ height: '70px', width: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
+            <img src="/assets/kayal-brand-logo.png" alt="Kayal Dental Tourism" style={{ height: '70px', width: 'auto', objectFit: 'contain', margin: '0 auto 1rem' }} />
             <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--purple-700)' }}>Admin Portal</h1>
           </div>
 

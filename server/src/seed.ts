@@ -171,7 +171,7 @@ const seed = async () => {
   await Testimonial.insertMany([
     {
       patientName: 'Priya S.',
-      review: 'I visited KAYAL Multispeciality Dental Care for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort.',
+      review: 'I visited Kayal Dental Tourism for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort.',
       rating: 5,
       status: 'active',
     },

@@ -156,11 +156,10 @@ export default function Navbar() {
 
         {/* Action Buttons (Right / Left Side Actions) */}
         <div className="navbar__actions">
-          {/* Contact Dropdown */}
+          {/* Contact Dropdown - Icon Only */}
           <div className="navbar__menu-item-wrap">
-            <Link to="/contact" className="navbar__phone">
-              <Phone size={14} />
-              Contact <ChevronDown size={12} className="navbar__chevron" />
+            <Link to="/contact" className="navbar__contact-icon-btn" title="Contact Us" aria-label="Contact Us">
+              <Phone size={17} />
             </Link>
             <div className="navbar__dropdown navbar__dropdown--right">
               <div className="navbar__dropdown-inner">
@@ -185,7 +184,7 @@ export default function Navbar() {
               className="btn btn-primary btn-sm navbar__cta-btn"
               onClick={() => navigate('/online-consultation')}
             >
-              Book Online Consultation <ChevronDown size={14} className="navbar__chevron" />
+              Book Online Consultation
             </button>
             <div className="navbar__dropdown navbar__dropdown--right">
               <div className="navbar__dropdown-inner">
@@ -217,13 +216,18 @@ export default function Navbar() {
               <Link
                 to={item.path}
                 className={`navbar__mobile-link ${location.pathname === item.path ? 'navbar__mobile-link--active' : ''}`}
+                onClick={() => setMenuOpen(false)}
               >
                 {item.label}
               </Link>
               {item.subItems && (
                 <button
                   className="navbar__mobile-toggle"
-                  onClick={() => toggleMobileDropdown(item.label)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleMobileDropdown(item.label);
+                  }}
+                  aria-label={`Toggle ${item.label} submenu`}
                 >
                   <ChevronDown
                     size={16}
@@ -239,7 +243,12 @@ export default function Navbar() {
             {item.subItems && activeMobileDropdown === item.label && (
               <div className="navbar__mobile-sublist">
                 {item.subItems.map((sub, i) => (
-                  <Link key={i} to={sub.path} className="navbar__mobile-subitem">
+                  <Link
+                    key={i}
+                    to={sub.path}
+                    className="navbar__mobile-subitem"
+                    onClick={() => setMenuOpen(false)}
+                  >
                     {sub.label}
                   </Link>
                 ))}

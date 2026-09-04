@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { appointmentsAPI } from '../services/api';
+import './ContactPage.css';
 
 const ContactPage: React.FC = () => {
   const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
@@ -60,7 +61,7 @@ const ContactPage: React.FC = () => {
 
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '4rem', alignItems: 'start' }}>
+          <div className="contact-grid">
             {/* Info */}
             <div>
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1.5rem' }}>Clinic Information</h2>

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { ChevronDown, ChevronUp, Check, ShieldCheck, Sparkles, HeartPulse, Smile, CheckCircle2 } from 'lucide-react';
 import './PatientResourcesPage.css';
 
 const PatientResourcesPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'medical' | 'travel' | 'payment'>('medical');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
-  const [openCare, setOpenCare] = useState<number | null>(null);
 
   const toggleChecklist = (id: string) => {
     setChecklist(prev => ({ ...prev, [id]: !prev[id] }));
@@ -56,6 +55,8 @@ const PatientResourcesPage: React.FC = () => {
   const careGuides = [
     {
       title: "After Dental Implants",
+      badge: "Dental Implants",
+      icon: ShieldCheck,
       content: [
         "Maintain a soft food diet for 2 weeks",
         "Use gentle brushing around the implant site",
@@ -65,7 +66,9 @@ const PatientResourcesPage: React.FC = () => {
       ]
     },
     {
-      title: "After Crowns/Bridges",
+      title: "After Crowns & Bridges",
+      badge: "Crowns & Bridges",
+      icon: Sparkles,
       content: [
         "Avoid hard or sticky foods for the first 24 hours",
         "Mild temperature sensitivity is normal for a few days",
@@ -75,6 +78,8 @@ const PatientResourcesPage: React.FC = () => {
     },
     {
       title: "After Root Canal",
+      badge: "Root Canal",
+      icon: HeartPulse,
       content: [
         "Avoid chewing on the treated side until a permanent crown is placed",
         "Mild pain or swelling is normal for a few days",
@@ -84,6 +89,8 @@ const PatientResourcesPage: React.FC = () => {
     },
     {
       title: "After Cosmetic Procedures",
+      badge: "Cosmetic Dentistry",
+      icon: Smile,
       content: [
         "Avoid staining foods and drinks (coffee, tea, wine) for 48 hours",
         "Use desensitizing toothpaste if you experience sensitivity",
@@ -93,6 +100,8 @@ const PatientResourcesPage: React.FC = () => {
     },
     {
       title: "General Guidelines",
+      badge: "General Care",
+      icon: CheckCircle2,
       content: [
         "Keep our emergency contact information easily accessible",
         "Schedule your virtual follow-up appointment before leaving",
@@ -219,28 +228,41 @@ const PatientResourcesPage: React.FC = () => {
 
       <section id="care-guide" className="section bg-white">
         <div className="container">
-          <div className="text-center" style={{ textAlign: 'center' }}>
+          <div className="text-center" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div className="badge badge-cyan" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>Recovery Guidelines</div>
             <h2 className="section-title">Post-Treatment Care Guide</h2>
-            <p>Follow these guidelines to ensure optimal healing and long-lasting results.</p>
+            <p style={{ color: 'var(--gray-600)', maxWidth: '640px', margin: '0.5rem auto 0' }}>
+              Follow these specialist guidelines to ensure fast healing, maximum comfort, and long-lasting results.
+            </p>
           </div>
 
           <div className="care-guide-grid">
-            {careGuides.map((guide, index) => (
-              <div key={index} className="care-card">
-                <div 
-                  className="care-header"
-                  onClick={() => setOpenCare(openCare === index ? null : index)}
-                >
-                  <h3>{guide.title}</h3>
-                  {openCare === index ? <ChevronUp size={20} color="#451271" /> : <ChevronDown size={20} color="#451271" />}
+            {careGuides.map((guide, index) => {
+              const IconComponent = guide.icon;
+              return (
+                <div key={index} className="care-card-v2">
+                  <div className="care-card-v2__header">
+                    <div className="care-card-v2__icon-box">
+                      <IconComponent size={24} />
+                    </div>
+                    <div>
+                      <span className="care-card-v2__badge">{guide.badge}</span>
+                      <h3 className="care-card-v2__title">{guide.title}</h3>
+                    </div>
+                  </div>
+                  <div className="care-card-v2__body">
+                    <ul className="care-card-v2__list">
+                      {guide.content.map((point, i) => (
+                        <li key={i} className="care-card-v2__item">
+                          <CheckCircle2 size={16} className="care-card-v2__check" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <div className={`care-content ${openCare === index ? 'open' : ''}`}>
-                  {guide.content.map((point, i) => (
-                    <p key={i}>{point}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

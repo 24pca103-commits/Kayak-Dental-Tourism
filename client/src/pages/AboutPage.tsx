@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Globe, 
@@ -16,6 +17,7 @@ import {
 import './AboutPage.css';
 
 const AboutPage: React.FC = () => {
+  const navigate = useNavigate();
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -37,7 +39,7 @@ const AboutPage: React.FC = () => {
   ];
 
   const doctors = [
-    { name: "Dr. Kayal Anandhi", role: "Founder", specialty: "Implantology & Cosmetic", exp: "15+ yrs", initials: "KA", degree: "BDS MDS Prosthodontics" },
+    { name: "Dr. Kayal Anandhi", role: "Founder", specialty: "Implantology & Cosmetic", exp: "15+ yrs", initials: "KA", degree: "BDS MDS Prosthodontics", image: "/assets/dr-kayal-anandhi.jpg" },
     { name: "Dr. Rajesh Kumar", role: "Senior Implantologist", specialty: "Oral Surgery", exp: "12+ yrs", initials: "RK", degree: "BDS MDS" },
     { name: "Dr. Priya Sharma", role: "Cosmetic Dentist", specialty: "Veneers & Smile Design", exp: "10+ yrs", initials: "PS", degree: "BDS" },
     { name: "Dr. Suresh Babu", role: "Orthodontist", specialty: "Braces & Aligners", exp: "8+ yrs", initials: "SB", degree: "BDS MDS" },
@@ -65,7 +67,7 @@ const AboutPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1>About Kayal Multispeciality Dental Care</h1>
+            <h1>About Kayal Dental Tourism</h1>
             <p>Committed to providing gentle care, advanced technology, and world-class dental treatments for patients across the globe.</p>
           </motion.div>
         </div>
@@ -78,7 +80,7 @@ const AboutPage: React.FC = () => {
             <motion.div className="story-content" {...fadeInUp}>
               <div className="badge badge-cyan">Our Story</div>
               <h2 className="section-title">A Legacy of Excellence in Dental Care</h2>
-              <p>Welcome to Kayal Multispeciality Dental Care, where your smile is our top priority. Founded with a vision to make world-class dental care accessible to everyone, we have grown into a trusted destination for patients seeking quality treatments.</p>
+              <p>Welcome to Kayal Dental Tourism, where your smile is our top priority. Founded with a vision to make world-class dental care accessible to everyone, we have grown into a trusted destination for patients seeking quality treatments.</p>
               <p>Our philosophy is simple: combine gentle, compassionate care with the most advanced dental technology available. We understand that visiting the dentist can be daunting, which is why we've created a soothing environment where you can feel relaxed and confident in the care you receive.</p>
               <ul className="story-list">
                 <li><CheckCircle2 className="text-cyan" size={20} /> Patient-centric approach</li>
@@ -87,8 +89,59 @@ const AboutPage: React.FC = () => {
               </ul>
             </motion.div>
             <motion.div className="story-image-wrapper" {...fadeInUp}>
-              <div className="story-image-placeholder">
-                <div className="logo-placeholder">K</div>
+              <div style={{
+                borderRadius: '24px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 50px rgba(69,18,113,0.2)',
+                border: '2.5px solid rgba(36,224,225,0.4)',
+                position: 'relative'
+              }}>
+                {/* Tag INSIDE the card (top-left rounded cyan pill) */}
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  left: '16px',
+                  zIndex: 2,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  padding: '0.45rem 1rem',
+                  borderRadius: '50px',
+                  background: '#24E0E1',
+                  color: '#451271',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  fontFamily: 'var(--font-main)',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+                  border: '1.5px solid rgba(255,255,255,0.8)'
+                }}>
+                  <Award size={16} color="#451271" />
+                  <span>Founder &amp; Chief Dental Surgeon</span>
+                </div>
+
+                <img
+                  src="/assets/about-doctor-founder.png"
+                  alt="Dr. Kayal Anandhi - Founder & Chief Dental Surgeon"
+                  style={{ width: '100%', height: '400px', objectFit: 'cover', display: 'block' }}
+                />
+
+                {/* Bottom info INSIDE the card */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  background: 'linear-gradient(to top, rgba(36,8,64,0.92) 0%, rgba(36,8,64,0.6) 60%, transparent 100%)',
+                  padding: '2rem 1.25rem 1rem',
+                  color: '#ffffff'
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
+                    Dr. Kayal Anandhi
+                  </div>
+                  <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600 }}>
+                    Founder &amp; Chief Dentist · BDS, MDS (Prosthodontics)
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -139,7 +192,11 @@ const AboutPage: React.FC = () => {
             {doctors.map((doc, idx) => (
               <motion.div key={idx} className="doctor-card card" variants={fadeInUp}>
                 <div className="doctor-avatar">
-                  <span>{doc.initials}</span>
+                  {doc.image ? (
+                    <img src={doc.image} alt={doc.name} />
+                  ) : (
+                    <span>{doc.initials}</span>
+                  )}
                 </div>
                 <div className="doctor-info">
                   <h3>{doc.name}</h3>
@@ -187,8 +244,8 @@ const AboutPage: React.FC = () => {
           <motion.div className="cta-content text-center" {...fadeInUp}>
             <h2 className="text-white mb-4">Ready to experience world-class dental care?</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto opacity-90">Schedule your consultation today and take the first step towards a healthier, more beautiful smile.</p>
-            <button className="btn btn-cyan btn-lg">
-              Book Consultation <ArrowRight className="ml-2" size={20} />
+            <button className="btn btn-cyan btn-lg" onClick={() => navigate('/online-consultation')}>
+              Book Consultation <ArrowRight size={18} />
             </button>
           </motion.div>
         </div>

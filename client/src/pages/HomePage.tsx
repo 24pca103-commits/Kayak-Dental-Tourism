@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight, Globe, Heart, Sparkles, Plane, Award, ShieldCheck
+  ArrowRight, Globe, Heart, Sparkles, Award, ShieldCheck, ChevronLeft, ChevronRight
 } from 'lucide-react';
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { servicesAPI, doctorsAPI } from '../services/api';
 import type { Service, Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
@@ -24,7 +25,7 @@ const ALL_TREATMENTS = [
     title: 'Dental Implants',
     desc: 'Permanent titanium tooth replacements that look, feel, and function 100% naturally.',
     slug: 'dental-implants',
-    img: '/assets/treatment-1-implants.png',
+    img: '/assets/about-clinic-real.jpg',
   },
   {
     title: 'Full Mouth Rehabilitation',
@@ -66,8 +67,36 @@ const ALL_TREATMENTS = [
     title: 'Pediatric Dentistry',
     desc: 'Gentle, painless, and fun dental care tailored specifically for children.',
     slug: 'pediatric-dentistry',
-    img: '/assets/treatment-8-pediatric.jpg',
+    img: '/assets/treatment-8-pediatric-child.jpg',
   },
+];
+
+const HOME_TESTIMONIALS = [
+  {
+    quote: "I visited KAYAL Dental Tourism for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort. I finally have the confidence to smile again!",
+    author: "Priya S.",
+    location: "London, UK"
+  },
+  {
+    quote: "KAYAL Dental Care made me feel comfortable from the moment I walked in. The doctors explained every step clearly, and my smile makeover result was better than I expected. Thank you for the wonderful experience!",
+    author: "Karthik R.",
+    location: "Dubai, UAE"
+  },
+  {
+    quote: "Saved over 70% compared to US prices and received world-class full mouth implants. The care and precision was extraordinary. Highly recommended to anyone traveling for dental care!",
+    author: "Sarah M.",
+    location: "California, USA"
+  },
+  {
+    quote: "From airport pickup to final zirconia crowns fitting, everything was flawlessly arranged. Dr. Kayal and the team are true masters of dental artistry.",
+    author: "Ahmed K.",
+    location: "Doha, Qatar"
+  },
+  {
+    quote: "Exceptional service, pain-free root canal treatment, and beautiful veneers. I enjoyed exploring Chennai and returned home with a brand new smile!",
+    author: "James W.",
+    location: "Sydney, Australia"
+  }
 ];
 
 /* ═══════════════ HOME PAGE ═══════════════ */
@@ -76,6 +105,14 @@ const HomePage: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     Promise.all([
@@ -106,19 +143,19 @@ const HomePage: React.FC = () => {
                 Dental Excellence
               </div>
               <h1 className="hero__heading">
-                Advanced Dentistry<br />
-                <span className="hero__heading-accent" style={{ whiteSpace: 'nowrap' }}>International Standards</span><br />
-                Fraction of a Cost
+                <span className="hero__heading-line">Advanced Dentistry</span>
+                <span className="hero__heading-accent hero__heading-line">International Standards</span>
+                <span className="hero__heading-line">Fraction of a Cost</span>
               </h1>
               <p className="hero__desc">
-                Experience world-class dental care at Kayal Multispeciality Dental — trusted by 5,000+ international patients from 20+ countries.
+                Experience gentle, advanced, and affordable dental care designed to keep your smile bright and your life healthier
               </p>
               <div className="hero__actions">
-                <button className="btn btn-primary btn-lg" onClick={() => navigate('/online-consultation')}>
+                <button className="btn btn-primary hero__btn-compact" onClick={() => navigate('/online-consultation')}>
                   Book Online Consultation <ArrowRight size={16} />
                 </button>
-                <button className="btn btn-secondary btn-lg" onClick={() => navigate('/dental-tourism')}>
-                  World Desk <Globe size={16} />
+                <button className="btn btn-secondary hero__btn-compact" onClick={() => navigate('/dental-tourism')}>
+                  Info Deck <Globe size={16} />
                 </button>
               </div>
               <div className="hero__stats">
@@ -129,24 +166,20 @@ const HomePage: React.FC = () => {
                 <StatItem value="10+" label="Years Experience" />
               </div>
             </div>
-            {/* ── HERO VISUAL (User HD Dental Tourism Image with 4 Floating Badges) ── */}
+            {/* ── HERO VISUAL (User HD Dental Tourism Image with 3 Floating Badges) ── */}
             <div className="hero__visual">
               <div className="hero__visual-circle hero__visual-circle--outer" />
               <div className="hero__visual-circle hero__visual-circle--inner" />
 
               <div className="hero-3d-wrapper hero-3d-wrapper--clickable" onClick={() => navigate('/dental-tourism')}>
                 <img
-                  src="/assets/hero-dental-tourism-hd.jpg"
+                  src="/assets/hero-3d-tooth.png"
                   alt="Kayal Dental Tourism Excellence"
                   className="hero-3d-img"
                 />
-                <div className="hero-flight-badge-overlay">
-                  <Plane size={20} className="hero-flight-icon" />
-                  <span>Fly for Your Perfect Smile ↗</span>
-                </div>
               </div>
 
-              {/* 4 Animated Floating Badges */}
+              {/* 3 Animated Floating Badges (Global Care & Fly badge removed) */}
               <div className="hero__badge-floating hero__badge-floating--tl">
                 <Heart size={16} className="text-cyan" fill="#24E0E1" />
                 <span>Gentle Care</span>
@@ -154,10 +187,6 @@ const HomePage: React.FC = () => {
               <div className="hero__badge-floating hero__badge-floating--tr">
                 <Sparkles size={16} style={{ color: '#24E0E1' }} />
                 <span>SmileTech</span>
-              </div>
-              <div className="hero__badge-floating hero__badge-floating--bl">
-                <Globe size={16} className="text-cyan" />
-                <span>Global Care</span>
               </div>
               <div className="hero__badge-floating hero__badge-floating--br">
                 <Award size={16} style={{ color: '#fbbf24' }} />
@@ -180,7 +209,7 @@ const HomePage: React.FC = () => {
               <div className="highlight-item-v5__content">
                 <h3 className="highlight-item-v5__title">World Class</h3>
                 <p className="highlight-item-v5__desc">
-                  State-of-the-art dental care using premium international Swiss &amp; German materials.
+                  State-of-the-art dental care using premium Swiss &amp; German materials and technology.
                 </p>
               </div>
             </div>
@@ -193,7 +222,7 @@ const HomePage: React.FC = () => {
               <div className="highlight-item-v5__content">
                 <h3 className="highlight-item-v5__title">Accreditation</h3>
                 <p className="highlight-item-v5__desc">
-                  ISO 9001 &amp; NABH certified facility following strict international safety protocols.
+                  NABH-accredited clinic certified in implantology, orthodontics &amp; oral surgery.
                 </p>
               </div>
             </div>
@@ -214,31 +243,31 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── ABOUT SECTION (Section 3: Single Line Mission & Full Width Visual) ── */}
+      {/* ── ABOUT SECTION ── */}
       <section className="section welcome">
         <div className="container">
-          <div className="welcome__grid">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
             {/* Left Side: Content */}
-            <div className="welcome__text">
+            <div>
               <div className="badge badge-cyan" style={{ marginBottom: '0.75rem' }}>
                 About Us
               </div>
 
-              {/* Non-actionable Mission Pill/Banner (Enforced Single Line) */}
-              <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap' }}>
-                <Globe size={16} />
-                <span>About Kayal Dental Tourism : Mission - Creating Smiles Across the Globe.</span>
-              </div>
-
               <h2 className="section-title" style={{ marginTop: '1rem' }}>
-                <span style={{ color: '#451271' }}>Kayal Multispeciality<br />Dental Care</span>
+                <span style={{ color: '#451271' }}>Kayal Dental Tourism</span>
               </h2>
               <p style={{ color: 'var(--gray-600)', marginTop: '1rem', lineHeight: 1.8, fontSize: '18px' }}>
                 Experience gentle, patient-focused dentistry designed for your comfort. Our team combines advanced technology with compassionate care to deliver healthy, confident smiles across the globe.
               </p>
 
-              {/* 2 Cyan Pill Buttons: Facility & Technology first, Our Dentists second */}
-              <div className="welcome__actions-row" style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              {/* Mission Pill */}
+              <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap', marginTop: '1.25rem' }}>
+                <Globe size={16} />
+                <span>Mission - Creating Smiles Across the Globe.</span>
+              </div>
+
+              {/* Buttons */}
+              <div style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <button className="btn btn-cyan-pill" onClick={() => navigate('/about')}>
                   Facility &amp; Technology
                 </button>
@@ -248,20 +277,61 @@ const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Side: Image (Expanded to fill right column cleanly) */}
-            <div className="welcome__visual" style={{ width: '100%' }}>
-              <div
-                className="welcome__img-wrap-v4 welcome__img-wrap--clickable"
-                onClick={() => navigate('/dental-tourism')}
-                title="Click to explore Dental Tourism"
-                style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(69,18,113,0.18)', border: '2.5px solid rgba(36,224,225,0.4)', background: '#ffffff', cursor: 'pointer', width: '100%' }}
-              >
+            {/* Right Side: Founder Image Card */}
+            <div>
+              <div style={{
+                borderRadius: '24px',
+                overflow: 'hidden',
+                boxShadow: '0 20px 50px rgba(69,18,113,0.18)',
+                border: '2.5px solid rgba(36,224,225,0.4)',
+                position: 'relative'
+              }}>
+                {/* Tag INSIDE the card (top-left rounded cyan pill) */}
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  left: '16px',
+                  zIndex: 2,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  padding: '0.45rem 1rem',
+                  borderRadius: '50px',
+                  background: '#24E0E1',
+                  color: '#451271',
+                  fontWeight: 800,
+                  fontSize: '0.85rem',
+                  fontFamily: 'var(--font-main)',
+                  boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+                  border: '1.5px solid rgba(255,255,255,0.8)'
+                }}>
+                  <Award size={16} color="#451271" />
+                  <span>Founder &amp; Chief Dental Surgeon</span>
+                </div>
+
                 <img
-                  src="/assets/dental-tourism-resort-hd.jpg"
-                  alt="Kayal Dental Tourism Resort & Care"
-                  className="welcome__3d-img"
-                  style={{ width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
+                  src="/assets/about-doctor-founder.png"
+                  alt="Dr. Kayal Anandhi - Founder & Chief Dental Surgeon"
+                  style={{ width: '100%', height: '400px', objectFit: 'cover', display: 'block' }}
                 />
+
+                {/* Bottom info INSIDE the card */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  background: 'linear-gradient(to top, rgba(36,8,64,0.92) 0%, rgba(36,8,64,0.6) 60%, transparent 100%)',
+                  padding: '2rem 1.25rem 1rem',
+                  color: '#ffffff'
+                }}>
+                  <div style={{ fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
+                    Dr. Kayal Anandhi
+                  </div>
+                  <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600 }}>
+                    Founder &amp; Chief Dentist · BDS, MDS (Prosthodontics)
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -313,8 +383,8 @@ const HomePage: React.FC = () => {
             <div className="why-us-v4__visual">
               <div className="why-us-v4__img-box" style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(69,18,113,0.18)', border: '2.5px solid rgba(36,224,225,0.4)', background: '#ffffff', cursor: 'pointer' }} onClick={() => navigate('/dental-tourism')}>
                 <img
-                  src="/assets/why-india-doctor-checkup.jpg"
-                  alt="Why India for Dental Care - Expert Dentist Checkup"
+                  src="/assets/why-india-doctor-checkup.png"
+                  alt="Why India for Dental Care - Incredible India"
                   className="why-us-v4__doc-img"
                   style={{ borderRadius: '24px', width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
                 />
@@ -324,7 +394,7 @@ const HomePage: React.FC = () => {
             {/* Right Column: Single Line Heading + Content + 2 Button Rows */}
             <div className="why-us-v4__content">
               <h2 className="why-us-v4__title" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(20px, 2.7vw, 34px)', letterSpacing: '0.02em' }}>
-                WHY INDIA FOR DENTAL CARE
+                WHY INDIA FOR DENTAL CARE?
               </h2>
               <h3 className="why-us-v4__subtitle">World-class treatments at 70% lower cost</h3>
               <p className="why-us-v4__desc">
@@ -354,7 +424,7 @@ const HomePage: React.FC = () => {
 
       {/* ── TESTIMONIALS ── */}
       <section className="testimonials-v3-section" style={{ padding: '3rem 1.5rem', background: '#ffffff' }}>
-        <div className="container" style={{ maxWidth: '1400px' }}>
+        <div className="container">
           <div className="testimonials-v3__inner" style={{ background: '#24E0E1', borderRadius: '28px', padding: '3rem 2.5rem', display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '2.5rem', alignItems: 'center' }}>
             {/* Left Column: Heading & Paragraph */}
             <div className="testimonials-v3__left">
@@ -369,24 +439,62 @@ const HomePage: React.FC = () => {
               </p>
             </div>
 
-            {/* Right Column: 2 Parallel Dark Purple Testimonial Cards */}
-            <div className="testimonials-v3__cards-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-              <div className="testimonials-v3__card" style={{ background: '#451271', borderRadius: '24px', padding: '2.5rem 2.25rem', color: '#ffffff', boxShadow: '0 12px 35px rgba(69,18,113,0.3)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '260px' }}>
-                <p style={{ fontFamily: 'Comfortaa', fontSize: '16px', lineHeight: 1.75, color: 'rgba(255,255,255,0.92)', fontStyle: 'normal', margin: 0 }}>
-                  "I visited KAYAL Multispecialty Dental Care for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort. I finally have the confidence to smile again!"
-                </p>
-                <span style={{ fontFamily: 'Comfortaa', fontSize: '16px', fontWeight: 700, color: '#ffffff', marginTop: '1.5rem', display: 'block' }}>
-                  — Priya S.
-                </span>
+            {/* Right Column: Auto-sliding Testimonial Cards */}
+            <div className="testimonials-v3__slider-wrap">
+              <div className="testimonials-v3__cards-grid">
+                {[0, 1].map((offset) => {
+                  const itemIndex = (activeTestimonialIdx + offset) % HOME_TESTIMONIALS.length;
+                  const item = HOME_TESTIMONIALS[itemIndex];
+                  return (
+                    <motion.div
+                      key={`${itemIndex}-${offset}`}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, ease: 'easeOut' }}
+                      className="testimonials-v3__card"
+                    >
+                      <p className="testimonials-v3__card-quote">
+                        "{item.quote}"
+                      </p>
+                      <div className="testimonials-v3__card-author-wrap">
+                        <span className="testimonials-v3__card-author">
+                          — {item.author}
+                        </span>
+                        <span className="testimonials-v3__card-location">
+                          {item.location}
+                        </span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
 
-              <div className="testimonials-v3__card" style={{ background: '#451271', borderRadius: '24px', padding: '2.5rem 2.25rem', color: '#ffffff', boxShadow: '0 12px 35px rgba(69,18,113,0.3)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '260px' }}>
-                <p style={{ fontFamily: 'Comfortaa', fontSize: '16px', lineHeight: 1.75, color: 'rgba(255,255,255,0.92)', fontStyle: 'normal', margin: 0 }}>
-                  "KAYAL Dental Care made me feel comfortable from the moment I walked in. The doctors explained every step clearly, and my smile makeover result was better than I expected. Thank you for the wonderful experience!"
-                </p>
-                <span style={{ fontFamily: 'Comfortaa', fontSize: '16px', fontWeight: 700, color: '#ffffff', marginTop: '1.5rem', display: 'block' }}>
-                  — Karthik R.
-                </span>
+              {/* Slider Controls / Dots */}
+              <div className="testimonials-v3__controls">
+                <button
+                  className="testimonials-v3__arrow-btn"
+                  onClick={() => setActiveTestimonialIdx(prev => (prev - 1 + HOME_TESTIMONIALS.length) % HOME_TESTIMONIALS.length)}
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <div className="testimonials-v3__dots">
+                  {HOME_TESTIMONIALS.map((_, i) => (
+                    <button
+                      key={i}
+                      className={`testimonials-v3__dot ${i === activeTestimonialIdx ? 'testimonials-v3__dot--active' : ''}`}
+                      onClick={() => setActiveTestimonialIdx(i)}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
+                <button
+                  className="testimonials-v3__arrow-btn"
+                  onClick={() => setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length)}
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight size={18} />
+                </button>
               </div>
             </div>
           </div>
@@ -398,7 +506,7 @@ const HomePage: React.FC = () => {
         <div className="container">
           <div className="text-center" style={{ marginBottom: '3.5rem' }}>
             <div className="badge badge-cyan" style={{ marginBottom: '0.75rem' }}>
-              Global Dental Tourism Desk
+              Global Dental Tourism Deck
             </div>
             <h2 className="section-title" style={{ color: '#451271', fontSize: 'clamp(30px, 3.5vw, 42px)', fontWeight: 800 }}>
               YOUR DENTAL VACATION IN 4 SIMPLE STEPS
@@ -490,7 +598,7 @@ const HomePage: React.FC = () => {
               onClick={() => navigate('/travel-visa')}
             >
               <div className="travel-step-card__img-header">
-                <img src="/assets/travel-step-4-resort.jpg" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" />
+                <img src="/assets/travel-step-4-adiyogi.png" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" />
                 <div className="travel-step-card__num">04</div>
               </div>
               <div className="travel-step-card__content">
@@ -519,9 +627,9 @@ const HomePage: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-purple"
-                  style={{ background: '#22c55e', borderColor: '#22c55e', color: '#ffffff' }}
+                  style={{ background: '#25D366', borderColor: '#25D366', color: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
-                  WhatsApp Travel Desk ↗
+                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp Travel Deck ↗
                 </a>
               </div>
             </div>

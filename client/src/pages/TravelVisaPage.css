@@ -246,5 +246,18 @@
   }
   .transport-features {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .transport-feature {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 8px;
+  }
+  .transport-feature span {
+    white-space: nowrap !important;
+    font-size: clamp(0.68rem, 3.1vw, 0.92rem) !important;
+    overflow: visible;
   }
 }

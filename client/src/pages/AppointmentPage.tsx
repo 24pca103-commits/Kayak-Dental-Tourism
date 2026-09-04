@@ -5,6 +5,7 @@ import {
   Send, ClipboardList, DollarSign, Clock, Plane,
   Video, Phone, Shield, CheckCircle
 } from 'lucide-react';
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import './AppointmentPage.css';
 
 const AppointmentPage: React.FC = () => {
@@ -247,8 +248,8 @@ const AppointmentPage: React.FC = () => {
               <div className="consultation-side-card consultation-side-card--accent">
                 <h4>Need Immediate Help?</h4>
                 <p>Chat with us on WhatsApp for instant assistance.</p>
-                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ marginTop: '0.75rem' }}>
-                  <Phone size={16} /> WhatsApp Us
+                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ marginTop: '0.75rem', background: '#25D366', borderColor: '#25D366', color: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp Us
                 </a>
               </div>
             </div>

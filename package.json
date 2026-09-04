@@ -1,7 +1,7 @@
 {
   "name": "kayal-dental-care",
   "version": "1.0.0",
-  "description": "KAYAL Multispeciality Dental Care – Full MERN Stack Website",
+  "description": "Kayal Dental Tourism – Full MERN Stack Website",
   "private": true,
   "scripts": {
     "dev:client": "cd client && npm run dev",

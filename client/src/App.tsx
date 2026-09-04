@@ -22,6 +22,7 @@ import AdminDoctors from './pages/admin/AdminDoctors';
 import AdminServices from './pages/admin/AdminServices';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminFAQs from './pages/admin/AdminFAQs';
+import WhatsAppIcon from './components/icons/WhatsAppIcon';
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -53,6 +54,35 @@ const PublicLayout: React.FC = () => (
     <Navbar />
     <Outlet />
     <Footer />
+    {/* ── Floating WhatsApp Button (Bottom Right) ── */}
+    <a
+      href="https://wa.me/919876543210?text=Hello%20Kayal%20Dental%20Care"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat on WhatsApp"
+      style={{
+        position: 'fixed',
+        bottom: '1.5rem',
+        right: '1.5rem',
+        zIndex: 9999,
+        width: '54px',
+        height: '54px',
+        borderRadius: '50%',
+        background: '#25D366',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 6px 20px rgba(37,211,102,0.45)',
+        cursor: 'pointer',
+        textDecoration: 'none',
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      }}
+      onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.12)')}
+      onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+    >
+      {/* WhatsApp official icon */}
+      <WhatsAppIcon size={28} color="#ffffff" />
+    </a>
   </>
 );
 

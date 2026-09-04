@@ -40,7 +40,7 @@ const ServicesPage: React.FC = () => {
       {/* Header */}
       <section style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
         <div className="container">
-          <div className="badge badge-white" style={{ marginBottom: '1rem' }}>Our Services</div>
+          <div className="badge badge-white" style={{ marginBottom: '1rem' }}>Our Treatments</div>
           <h1 className="section-title text-white">Comprehensive Dental Services</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', maxWidth: 500, margin: '0.75rem auto 0' }}>
             From routine check-ups to advanced cosmetic treatments — we cover all your dental needs.

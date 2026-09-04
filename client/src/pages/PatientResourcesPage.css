@@ -165,56 +165,93 @@
 
 .care-guide-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.75rem;
+  margin-top: 2rem;
 }
 
-.care-card {
-  background: white;
-  border-radius: 12px;
+.care-card-v2 {
+  background: #ffffff;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-  border-top: 4px solid #451271;
-}
-
-.care-header {
-  padding: 20px;
+  box-shadow: 0 8px 30px rgba(69, 18, 113, 0.08);
+  border: 1.5px solid rgba(69, 18, 113, 0.1);
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.care-card-v2:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(69, 18, 113, 0.15);
+  border-color: rgba(36, 224, 225, 0.6);
+}
+
+.care-card-v2__header {
+  padding: 1.5rem 1.5rem 1.25rem;
+  display: flex;
   align-items: center;
-  cursor: pointer;
-  background: #fafafa;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(69, 18, 113, 0.04) 0%, rgba(36, 224, 225, 0.06) 100%);
+  border-bottom: 1.5px solid rgba(69, 18, 113, 0.08);
 }
 
-.care-header h3 {
-  margin: 0;
+.care-card-v2__icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #24E0E1;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(36, 224, 225, 0.4);
+}
+
+.care-card-v2__badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: #451271;
-  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 0.2rem;
 }
 
-.care-content {
+.care-card-v2__title {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.12rem;
+  font-weight: 700;
+  font-family: var(--font-display, 'Comfortaa', sans-serif);
+}
+
+.care-card-v2__body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.care-card-v2__list {
+  list-style: none;
   padding: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
-.care-content.open {
-  padding: 20px;
-  max-height: 500px;
+.care-card-v2__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #4b5563;
 }
 
-.care-content p {
-  margin-bottom: 10px;
-  position: relative;
-  padding-left: 20px;
-}
-
-.care-content p::before {
-  content: "→";
+.care-card-v2__check {
   color: #24E0E1;
-  position: absolute;
-  left: 0;
-  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 3px;
 }

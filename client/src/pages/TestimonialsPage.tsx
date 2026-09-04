@@ -4,7 +4,7 @@ import { testimonialsAPI } from '../services/api';
 import type { Testimonial } from '../types';
 
 const DEMO: Testimonial[] = [
-  { _id: '1', patientName: 'Priya S.', review: 'I visited KAYAL Multispeciality Dental Care for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort.', rating: 5, status: 'active', createdAt: '' },
+  { _id: '1', patientName: 'Priya S.', review: 'I visited Kayal Dental Tourism for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort.', rating: 5, status: 'active', createdAt: '' },
   { _id: '2', patientName: 'Karthik R.', review: 'KAYAL Dental Care made me feel comfortable from the moment I walked in. The doctors explained everything clearly, and my smile makeover results were better than I expected. Highly recommend!', rating: 5, status: 'active', createdAt: '' },
   { _id: '3', patientName: 'Meena L.', review: 'Best dental clinic! My daughter was very nervous about her first dental visit, but the pediatric dentist at KAYAL made her feel at ease immediately. Great experience overall.', rating: 5, status: 'active', createdAt: '' },
   { _id: '4', patientName: 'Suresh M.', review: 'I got dental implants done here. The procedure was explained in detail and the post-treatment care was excellent. The implants look and feel completely natural.', rating: 5, status: 'active', createdAt: '' },

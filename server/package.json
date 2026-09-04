@@ -1,7 +1,7 @@
 {
   "name": "kayal-dental-server",
   "version": "1.0.0",
-  "description": "KAYAL Multispeciality Dental Care – Backend API",
+  "description": "Kayal Dental Tourism – Backend API",
   "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",

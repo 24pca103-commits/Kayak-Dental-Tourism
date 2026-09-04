@@ -2504,18 +2504,48 @@
     box-sizing: border-box !important;
   }
 
-  /* Single Line Headings on Mobile */
+  /* Responsive Headings on Mobile */
+  .hero__heading-line,
   .welcome__title,
   .why-us-v4__title,
   .testimonials-v3__left h2,
   .travel-home-section .section-title,
-  .travel-concierge-banner__title {
-    white-space: nowrap !important;
-    font-size: clamp(0.85rem, 3.4vw, 1.25rem) !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+  .travel-concierge-banner__title,
+  .travel-step-card__title,
+  .what-we-do__title {
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    font-size: clamp(1.25rem, 5vw, 1.85rem) !important;
     line-height: 1.3 !important;
-    text-align: left !important;
+    text-align: center !important;
+  }
+
+  /* Highlights Bar Single Column Stack on Mobile */
+  .highlights__inner--v5 {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 24px 16px !important;
+    min-height: auto !important;
+    border-radius: 20px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .highlight-item-v5 {
+    width: 100% !important;
+    min-height: auto !important;
+    border-left: none !important;
+    border-bottom: 1px solid rgba(69, 18, 113, 0.18) !important;
+    padding-left: 0 !important;
+    padding-bottom: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .highlight-item-v5:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
   }
 
   /* Left Align Process Body Content & Justify Paragraphs on Mobile */
@@ -2545,12 +2575,6 @@
   .travel-timeline {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
-  }
-
-  .travel-step-card__title {
-    white-space: normal !important;
-    font-size: 1.05rem !important;
-    text-align: left !important;
   }
 
   /* Testimonials Grid Single Column on Mobile with small clean gap */

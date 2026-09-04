@@ -403,7 +403,7 @@ const HomePage: React.FC = () => {
 
               {/* Action Buttons: Line 1 = Patient Journey & Quality & Safety, Line 2 = Book Online Consultation */}
               <div className="why-us-v4__cta-column" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.75rem' }}>
-                <div className="why-us-v4__cta-row-pills" style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap' }}>
+                <div className="why-us-v4__cta-row-pills" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   <button className="btn btn-cyan-pill" onClick={() => navigate('/dental-tourism')}>
                     Patient Journey
                   </button>
@@ -533,7 +533,7 @@ const HomePage: React.FC = () => {
                 <div className="travel-step-card__num">01</div>
               </div>
               <div className="travel-step-card__content">
-                <h3 className="travel-step-card__title" style={{ whiteSpace: 'nowrap' }}>1. Online Consult &amp; E-Visa</h3>
+                <h3 className="travel-step-card__title">1. Online Consult &amp; E-Visa</h3>
                 <p className="travel-step-card__desc">
                   Receive your customized treatment plan &amp; official Indian E-Medical Visa invitation letter within 24 hours.
                 </p>

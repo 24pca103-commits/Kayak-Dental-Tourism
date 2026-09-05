@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Phone } from 'lucide-react';
+import { Menu, X, ChevronDown, Phone, ArrowRight } from 'lucide-react';
 import './Navbar.css';
 
 interface SubMenuItem {
@@ -183,8 +183,9 @@ export default function Navbar() {
             <button
               className="btn btn-primary btn-sm navbar__cta-btn"
               onClick={() => navigate('/online-consultation')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
             >
-              Book Online Consultation
+              Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
             </button>
             <div className="navbar__dropdown navbar__dropdown--right">
               <div className="navbar__dropdown-inner">
@@ -261,8 +262,9 @@ export default function Navbar() {
           <button
             className="btn btn-primary w-full"
             onClick={() => navigate('/online-consultation')}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', whiteSpace: 'nowrap' }}
           >
-            Book Online Consultation
+            Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
           </button>
           <div className="navbar__mobile-contact-links">
             <Link to="/contact" className="navbar__mobile-subitem">Contact Us</Link>

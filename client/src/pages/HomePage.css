@@ -156,6 +156,12 @@
   transition: all 0.25s ease;
 }
 
+.hero__actions .btn-secondary svg,
+.hero__btn-compact.btn-secondary svg {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
 .hero__actions .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: #24E0E1;
@@ -1283,9 +1289,14 @@
 }
 
 .why-us-v4__cta-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  white-space: nowrap !important;
   background: #451271 !important;
   color: #ffffff !important;
-  padding: 1rem 2.25rem;
+  padding: 0.9rem 2.25rem;
   border-radius: 50px;
   font-family: var(--font-main);
   font-size: 17px;
@@ -1294,6 +1305,18 @@
   box-shadow: 0 8px 25px rgba(69,18,113,0.35);
   margin-top: 0.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.why-us-v4__cta-btn svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  flex-shrink: 0 !important;
+}
+
+.hero__btn-compact svg,
+.btn-primary svg {
+  color: #451271 !important;
+  stroke: #451271 !important;
 }
 
 .why-us-v4__cta-btn:hover {

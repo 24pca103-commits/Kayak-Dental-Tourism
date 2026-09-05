@@ -245,7 +245,7 @@ const AboutPage: React.FC = () => {
             <h2 className="text-white mb-4">Ready to experience world-class dental care?</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto opacity-90">Schedule your consultation today and take the first step towards a healthier, more beautiful smile.</p>
             <button className="btn btn-cyan btn-lg" onClick={() => navigate('/online-consultation')}>
-              Book Consultation <ArrowRight size={18} />
+              Book Consultation <ArrowRight size={18} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
             </button>
           </motion.div>
         </div>

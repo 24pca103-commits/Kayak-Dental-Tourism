@@ -152,10 +152,10 @@ const HomePage: React.FC = () => {
               </p>
               <div className="hero__actions">
                 <button className="btn btn-primary hero__btn-compact" onClick={() => navigate('/online-consultation')}>
-                  Book Online Consultation <ArrowRight size={16} />
+                  Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
                 </button>
                 <button className="btn btn-secondary hero__btn-compact" onClick={() => navigate('/dental-tourism')}>
-                  Info Deck <Globe size={16} />
+                  Info Deck <Globe size={16} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff' }} />
                 </button>
               </div>
               <div className="hero__stats">
@@ -413,7 +413,8 @@ const HomePage: React.FC = () => {
                 </div>
                 <div style={{ marginTop: '0.75rem' }}>
                   <button className="why-us-v4__cta-btn" onClick={() => navigate('/online-consultation')}>
-                    Book Online Consultation <ArrowRight size={18} style={{ display: 'inline', marginLeft: '6px' }} />
+                    <span>Book Online Consultation</span>
+                    <ArrowRight size={18} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff', flexShrink: 0 }} />
                   </button>
                 </div>
               </div>

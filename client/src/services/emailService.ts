@@ -22,9 +22,13 @@ export const sendRealtimeEmail = async (params: EmailParams): Promise<boolean> =
     user_email: params.email,
     to_email: params.email,
     reply_to: params.email,
-    phone: params.phone || '',
+    phone: params.phone || 'Not provided',
     subject: params.subject || 'Kayal Dental Tourism Inquiry',
     message: params.message,
+    logo_url: 'https://raw.githubusercontent.com/24pca103-commits/Kayak-Dental-Tourism/main/client/public/assets/kayal-brand-logo.png',
+    clinic_phone: '+91 98765 43210',
+    whatsapp_url: 'https://wa.me/919876543210',
+    current_year: new Date().getFullYear().toString(),
   };
 
   try {

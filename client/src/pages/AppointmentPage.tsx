@@ -6,6 +6,8 @@ import {
   Video, Phone, Shield, CheckCircle
 } from 'lucide-react';
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
+import { appointmentsAPI } from '../services/api';
+import { sendRealtimeEmail } from '../services/emailService';
 import './AppointmentPage.css';
 
 const AppointmentPage: React.FC = () => {
@@ -55,7 +57,29 @@ const AppointmentPage: React.FC = () => {
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // 1. Send real-time confirmation email to user
+      await sendRealtimeEmail({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: 'Free Online Consultation Request',
+        message: form.issue,
+      });
+
+      // 2. Also save to appointments API if available
+      try {
+        await appointmentsAPI.create({
+          patientName: form.name,
+          phone: form.phone,
+          email: form.email,
+          serviceName: 'Free Online Consultation',
+          appointmentDate: new Date().toISOString(),
+          appointmentTime: 'Online Consultation',
+          message: form.issue,
+        });
+      } catch {
+        // silent
+      }
       setSuccess(true);
     } catch {
       setSuccess(true);

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Calendar, Clock, User, Phone, Mail, ChevronDown, CheckCircle } from 'lucide-react';
 import { appointmentsAPI } from '../../services/api';
+import { sendRealtimeEmail } from '../../services/emailService';
 import type { Service, Doctor } from '../../types';
 import './AppointmentModal.css';
 
@@ -60,10 +61,24 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
     try {
-      await appointmentsAPI.create({
-        ...form,
-        appointmentDate: new Date(form.appointmentDate).toISOString(),
+      // 1. Send real-time confirmation email to user
+      await sendRealtimeEmail({
+        name: form.patientName,
+        email: form.email,
+        phone: form.phone,
+        subject: `Appointment Booking - ${form.serviceName}`,
+        message: `Appointment for ${form.serviceName} on ${form.appointmentDate} at ${form.appointmentTime}. ${form.message || ''}`,
       });
+
+      // 2. Also save to appointments API if available
+      try {
+        await appointmentsAPI.create({
+          ...form,
+          appointmentDate: new Date(form.appointmentDate).toISOString(),
+        });
+      } catch {
+        // backend optional
+      }
       setSuccess(true);
     } catch {
       // Show success even on network error (demo mode)

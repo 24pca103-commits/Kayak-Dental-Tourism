@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Phone, ArrowRight } from 'lucide-react';
+import WhatsAppIcon from '../icons/WhatsAppIcon';
 import './Navbar.css';
 
 interface SubMenuItem {
@@ -165,8 +166,9 @@ export default function Navbar() {
               <div className="navbar__dropdown-inner">
                 {contactSubItems.map((sub, i) => (
                   sub.isExternal ? (
-                    <a key={i} href={sub.path} target="_blank" rel="noopener noreferrer" className="navbar__dropdown-item">
-                      {sub.label} ↗
+                    <a key={i} href={sub.path} target="_blank" rel="noopener noreferrer" className="navbar__dropdown-item" style={{ justifyContent: 'flex-start', gap: '8px' }}>
+                      {sub.label === 'WhatsApp' && <WhatsAppIcon size={16} color="#25D366" />}
+                      <span>{sub.label} ↗</span>
                     </a>
                   ) : (
                     <Link key={i} to={sub.path} className="navbar__dropdown-item">
@@ -268,7 +270,9 @@ export default function Navbar() {
           </button>
           <div className="navbar__mobile-contact-links">
             <Link to="/contact" className="navbar__mobile-subitem">Contact Us</Link>
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="navbar__mobile-subitem">WhatsApp Us ↗</a>
+            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="navbar__mobile-subitem" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <WhatsAppIcon size={16} color="#25D366" /> WhatsApp Us ↗
+            </a>
           </div>
         </div>
       </div>

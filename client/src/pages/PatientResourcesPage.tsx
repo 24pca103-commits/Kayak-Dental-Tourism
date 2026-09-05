@@ -243,7 +243,7 @@ const PatientResourcesPage: React.FC = () => {
                 <div key={index} className="care-card-v2">
                   <div className="care-card-v2__header">
                     <div className="care-card-v2__icon-box">
-                      <IconComponent size={24} />
+                      <IconComponent size={24} color="#1B2B65" stroke="#1B2B65" style={{ color: '#1B2B65', stroke: '#1B2B65' }} />
                     </div>
                     <div>
                       <span className="care-card-v2__badge">{guide.badge}</span>

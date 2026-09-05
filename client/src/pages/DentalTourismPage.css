@@ -70,6 +70,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   border: 1px solid #f3f4f6;
+  overflow: hidden;
 }
 
 .cost-treatment-name {
@@ -88,10 +89,13 @@
 .cost-bar-group {
   display: flex;
   align-items: center;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .cost-label {
   width: 60px;
+  min-width: 60px;
   font-size: 0.9rem;
   font-weight: 600;
   color: #4b5563;
@@ -108,6 +112,7 @@
   font-size: 0.85rem;
   position: relative;
   min-width: 50px;
+  max-width: 100%;
 }
 
 .bar-india {
@@ -122,6 +127,27 @@
 
 .bar-value {
   white-space: nowrap;
+}
+
+/* Mobile responsive for cost comparison */
+@media (max-width: 480px) {
+  .cost-row {
+    padding: 14px;
+  }
+  .cost-treatment-name {
+    font-size: 1rem;
+  }
+  .cost-label {
+    width: 45px;
+    min-width: 45px;
+    font-size: 0.8rem;
+  }
+  .bar {
+    min-width: 40px;
+    font-size: 0.75rem;
+    padding: 0 8px;
+    height: 24px;
+  }
 }
 
 /* 3. Journey Timeline */

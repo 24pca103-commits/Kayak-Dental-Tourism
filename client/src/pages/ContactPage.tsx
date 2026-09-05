@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { appointmentsAPI } from '../services/api';
+import { sendRealtimeEmail } from '../services/emailService';
 import './ContactPage.css';
 
 const ContactPage: React.FC = () => {
@@ -25,16 +26,29 @@ const ContactPage: React.FC = () => {
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
     try {
-      // Send as a contact inquiry appointment
-      await appointmentsAPI.create({
-        patientName: form.name,
-        phone: form.phone,
+      // 1. Send real-time confirmation email to user
+      await sendRealtimeEmail({
+        name: form.name,
         email: form.email,
-        serviceName: form.subject || 'General Inquiry',
-        appointmentDate: new Date().toISOString(),
-        appointmentTime: '10:00 AM',
+        phone: form.phone,
+        subject: form.subject || 'General Inquiry',
         message: form.message,
       });
+
+      // 2. Also save to appointments API if available
+      try {
+        await appointmentsAPI.create({
+          patientName: form.name,
+          phone: form.phone,
+          email: form.email,
+          serviceName: form.subject || 'General Inquiry',
+          appointmentDate: new Date().toISOString(),
+          appointmentTime: '10:00 AM',
+          message: form.message,
+        });
+      } catch {
+        // silent
+      }
     } catch {
       // silent
     } finally {

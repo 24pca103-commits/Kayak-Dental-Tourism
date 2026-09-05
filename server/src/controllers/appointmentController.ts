@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Appointment from '../models/Appointment';
+import { sendConfirmationEmail } from '../services/emailService';
 
 export const getAppointments = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -45,6 +46,18 @@ export const getAppointmentStats = async (_req: Request, res: Response): Promise
 export const createAppointment = async (req: Request, res: Response): Promise<void> => {
   try {
     const appointment = await Appointment.create(req.body);
+
+    // Send real-time confirmation email to user
+    if (req.body.email) {
+      sendConfirmationEmail({
+        patientName: req.body.patientName,
+        email: req.body.email,
+        phone: req.body.phone,
+        serviceName: req.body.serviceName,
+        message: req.body.message,
+      }).catch(err => console.error('Error sending confirmation email:', err));
+    }
+
     res.status(201).json({ success: true, data: appointment, message: 'Appointment booked successfully' });
   } catch (error) {
     res.status(400).json({ success: false, message: 'Failed to book appointment', error });

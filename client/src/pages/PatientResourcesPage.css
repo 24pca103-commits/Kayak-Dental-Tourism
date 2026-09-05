@@ -201,12 +201,18 @@
   height: 48px;
   border-radius: 14px;
   background: #24E0E1;
-  color: #ffffff;
+  color: #1B2B65;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(36, 224, 225, 0.4);
+}
+
+.care-card-v2__icon-box svg,
+.care-card-v2__icon-box svg.lucide {
+  color: #1B2B65 !important;
+  stroke: #1B2B65 !important;
 }
 
 .care-card-v2__badge {

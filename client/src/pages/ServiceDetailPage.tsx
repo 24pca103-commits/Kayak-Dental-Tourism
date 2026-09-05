@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Clock, Users, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, Users, ChevronDown, ChevronUp, ArrowRight, Phone } from 'lucide-react';
 import { servicesAPI, doctorsAPI } from '../services/api';
 import type { Service, Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
+import './ServiceDetailPage.css';
 
 const SLUG_DATA: Record<string, Partial<Service>> = {
   'dental-implants': {
@@ -83,7 +84,7 @@ const ServiceDetailPage: React.FC = () => {
 
       <section className="section">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '3rem', alignItems: 'start' }}>
+          <div className="service-detail-grid">
             <div>
               {/* Description */}
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1rem' }}>What is {service.name}?</h2>
@@ -166,8 +167,8 @@ const ServiceDetailPage: React.FC = () => {
               <div style={{ background: 'var(--cyan-50)', border: '1.5px solid var(--cyan-100)', borderRadius: 'var(--radius-lg)', padding: '1.25rem' }}>
                 <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--cyan-700)', marginBottom: '0.4rem' }}>Need help deciding?</p>
                 <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)' }}>Call us and speak to a dental expert.</p>
-                <a href="tel:+919876543210" className="btn btn-primary btn-sm" style={{ marginTop: '0.75rem', display: 'inline-flex' }}>
-                  Call Now
+                <a href="tel:+919876543210" className="btn btn-primary btn-sm" style={{ marginTop: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <Phone size={14} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} /> Call Now
                 </a>
               </div>
             </div>

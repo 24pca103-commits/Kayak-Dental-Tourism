@@ -448,6 +448,20 @@ h1, .hero__heading {
   }
 }
 
+/* ── Global Responsive Display Helpers ── */
+.show-mobile {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  .show-mobile {
+    display: inline !important;
+  }
+}
+
 /* ── Global Lucide Icon Color: Sky Blue ── */
 svg.lucide {
   color: #24E0E1;

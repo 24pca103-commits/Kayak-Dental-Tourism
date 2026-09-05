@@ -401,19 +401,19 @@ const HomePage: React.FC = () => {
                 India is the leading destination for dental tourism. At Kayal Dental Care, we combine internationally trained specialists, advanced digital technology, and sterile hospital standards to deliver premium care.
               </p>
 
-              {/* Action Buttons: Line 1 = Patient Journey & Quality & Safety, Line 2 = Book Online Consultation */}
-              <div className="why-us-v4__cta-column" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.75rem' }}>
-                <div className="why-us-v4__cta-row-pills">
-                  <button className="btn btn-cyan-pill" onClick={() => navigate('/dental-tourism')}>
+              {/* Action Buttons: Desktop = 2 Pills + CTA Button, Mobile = 2 Side-by-Side Pills + CTA */}
+              <div className="why-us-v4__cta-column" style={{ marginTop: '1.75rem' }}>
+                <div className="why-us-v4__pills">
+                  <div className="why-us-v4__pill" onClick={() => navigate('/dental-tourism')} style={{ cursor: 'pointer' }}>
                     Patient Journey
-                  </button>
-                  <button className="btn btn-cyan-pill" onClick={() => navigate('/about')}>
+                  </div>
+                  <div className="why-us-v4__pill" onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>
                     Quality &amp; Safety
-                  </button>
+                  </div>
                 </div>
-                <div>
-                  <button className="btn btn-purple" onClick={() => navigate('/online-consultation')}>
-                    Book Online Consultation <ArrowRight size={16} />
+                <div style={{ marginTop: '0.75rem' }}>
+                  <button className="why-us-v4__cta-btn" onClick={() => navigate('/online-consultation')}>
+                    Book Online Consultation <ArrowRight size={18} style={{ display: 'inline', marginLeft: '6px' }} />
                   </button>
                 </div>
               </div>
@@ -623,13 +623,15 @@ const HomePage: React.FC = () => {
                   Plan My Dental Trip <ArrowRight size={16} />
                 </button>
                 <a
-                  href="https://wa.me/919876543210?text=Hello%20Kayal%20Dental%20Care,%20I%20need%20help%20planning%20my%20dental%20travel."
+                  href="https://wa.me/919876543210?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20to%20plan%20my%20dental%20trip."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-purple"
                   style={{ background: '#25D366', borderColor: '#25D366', color: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
-                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp ↗
+                  <WhatsAppIcon size={18} color="#ffffff" />
+                  <span className="hide-mobile">WhatsApp Travel Desk ↗</span>
+                  <span className="show-mobile">WhatsApp ↗</span>
                 </a>
               </div>
             </div>

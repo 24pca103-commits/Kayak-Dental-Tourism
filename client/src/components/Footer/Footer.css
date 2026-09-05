@@ -268,11 +268,15 @@
 
 @media (max-width: 768px) {
   .footer__grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1.75rem 1.25rem !important;
+    grid-template-columns: 1.3fr 1fr !important;
+    gap: 1.75rem 0.85rem !important;
   }
   .footer__col--brand {
     grid-column: 1 / -1 !important;
+  }
+  .footer__link {
+    white-space: nowrap !important;
+    font-size: clamp(0.76rem, 3.1vw, 0.875rem) !important;
   }
   .footer__bottom {
     flex-direction: column;

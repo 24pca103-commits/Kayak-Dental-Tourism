@@ -403,7 +403,7 @@ const HomePage: React.FC = () => {
 
               {/* Action Buttons: Line 1 = Patient Journey & Quality & Safety, Line 2 = Book Online Consultation */}
               <div className="why-us-v4__cta-column" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.75rem' }}>
-                <div className="why-us-v4__cta-row-pills" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <div className="why-us-v4__cta-row-pills">
                   <button className="btn btn-cyan-pill" onClick={() => navigate('/dental-tourism')}>
                     Patient Journey
                   </button>
@@ -629,7 +629,7 @@ const HomePage: React.FC = () => {
                   className="btn btn-purple"
                   style={{ background: '#25D366', borderColor: '#25D366', color: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
-                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp Travel Deck ↗
+                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp ↗
                 </a>
               </div>
             </div>

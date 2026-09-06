@@ -1,17 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Globe, 
-  Users, 
-  Award, 
-  Clock, 
-  CheckCircle2, 
-  Camera, 
-  Activity, 
-  ShieldCheck, 
-  Monitor, 
-  Cpu, 
+import {
+  Globe,
+  Users,
+  Award,
+  Clock,
+  CheckCircle2,
+  Camera,
+  Activity,
+  ShieldCheck,
+  Monitor,
+  Cpu,
   ArrowRight
 } from 'lucide-react';
 import './AboutPage.css';
@@ -61,7 +61,7 @@ const AboutPage: React.FC = () => {
       {/* Hero Section */}
       <section className="about-hero">
         <div className="container">
-          <motion.div 
+          <motion.div
             className="about-hero-content"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -156,8 +156,8 @@ const AboutPage: React.FC = () => {
             <h2 className="section-title text-white">Creating Smiles Across the Globe</h2>
             <p className="mission-subtitle">Our mission is to be the premier destination for dental tourism, offering uncompromising quality and personalized care.</p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="stats-grid"
             variants={staggerContainer}
             initial="initial"
@@ -183,7 +183,7 @@ const AboutPage: React.FC = () => {
             <p className="text-gray-600 max-w-2xl mx-auto">Our multidisciplinary team of highly qualified specialists works together to provide comprehensive care tailored to your unique needs.</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="doctors-grid"
             variants={staggerContainer}
             initial="initial"
@@ -219,7 +219,7 @@ const AboutPage: React.FC = () => {
             <p className="text-gray-600 max-w-2xl mx-auto">We utilize the latest advancements in dental technology to ensure precise diagnosis, effective treatments, and maximum comfort.</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="facility-grid"
             variants={staggerContainer}
             initial="initial"
@@ -245,7 +245,7 @@ const AboutPage: React.FC = () => {
             <h2 className="text-white mb-4">Ready to experience world-class dental care?</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto opacity-90">Schedule your consultation today and take the first step towards a healthier, more beautiful smile.</p>
             <button className="btn btn-cyan btn-lg" onClick={() => navigate('/online-consultation')}>
-              Book Consultation <ArrowRight size={18} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
+              Book Online Consultation <ArrowRight size={18} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
             </button>
           </motion.div>
         </div>

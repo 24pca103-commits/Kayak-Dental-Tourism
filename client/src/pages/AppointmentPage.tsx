@@ -222,7 +222,7 @@ const AppointmentPage: React.FC = () => {
                     </div>
 
                     <button type="submit" className="btn btn-primary btn-lg w-full" disabled={loading}>
-                      {loading ? 'Submitting...' : <><Send size={18} /> Submit Consultation Request</>}
+                      {loading ? 'Submitting...' : <><Send size={18} /> Submit  Request</>}
                     </button>
 
                     <p className="consultation-note">
@@ -272,8 +272,23 @@ const AppointmentPage: React.FC = () => {
               <div className="consultation-side-card consultation-side-card--accent">
                 <h4>Need Immediate Help?</h4>
                 <p>Chat with us on WhatsApp for instant assistance.</p>
-                <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ marginTop: '0.75rem', background: '#25D366', borderColor: '#25D366', color: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp Us
+                <a
+                  href="https://wa.me/919876543210"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn"
+                  style={{
+                    marginTop: '0.75rem',
+                    background: '#451271',
+                    color: '#ffffff',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontWeight: 700,
+                    boxShadow: '0 4px 14px rgba(69, 18, 113, 0.35)',
+                  }}
+                >
+                  <WhatsAppIcon size={18} color="#25D366" /> WhatsApp Us
                 </a>
               </div>
             </div>

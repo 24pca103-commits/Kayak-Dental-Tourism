@@ -76,7 +76,7 @@ const ServicesPage: React.FC = () => {
                 <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)', marginBottom: '0.5rem' }}>{service.name}</h2>
                 <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', lineHeight: 1.6, marginBottom: '1.25rem' }}>{service.shortDescription}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--cyan-600)' }}>
-                  Learn More <ArrowRight size={14} />
+                  Learn More <ArrowRight size={14} color="#18b8b9" style={{ color: '#18b8b9', stroke: '#18b8b9', flexShrink: 0 }} />
                 </div>
               </div>
             ))}

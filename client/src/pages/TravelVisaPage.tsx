@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FileText, CheckCircle, CreditCard, Clock, Plane, MapPin, Star, Languages, DollarSign, Shield, Sun, Coffee, Wifi, Mail } from 'lucide-react';
+import { FileText, CheckCircle, CreditCard, Clock, Plane, MapPin, Star, Languages, DollarSign, Shield, Sun, Coffee, Wifi, Mail, ArrowRight } from 'lucide-react';
 import './TravelVisaPage.css';
 
 const TravelVisaPage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="travel-visa-page">
       <section className="travel-hero">
@@ -88,7 +90,13 @@ const TravelVisaPage: React.FC = () => {
             <div className="invitation-content">
               <h3>Visa Invitation Letter</h3>
               <p>Kayal Dental provides official medical invitation letters for your visa application. Contact our coordination team with your passport details, and we'll prepare your letter within 24 hours to expedite your visa process.</p>
-              <button className="btn btn-purple" style={{ marginTop: '1rem' }}>Request Invitation Letter</button>
+              <button
+                className="btn btn-purple"
+                style={{ marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                onClick={() => navigate('/online-consultation')}
+              >
+                Request Invitation Letter <ArrowRight size={16} />
+              </button>
             </div>
           </div>
         </div>

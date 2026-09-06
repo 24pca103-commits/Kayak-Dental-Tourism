@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight, Globe, Heart, Sparkles, Award, ShieldCheck, ChevronLeft, ChevronRight
+  ArrowRight, Globe, Heart, Sparkles, Award, ShieldCheck, ChevronLeft, ChevronRight, BookOpen
 } from 'lucide-react';
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { servicesAPI, doctorsAPI } from '../services/api';
@@ -155,7 +155,7 @@ const HomePage: React.FC = () => {
                   Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
                 </button>
                 <button className="btn btn-secondary hero__btn-compact" onClick={() => navigate('/dental-tourism')}>
-                  Info Deck <Globe size={16} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff' }} />
+                  Info Deck <BookOpen size={16} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff' }} />
                 </button>
               </div>
               <div className="hero__stats">
@@ -366,7 +366,7 @@ const HomePage: React.FC = () => {
                   <p className="treatment-card-v__desc">{item.desc}</p>
                   <div className="treatment-card-v__footer">
                     <span>Learn More</span>
-                    <ArrowRight size={15} className="treatment-card-v__arrow" />
+                    <ArrowRight size={15} color="#451271" style={{ color: '#451271', stroke: '#451271' }} className="treatment-card-v__arrow" />
                   </div>
                 </div>
               </motion.div>
@@ -404,10 +404,10 @@ const HomePage: React.FC = () => {
               {/* Action Buttons: Desktop = 2 Pills + CTA Button, Mobile = 2 Side-by-Side Pills + CTA */}
               <div className="why-us-v4__cta-column" style={{ marginTop: '1.75rem' }}>
                 <div className="why-us-v4__pills">
-                  <div className="why-us-v4__pill" onClick={() => navigate('/dental-tourism')} style={{ cursor: 'pointer' }}>
+                  <div className="why-us-v4__pill" onClick={() => navigate('/dental-tourism#journey')} style={{ cursor: 'pointer' }}>
                     Patient Journey
                   </div>
-                  <div className="why-us-v4__pill" onClick={() => navigate('/about')} style={{ cursor: 'pointer' }}>
+                  <div className="why-us-v4__pill" onClick={() => navigate('/dental-tourism#safety')} style={{ cursor: 'pointer' }}>
                     Quality &amp; Safety
                   </div>
                 </div>
@@ -527,7 +527,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
               whileHover={{ y: -8 }}
-              onClick={() => navigate('/travel-visa')}
+              onClick={() => navigate('/online-consultation')}
             >
               <div className="travel-step-card__img-header">
                 <img src="/assets/travel-step-1-evisa.png" alt="Online Consultation & E-Visa" className="travel-step-card__top-img" />
@@ -550,7 +550,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
               whileHover={{ y: -8 }}
-              onClick={() => navigate('/travel-visa')}
+              onClick={() => navigate('/travel-visa#pickup')}
             >
               <div className="travel-step-card__img-header">
                 <img src="/assets/travel-step-2-airport.jpg" alt="VIP Airport Pickup & Hotel Stay" className="travel-step-card__top-img" />
@@ -573,7 +573,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
               whileHover={{ y: -8 }}
-              onClick={() => navigate('/travel-visa')}
+              onClick={() => navigate('/services')}
             >
               <div className="travel-step-card__img-header">
                 <img src="/assets/travel-step-3-care.png" alt="World-Class Dental Care" className="travel-step-card__top-img" />
@@ -596,7 +596,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
               whileHover={{ y: -8 }}
-              onClick={() => navigate('/travel-visa')}
+              onClick={() => navigate('/travel-visa#tips')}
             >
               <div className="travel-step-card__img-header">
                 <img src="/assets/travel-step-4-adiyogi.png" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" />
@@ -631,7 +631,7 @@ const HomePage: React.FC = () => {
                   style={{ background: '#25D366', borderColor: '#25D366', color: '#ffffff', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
                   <WhatsAppIcon size={18} color="#ffffff" />
-                  <span className="hide-mobile">WhatsApp Travel Desk ↗</span>
+                  <span className="hide-mobile">WhatsApp Travel Deck ↗</span>
                   <span className="show-mobile">WhatsApp ↗</span>
                 </a>
               </div>

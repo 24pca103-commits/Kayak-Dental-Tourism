@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Award, Users, Star } from 'lucide-react';
+import { Award, Users, Star, ArrowRight } from 'lucide-react';
 import { doctorsAPI } from '../services/api';
 import type { Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
@@ -98,8 +98,8 @@ const TeamPage: React.FC = () => {
               </div>
             ))}
           </div>
-          <button className="btn btn-purple btn-lg" style={{ marginTop: '2.5rem' }} onClick={() => setShowModal(true)}>
-            Book an Appointment
+          <button className="btn btn-purple btn-lg" style={{ marginTop: '2.5rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }} onClick={() => setShowModal(true)}>
+            Book an Appointment <ArrowRight size={18} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff', flexShrink: 0 }} />
           </button>
         </div>
       </section>

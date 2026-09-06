@@ -151,7 +151,9 @@ const ServiceDetailPage: React.FC = () => {
               <div style={{ background: 'linear-gradient(135deg,var(--purple-700),var(--purple-800))', borderRadius: 'var(--radius-lg)', padding: '1.75rem', color: 'white' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem' }}>Book This Treatment</h3>
                 <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)', marginBottom: '1.25rem', lineHeight: 1.6 }}>Ready to get started? Book your consultation with our specialist today.</p>
-                <button className="btn btn-primary w-full" onClick={() => setShowModal(true)}>Book Appointment</button>
+                <button className="btn btn-primary w-full" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => setShowModal(true)}>
+                  Book Appointment <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
+                </button>
               </div>
 
               {service.duration && (

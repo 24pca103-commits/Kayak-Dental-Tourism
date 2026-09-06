@@ -102,11 +102,33 @@ const ContactPage: React.FC = () => {
                 ))}
               </div>
 
-              {/* Map placeholder */}
-              <div style={{ marginTop: '2rem', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1.5px solid var(--gray-200)', height: 200, background: 'var(--gray-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '0.5rem', color: 'var(--gray-400)' }}>
-                <MapPin size={32} />
-                <p style={{ fontSize: '0.85rem' }}>123 Seaside Road, Chennai</p>
-                <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" className="btn btn-outline-purple btn-sm" style={{ marginTop: '0.5rem' }}>Open in Maps</a>
+              {/* Live Interactive Google Map */}
+              <div id="map" style={{ marginTop: '2rem', borderRadius: 'var(--radius-lg)', overflow: 'hidden', border: '1.5px solid var(--gray-200)', background: 'white', boxShadow: 'var(--shadow-sm)' }}>
+                <iframe
+                  title="Kayal Dental Clinic Location"
+                  width="100%"
+                  height="220"
+                  style={{ border: 0, display: 'block' }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src="https://maps.google.com/maps?q=123%20Seaside%20Road,%20Chennai,%20Tamil%20Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                />
+                <div style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--gray-50)', borderTop: '1px solid var(--gray-200)', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--gray-700)', fontWeight: 600 }}>
+                    <MapPin size={16} color="#451271" style={{ color: '#451271', flexShrink: 0 }} />
+                    <span>123 Seaside Road, Chennai</span>
+                  </div>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=123+Seaside+Road,+Chennai,+Tamil+Nadu+-+600001"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-purple btn-sm"
+                    style={{ fontSize: '0.78rem', padding: '0.35rem 0.85rem' }}
+                  >
+                    Open in Google Maps ↗
+                  </a>
+                </div>
               </div>
             </div>
 

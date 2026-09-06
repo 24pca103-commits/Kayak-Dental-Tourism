@@ -1,0 +1,110 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  admin
+  staff
+}
+
+enum Status {
+  active
+  inactive
+}
+
+enum AppointmentStatus {
+  pending
+  confirmed
+  rescheduled
+  completed
+  cancelled
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?
+  password  String
+  role      Role     @default(admin)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Doctor {
+  id             Int           @id @default(autoincrement())
+  name           String
+  qualification  String
+  specialization String
+  experience     Int
+  image          String        @default("")
+  description    String        @db.Text
+  availability   String        @default("[\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\"]")
+  status         Status        @default(active)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  appointments   Appointment[]
+}
+
+model Service {
+  id               Int           @id @default(autoincrement())
+  name             String
+  slug             String        @unique
+  image            String        @default("")
+  shortDescription String        @db.Text
+  description      String        @db.Text
+  benefits         String        @default("[]")
+  treatmentProcess String        @default("") @db.Text
+  whoNeeds         String        @default("") @db.Text
+  duration         String        @default("")
+  status           Status        @default(active)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  appointments     Appointment[]
+}
+
+model Appointment {
+  id              Int               @id @default(autoincrement())
+  patientName     String
+  phone           String
+  email           String
+  serviceId       Int?
+  service         Service?          @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  serviceName     String?
+  doctorId        Int?
+  doctor          Doctor?           @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  doctorName      String?
+  appointmentDate DateTime
+  appointmentTime String
+  message         String?           @db.Text
+  status          AppointmentStatus @default(pending)
+  adminNote       String?           @db.Text
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model Testimonial {
+  id          Int      @id @default(autoincrement())
+  patientName String
+  review      String   @db.Text
+  rating      Int      @default(5)
+  image       String   @default("")
+  status      Status   @default(active)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model FAQ {
+  id           Int      @id @default(autoincrement())
+  question     String   @db.Text
+  answer       String   @db.Text
+  status       Status   @default(active)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

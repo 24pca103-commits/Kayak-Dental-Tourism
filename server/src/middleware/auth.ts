@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import prisma from '../config/prisma';
 
 export interface AuthRequest extends Request {
-  user?: { id: string; role: string };
+  user?: { id: number; role: string };
 }
 
 export const protect = async (
@@ -20,9 +20,13 @@ export const protect = async (
 
     const token = authHeader.split(' ')[1];
     const secret = process.env.JWT_SECRET || 'kayal_secret';
-    const decoded = jwt.verify(token, secret) as { id: string; role: string };
+    const decoded = jwt.verify(token, secret) as { id: number | string; role: string };
 
-    const user = await User.findById(decoded.id).select('-password');
+    const user = await prisma.user.findUnique({
+      where: { id: Number(decoded.id) },
+      select: { id: true, role: true },
+    });
+
     if (!user) {
       res.status(401).json({ success: false, message: 'User not found' });
       return;

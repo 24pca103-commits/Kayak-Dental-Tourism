@@ -468,7 +468,26 @@ svg.lucide {
 }
 /* Exceptions: icons with explicit inline color stay as-is via currentColor */
 
-/* ── Mobile View Only: Section Sub-content Left Alignment & Tab Space ── */
+/* ── Sub-content Justify Across All Pages (Excluding Hero Sections) ── */
+:not([class*="hero"]):not(.hero):not(.hero-section) > * > .section-subtitle,
+:not([class*="hero"]):not(.hero):not(.hero-section) > * > .section-title + p,
+:not([class*="hero"]):not(.hero):not(.hero-section) .section-subtitle,
+:not([class*="hero"]):not(.hero):not(.hero-section) .what-we-do__subtitle,
+:not([class*="hero"]):not(.hero):not(.hero-section) .mission-subtitle,
+.section:not([class*="hero"]):not(.hero-section) > .container > .text-center > p,
+.section:not([class*="hero"]):not(.hero-section) > .container > .text-center > .section-subtitle,
+.section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align: center"] > p,
+.section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align:center"] > p,
+.about-story .story-content > p,
+.welcome .section-title + p,
+.why-us-v4__desc,
+.testimonials-v3__left p,
+.service-detail__desc {
+  text-align: justify !important;
+  text-justify: inter-word;
+}
+
+/* ── Mobile View Only: Section Sub-content Justify & Tab Space ── */
 @media (max-width: 768px) {
   :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) > * > .section-subtitle,
   :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) > * > .section-title + p,
@@ -489,8 +508,8 @@ svg.lucide {
   .why-us-v4__desc,
   .testimonials-v3__left h3,
   .testimonials-v3__left p {
-    text-align: start !important;
-    text-align: left !important;
+    text-align: justify !important;
+    text-justify: inter-word;
     text-indent: 1.5rem !important;
   }
 
@@ -503,27 +522,11 @@ svg.lucide {
     margin-right: auto !important;
   }
 
-  /* ALL CARDS on Mobile: Strictly NO tabspace, Text-Align Start */
-  .card,
-  .card *,
-  [class*="card"],
-  [class*="card"] *,
-  [class*="Card"],
-  [class*="Card"] *,
+  /* Cards on Mobile with Left-Align: Strictly NO tabspace, Text-Align Start (Excluding highlights, stats & doctors) */
   .treatment-card-v,
   .treatment-card-v *,
   .travel-step-card,
   .travel-step-card *,
-  .highlight-item-v5,
-  .highlight-item-v5 .highlight-item-v5__desc,
-  .highlight-item,
-  .highlight-item *,
-  .doctor-card,
-  .doctor-card *,
-  .facility-card,
-  .facility-card *,
-  .stat-card,
-  .stat-card *,
   .testimonials-v3__slider-wrap,
   .testimonials-v3__slider-wrap *,
   .testimonials-v3__cards-grid,
@@ -555,6 +558,45 @@ svg.lucide {
     text-indent: 0 !important;
     text-align: start !important;
     text-align: left !important;
+  }
+
+  /* Point 2: Highlight cards content centered on mobile */
+  .highlight-item-v5,
+  .highlight-item-v5 *,
+  .highlight-item-v5__content,
+  .highlight-item-v5__title,
+  .highlight-item-v5__desc {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Point 4: Stat cards content centered on mobile */
+  .stat-card,
+  .stat-card *,
+  .stat-icon,
+  .stat-value,
+  .stat-label {
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Point 5: Doctor cards content centered on mobile */
+  .doctor-card,
+  .doctor-card *,
+  .doctor-info,
+  .doctor-info h3,
+  .doctor-degree,
+  .doctor-role,
+  .doctor-exp {
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 }
 

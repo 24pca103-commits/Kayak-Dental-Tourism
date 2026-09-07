@@ -244,6 +244,13 @@
     flex-direction: column;
     text-align: center;
   }
+  .invitation-content p {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    text-align-last: left !important;
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
+  }
   .transport-features {
     grid-template-columns: 1fr;
     gap: 12px;

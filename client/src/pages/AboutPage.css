@@ -167,6 +167,58 @@
   .stat-card {
     flex: 0 0 calc(100% - 1rem);
     max-width: 100%;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .stat-card .stat-icon,
+  .stat-card .stat-value,
+  .stat-card .stat-label {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .doctor-card {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .doctor-avatar {
+    margin: 0 auto 1.25rem auto !important;
+  }
+
+  .doctor-info,
+  .doctor-info h3,
+  .doctor-degree,
+  .doctor-role,
+  .doctor-exp {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .doctor-exp {
+    display: inline-flex !important;
+    align-self: center !important;
+  }
+
+  /* Point 6: CTA Section Sub-content on Mobile (Start-align, Justify, and Tabspace) */
+  .about-cta p,
+  .cta-content p {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    text-align-last: left !important;
+    text-indent: 1.5rem !important;
+    max-width: 100% !important;
+    font-size: 0.95rem !important;
+    line-height: 1.65 !important;
   }
 }
 
@@ -373,22 +425,39 @@
   font-size: clamp(1.75rem, 3vw, 2.5rem);
 }
 
+/* Point 5: CTA Section Button Color */
+.about-cta .btn-cyan,
 .btn-cyan {
-  background-color: var(--color-cyan);
-  color: #1a1a1a;
-  border: none;
-  border-radius: 9999px;
-  padding: 0.75rem 2rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  background: #24E0E1 !important;
+  background-color: #24E0E1 !important;
+  color: #451271 !important;
+  border: 1.5px solid #24E0E1 !important;
+  border-radius: 9999px !important;
+  padding: 0.85rem 2.25rem !important;
+  font-weight: 700 !important;
+  font-family: var(--font-main) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  box-shadow: 0 6px 20px rgba(36, 224, 225, 0.45) !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
 }
 
+.about-cta .btn-cyan svg,
+.btn-cyan svg {
+  color: #451271 !important;
+  stroke: #451271 !important;
+}
+
+.about-cta .btn-cyan:hover,
 .btn-cyan:hover {
-  background-color: #1bc3c4;
-  transform: translateY(-2px);
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #451271 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.6) !important;
 }
 
 .btn-lg {

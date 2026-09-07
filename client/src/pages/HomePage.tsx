@@ -109,6 +109,8 @@ const HomePage: React.FC = () => {
   const [whatWeDoIdx, setWhatWeDoIdx] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [testTouchStart, setTestTouchStart] = useState<number | null>(null);
+  const [testTouchEnd, setTestTouchEnd] = useState<number | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
@@ -131,10 +133,38 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleTestTouchStart = (e: React.TouchEvent) => {
+    setTestTouchEnd(null);
+    setTestTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTestTouchMove = (e: React.TouchEvent) => {
+    setTestTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTestTouchEnd = () => {
+    if (!testTouchStart || !testTouchEnd) return;
+    const distance = testTouchStart - testTouchEnd;
+    if (distance > 50) {
+      setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
+    } else if (distance < -50) {
+      setActiveTestimonialIdx(prev => (prev - 1 + HOME_TESTIMONIALS.length) % HOME_TESTIMONIALS.length);
+    }
+  };
+
+  // Auto-scroll for Testimonials (Point 3)
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
-    }, 4000);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Auto-scroll for What We Do on mobile (Point 4)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
+    }, 4500);
     return () => clearInterval(timer);
   }, []);
 
@@ -291,7 +321,7 @@ const HomePage: React.FC = () => {
               </div>
 
               {/* Buttons */}
-              <div style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="welcome__buttons" style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <button className="btn btn-cyan-pill" onClick={() => navigate('/about')}>
                   Facility &amp; Technology
                 </button>
@@ -536,7 +566,12 @@ const HomePage: React.FC = () => {
 
             {/* Right Column: Auto-sliding Testimonial Cards with Side Arrows */}
             <div className="testimonials-v3__slider-wrap">
-              <div className="testimonials-v3__cards-container">
+              <div
+                className="testimonials-v3__cards-container"
+                onTouchStart={handleTestTouchStart}
+                onTouchMove={handleTestTouchMove}
+                onTouchEnd={handleTestTouchEnd}
+              >
                 {/* Left Arrow Button */}
                 <button
                   className="testimonials-v3__arrow-btn testimonials-v3__arrow-btn--prev"

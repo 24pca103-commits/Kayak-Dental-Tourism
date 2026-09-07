@@ -363,6 +363,10 @@
   margin-bottom: 15px;
 }
 
+.dt-cta-line {
+  display: inline;
+}
+
 .cta-content p {
   font-size: 1.1rem;
   opacity: 0.9;
@@ -431,30 +435,65 @@
     letter-spacing: -0.02em !important;
   }
 
-  /* Point 3: World-Class Quality & Safety cards content centered on mobile */
+  /* Point 1: Ready to Transform Your Smile heading in 2 lines on mobile */
+  .cta-content h2 {
+    font-size: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+  }
+  .dt-cta-line {
+    display: block !important;
+    white-space: nowrap !important;
+  }
+
+  /* Point 3: World-Class Quality & Safety cards identical size (height & width) & centered on mobile */
   .standards-grid {
-    grid-template-columns: 1fr !important;
-    gap: 15px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 16px !important;
+    width: 100% !important;
   }
   .standard-card {
+    width: 100% !important;
+    max-width: 350px !important;
+    height: 135px !important;
+    min-height: 135px !important;
+    max-height: 135px !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
     text-align: center !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 24px 16px !important;
+    padding: 18px 16px !important;
   }
   .standard-icon {
-    margin: 0 auto 12px auto !important;
+    margin: 0 auto 10px auto !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
+    flex-shrink: 0 !important;
   }
-  .standard-title,
-  .standard-sub {
+  .standard-icon svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .standard-title {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
     text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
+  .standard-sub {
+    font-size: 0.78rem !important;
+    color: #6b7280 !important;
+    text-align: center !important;
+    margin-top: 4px !important;
+    line-height: 1.2 !important;
   }
   
   .timeline-line {

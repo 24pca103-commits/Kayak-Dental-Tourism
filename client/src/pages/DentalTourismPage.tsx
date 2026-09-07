@@ -377,7 +377,10 @@ const DentalTourismPage: React.FC = () => {
       <section className="cta-banner">
         <div className="container">
           <div className="cta-content">
-            <h2 className="font-display">Ready to Transform Your Smile?</h2>
+            <h2 className="font-display">
+              <span className="dt-cta-line">Ready to Transform</span>{' '}
+              <span className="dt-cta-line">Your Smile?</span>
+            </h2>
             <p>Get a free personalized treatment plan and cost estimate today.</p>
             <div className="cta-buttons">
               <Link to="/online-consultation" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>

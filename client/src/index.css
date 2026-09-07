@@ -569,7 +569,16 @@ svg.lucide {
     text-align: left !important;
   }
 
-  /* Point 3: World-Class Quality & Safety cards content centered on mobile */
+  /* Point 3: World-Class Quality & Safety cards content centered and identical size on mobile */
+  .standard-card {
+    width: 100% !important;
+    max-width: 350px !important;
+    height: 135px !important;
+    min-height: 135px !important;
+    max-height: 135px !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+  }
   .standard-card,
   .standard-card *,
   .standard-title,
@@ -605,7 +614,16 @@ svg.lucide {
     margin-right: auto !important;
   }
 
-  /* Point 5: Doctor cards content centered on mobile */
+  /* Point 5: Doctor cards content centered and identical size on mobile */
+  .doctor-card {
+    width: 100% !important;
+    max-width: 350px !important;
+    height: 335px !important;
+    min-height: 335px !important;
+    max-height: 335px !important;
+    box-sizing: border-box !important;
+    margin: 0 auto !important;
+  }
   .doctor-card,
   .doctor-card *,
   .doctor-info,

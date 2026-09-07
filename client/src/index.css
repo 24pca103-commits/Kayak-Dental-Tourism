@@ -437,9 +437,9 @@ h1, .hero__heading {
   .section { padding: 2rem 0; }
   .section-title { font-size: 1.5rem; }
   .btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.25rem;
     font-size: 0.95rem;
-    white-space: normal;
+    white-space: nowrap !important;
     text-align: center;
   }
   .btn-lg {
@@ -552,8 +552,6 @@ svg.lucide {
   .cost-chart-container *,
   .timeline-content,
   .timeline-content *,
-  .standard-card,
-  .standard-card *,
   .video-slider-card,
   .video-slider-card *,
   .accordion-item,
@@ -569,6 +567,18 @@ svg.lucide {
     text-indent: 0 !important;
     text-align: start !important;
     text-align: left !important;
+  }
+
+  /* Point 3: World-Class Quality & Safety cards content centered on mobile */
+  .standard-card,
+  .standard-card *,
+  .standard-title,
+  .standard-sub {
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   /* Point 2: Highlight cards content centered on mobile */
@@ -608,6 +618,45 @@ svg.lucide {
     justify-content: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
+  }
+
+  /* ── Mobile View: All Button Text Strictly Single Line ── */
+  button,
+  .btn,
+  a.btn,
+  input[type="button"],
+  input[type="submit"],
+  [class*="btn"],
+  .btn-primary,
+  .btn-secondary,
+  .btn-cyan-pill,
+  .btn-purple,
+  .btn-cyan,
+  .btn-outline-light,
+  .btn-whatsapp-cta {
+    white-space: nowrap !important;
+  }
+
+  button *,
+  .btn *,
+  a.btn *,
+  [class*="btn"] * {
+    white-space: nowrap !important;
+  }
+
+  /* ── Point 2: Hero Section Headings Single Line across all pages (excluding main home hero) ── */
+  .treatment-hero__title,
+  .contact-hero h1,
+  .about-hero h1,
+  .travel-hero h1,
+  .resources-hero h1,
+  .consultation-hero h1,
+  .consultation-hero .section-title,
+  section[style*="purple-900"] > .container > h1,
+  section[style*="cyan-600"] > .container > h1 {
+    white-space: nowrap !important;
+    font-size: clamp(1.05rem, 4.6vw, 1.65rem) !important;
+    letter-spacing: -0.01em !important;
   }
 }
 

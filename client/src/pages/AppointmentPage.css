@@ -327,6 +327,12 @@
 }
 
 @media (max-width: 768px) {
+  .consultation-hero h1,
+  .consultation-hero .section-title {
+    font-size: clamp(1.1rem, 4.8vw, 1.6rem) !important;
+    white-space: nowrap !important;
+  }
+
   .consultation-form-row {
     grid-template-columns: 1fr;
   }

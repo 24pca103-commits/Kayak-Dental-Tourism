@@ -168,9 +168,27 @@
 }
 
 @media (max-width: 768px) {
+  /* Hero heading single line */
+  .about-hero h1 {
+    font-size: clamp(1.15rem, 4.8vw, 1.6rem) !important;
+    white-space: nowrap !important;
+  }
+
+  /* Point 4: Creating Smiles Across the Globe section cards in a single row */
+  .stats-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+  }
+
   .stat-card {
-    flex: 0 0 calc(100% - 1rem);
-    max-width: 100%;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 33.33% !important;
+    padding: 1.25rem 0.5rem !important;
     text-align: center !important;
     display: flex !important;
     flex-direction: column !important;
@@ -178,31 +196,68 @@
     justify-content: center !important;
   }
 
-  .stat-card .stat-icon,
-  .stat-card .stat-value,
-  .stat-card .stat-label {
+  .stat-icon {
+    margin-bottom: 0.4rem !important;
+  }
+
+  .stat-icon svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .stat-value {
+    font-size: clamp(1.1rem, 4.5vw, 1.45rem) !important;
+    margin-bottom: 0.2rem !important;
+    white-space: nowrap !important;
+  }
+
+  .stat-label {
+    font-size: clamp(0.55rem, 2.2vw, 0.7rem) !important;
+    letter-spacing: 0px !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+  }
+
+  /* Point 1: Our Team Section cards all same size on mobile */
+  .doctors-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    grid-auto-rows: 1fr !important;
+  }
+
+  .doctor-card {
+    height: 100% !important;
+    min-height: 290px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: center !important;
+    padding: 2rem 1.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .doctor-avatar {
+    margin: 0 auto 1.25rem auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  .doctor-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
     text-align: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
-  .doctor-card {
-    text-align: center !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .doctor-avatar {
-    margin: 0 auto 1.25rem auto !important;
-  }
-
-  .doctor-info,
   .doctor-info h3,
   .doctor-degree,
-  .doctor-role,
-  .doctor-exp {
+  .doctor-role {
     text-align: center !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -211,6 +266,9 @@
   .doctor-exp {
     display: inline-flex !important;
     align-self: center !important;
+    margin-top: auto !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   /* Point 6: CTA Section Sub-content on Mobile (Start-align, Justify, and Tabspace) */

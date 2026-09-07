@@ -426,7 +426,35 @@
 
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 1.8rem;
+    font-size: clamp(0.92rem, 4.2vw, 1.4rem) !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  /* Point 3: World-Class Quality & Safety cards content centered on mobile */
+  .standards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+  .standard-card {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 24px 16px !important;
+  }
+  .standard-icon {
+    margin: 0 auto 12px auto !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .standard-title,
+  .standard-sub {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
   
   .timeline-line {

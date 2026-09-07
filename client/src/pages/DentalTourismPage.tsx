@@ -19,12 +19,20 @@ import {
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import './DentalTourismPage.css';
 
-const VIDEO_TESTIMONIALS = [
-  { name: 'Priya S.', country: 'UK 🇬🇧', tag: 'Dental Implants', videoId: 'dQw4w9WgXcQ' },
-  { name: 'Karthik R.', country: 'UAE 🇦🇪', tag: 'Smile Makeover', videoId: 'dQw4w9WgXcQ' },
-  { name: 'Sarah M.', country: 'USA 🇺🇸', tag: 'Full Mouth Rehab', videoId: 'dQw4w9WgXcQ' },
-  { name: 'Ahmed K.', country: 'Qatar 🇶🇦', tag: 'Zirconia Crowns', videoId: 'dQw4w9WgXcQ' },
-  { name: 'Lisa W.', country: 'Australia 🇦🇺', tag: 'Veneers', videoId: 'dQw4w9WgXcQ' },
+interface VideoTestimonial {
+  name: string;
+  country: string;
+  tag: string;
+  videoUrl?: string;
+  videoId?: string;
+}
+
+const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
+  { name: 'Priya S.', country: 'UK 🇬🇧', tag: 'Dental Implants', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
+  { name: 'Karthik R.', country: 'UAE 🇦🇪', tag: 'Smile Makeover', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
+  { name: 'Sarah M.', country: 'USA 🇺🇸', tag: 'Full Mouth Rehab', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
+  { name: 'Ahmed K.', country: 'Qatar 🇶🇦', tag: 'Zirconia Crowns', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
+  { name: 'Lisa W.', country: 'Australia 🇦🇺', tag: 'Veneers', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
 ];
 
 const costData = [
@@ -126,9 +134,9 @@ const DentalTourismPage: React.FC = () => {
       {/* 2. Cost Comparison */}
       <section id="cost-comparison" className="section bg-white">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="section-title font-display">Transparent Cost Comparison</h2>
-            <p className="section-subtitle">See why thousands travel to India for their dental care</p>
+          <div className="text-center mb-12" style={{ textAlign: 'center' }}>
+            <h2 className="section-title font-display" style={{ textAlign: 'center' }}>Transparent Cost Comparison</h2>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>See why thousands travel to India for their dental care</p>
             <p style={{
               marginTop: '0.75rem',
               fontSize: '0.85rem',
@@ -250,9 +258,9 @@ const DentalTourismPage: React.FC = () => {
       {/* 4. Quality & Safety Standards */}
       <section id="safety" className="section bg-white">
         <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="section-title font-display">World-Class Quality & Safety</h2>
-            <p className="section-subtitle">We never compromise on international standards</p>
+          <div className="text-center mb-12" style={{ textAlign: 'center' }}>
+            <h2 className="section-title font-display" style={{ textAlign: 'center' }}>World-Class Quality & Safety</h2>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>We never compromise on international standards</p>
           </div>
 
           <div className="standards-grid">
@@ -276,10 +284,10 @@ const DentalTourismPage: React.FC = () => {
       {/* 5. Patient Testimonials – Auto-Sliding Video Carousel (No Horizontal Scroller) */}
       <section id="testimonials" className="section bg-light-gray">
         <div className="container">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12" style={{ textAlign: 'center' }}>
             <div className="badge badge-cyan" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>Patient Stories</div>
-            <h2 className="section-title font-display">Real Reviews From Real Patients</h2>
-            <p className="section-subtitle">Hear directly from our international patients who flew for their smile transformation</p>
+            <h2 className="section-title font-display" style={{ textAlign: 'center' }}>Real Reviews From Real Patients</h2>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>Hear directly from our international patients who flew for their smile transformation</p>
           </div>
 
           {/* Auto-sliding Carousel Container */}
@@ -320,13 +328,25 @@ const DentalTourismPage: React.FC = () => {
                   >
                     <div className="video-slider-card">
                       <div className="video-slider-iframe-wrap">
-                        <iframe
-                          src={v.videoId ? `https://www.youtube.com/embed/${v.videoId}` : undefined}
-                          title={`Patient Review – ${v.name}`}
-                          allow="encrypted-media"
-                          allowFullScreen
-                          className="video-slider-iframe"
-                        />
+                        {v.videoUrl ? (
+                          <video
+                            src={v.videoUrl}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            controls
+                            className="video-slider-video"
+                          />
+                        ) : v.videoId ? (
+                          <iframe
+                            src={`https://www.youtube.com/embed/${v.videoId}`}
+                            title={`Patient Review – ${v.name}`}
+                            allow="encrypted-media"
+                            allowFullScreen
+                            className="video-slider-iframe"
+                          />
+                        ) : null}
                       </div>
                       <div className="video-slider-meta">
                         <span className="video-slider-name">{v.name} · {v.country}</span>

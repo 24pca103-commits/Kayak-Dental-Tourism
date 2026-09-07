@@ -30,8 +30,8 @@ const TravelVisaPage: React.FC = () => {
       <section id="visa" className="section visa-guide">
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
-            <h2 className="section-title">Indian Medical Visa Guide</h2>
-            <p>Everything you need to know about getting your medical visa for dental treatment in India.</p>
+            <h2 className="section-title" style={{ textAlign: 'center' }}>Indian Medical Visa Guide</h2>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>Everything you need to know about getting your medical visa for dental treatment in India.</p>
           </div>
 
           <div className="visa-steps-grid">
@@ -105,7 +105,7 @@ const TravelVisaPage: React.FC = () => {
       <section id="pickup" className="transport-section">
         <div className="container transport-content">
           <div className="transport-text">
-            <h2>Airport Pickup & Transport</h2>
+            <h2 style={{ textAlign: 'center' }}>Airport Pickup & Transport</h2>
             <p>Your comfort is our priority from the moment you land. We provide complimentary VIP airport transfers for all our international patients.</p>
             
             <div className="transport-features">
@@ -133,8 +133,8 @@ const TravelVisaPage: React.FC = () => {
       <section id="hotels" className="section" style={{ backgroundColor: '#f9f9f9' }}>
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
-            <h2 className="section-title">Accommodation Partnerships</h2>
-            <p>In Partnership with Rebel Packages, we offer specially negotiated rates at trusted hotels near our clinic.</p>
+            <h2 className="section-title" style={{ textAlign: 'center' }}>Accommodation Partnerships</h2>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>In Partnership with Rebel Packages, we offer specially negotiated rates at trusted hotels near our clinic.</p>
           </div>
 
           <div className="accommodation-grid">
@@ -192,8 +192,8 @@ const TravelVisaPage: React.FC = () => {
       <section id="tips" className="section">
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
-            <h2 className="section-title">Local Travel Tips</h2>
-            <p>Essential information for your stay in India.</p>
+            <h2 className="section-title" style={{ textAlign: 'center' }}>Local Travel Tips</h2>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>Essential information for your stay in India.</p>
           </div>
 
           <div className="tips-grid">

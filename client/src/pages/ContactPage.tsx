@@ -65,11 +65,11 @@ const ContactPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      <section style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
-        <div className="container">
-          <div className="badge badge-white" style={{ marginBottom: '1rem' }}>Contact Us</div>
-          <h1 className="section-title text-white">Get In Touch</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem' }}>We'd love to hear from you. Reach out and our team will respond promptly.</p>
+      <section className="contact-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Contact Us</div>
+          <h1 className="section-title text-white" style={{ textAlign: 'center' }}>Get In Touch</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto', maxWidth: '600px' }}>We'd love to hear from you. Reach out and our team will respond promptly.</p>
         </div>
       </section>
 

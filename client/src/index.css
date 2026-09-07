@@ -468,23 +468,34 @@ svg.lucide {
 }
 /* Exceptions: icons with explicit inline color stay as-is via currentColor */
 
-/* ── Sub-content Justify Across All Pages (Excluding Hero Sections) ── */
-:not([class*="hero"]):not(.hero):not(.hero-section) > * > .section-subtitle,
-:not([class*="hero"]):not(.hero):not(.hero-section) > * > .section-title + p,
-:not([class*="hero"]):not(.hero):not(.hero-section) .section-subtitle,
-:not([class*="hero"]):not(.hero):not(.hero-section) .what-we-do__subtitle,
-:not([class*="hero"]):not(.hero):not(.hero-section) .mission-subtitle,
-.section:not([class*="hero"]):not(.hero-section) > .container > .text-center > p,
-.section:not([class*="hero"]):not(.hero-section) > .container > .text-center > .section-subtitle,
-.section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align: center"] > p,
-.section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align:center"] > p,
-.about-story .story-content > p,
-.welcome .section-title + p,
-.why-us-v4__desc,
-.testimonials-v3__left p,
-.service-detail__desc {
-  text-align: justify !important;
-  text-justify: inter-word;
+/* ── Desktop View (min-width: 769px): Section Headings & Subtitles Centered ── */
+@media (min-width: 769px) {
+  .text-center,
+  .text-center > *,
+  .text-center p,
+  .text-center .section-title,
+  .text-center .section-subtitle,
+  .section-header.text-center,
+  .section-header.text-center *,
+  .section-header.text-center p,
+  .section-header.text-center .section-title,
+  .section-header.text-center .section-subtitle,
+  .section-subtitle,
+  .contact-hero,
+  .contact-hero *,
+  .consultation-cta,
+  .consultation-cta *,
+  .transport-text h2 {
+    text-align: center !important;
+  }
+
+  .text-center p,
+  .section-header.text-center p,
+  .section-subtitle,
+  .consultation-cta p {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
 
 /* ── Mobile View Only: Section Sub-content Justify & Tab Space ── */

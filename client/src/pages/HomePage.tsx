@@ -699,7 +699,7 @@ const HomePage: React.FC = () => {
               <div className="travel-step-card__content">
                 <h3 className="travel-step-card__title">2. Airport Pickup &amp; Hotel</h3>
                 <p className="travel-step-card__desc">
-                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to partner <br /><span style={{ whiteSpace: 'nowrap' }}>3★–5★ hotels.</span>
+                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to <span style={{ whiteSpace: 'nowrap' }}>partner 3★–5★ hotels.</span>
                 </p>
                 <span className="travel-step-card__tag">100% Free Transfer</span>
               </div>

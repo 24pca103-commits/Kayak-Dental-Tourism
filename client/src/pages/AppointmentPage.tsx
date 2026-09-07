@@ -322,9 +322,9 @@ const AppointmentPage: React.FC = () => {
 
       {/* CTA */}
       <section className="consultation-cta">
-        <div className="container text-center">
-          <h2 className="section-title text-white">Questions Before Booking?</h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.75rem', marginBottom: '1.5rem', fontSize: '18px' }}>
+        <div className="container text-center" style={{ textAlign: 'center' }}>
+          <h2 className="section-title text-white" style={{ textAlign: 'center' }}>Questions Before Booking?</h2>
+          <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.75rem', marginBottom: '1.5rem', fontSize: '18px', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             Explore our dental tourism page or patient resources for more information.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>

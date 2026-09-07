@@ -629,13 +629,15 @@
   background: #0f0f0f;
 }
 
-.video-slider-iframe {
+.video-slider-iframe,
+.video-slider-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border: none;
+  object-fit: cover;
 }
 
 .video-slider-meta {

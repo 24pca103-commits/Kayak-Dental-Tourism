@@ -322,11 +322,11 @@ const HomePage: React.FC = () => {
 
               {/* Buttons */}
               <div className="welcome__buttons" style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                <button className="btn btn-cyan-pill" onClick={() => navigate('/about')}>
+                <button className="btn btn-cyan-pill" onClick={() => navigate('/about#facilities')}>
                   Facility &amp; Technology
                 </button>
                 <button className="btn btn-cyan-pill" onClick={() => navigate('/team')}>
-                  Our Dentists <ArrowRight size={16} />
+                  Our Dentists <ArrowRight size={16} color="#0d1b5e" style={{ color: '#0d1b5e', stroke: '#0d1b5e' }} />
                 </button>
               </div>
             </div>

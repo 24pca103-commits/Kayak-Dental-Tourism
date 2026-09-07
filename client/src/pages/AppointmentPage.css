@@ -267,7 +267,7 @@
 .consultation-expect-card {
   background: white;
   border-radius: var(--radius-lg);
-  padding: 2rem 1.5rem;
+  padding: 2rem 1rem;
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
@@ -293,16 +293,21 @@
 }
 
 .consultation-expect-card h4 {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 0.95vw, 1rem);
   font-weight: 700;
   color: var(--gray-800);
   margin-bottom: 0.5rem;
+  white-space: nowrap;
 }
 
 .consultation-expect-card p {
   font-size: 0.85rem;
   color: var(--gray-500);
   line-height: 1.6;
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  text-align-last: left !important;
+  text-indent: 1.5rem !important;
 }
 
 /* ── CTA ── */

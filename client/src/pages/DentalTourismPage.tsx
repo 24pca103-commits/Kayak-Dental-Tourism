@@ -383,8 +383,13 @@ const DentalTourismPage: React.FC = () => {
               <Link to="/online-consultation" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                 Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
               </Link>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="btn btn-outline-light" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                <WhatsAppIcon size={18} color="#25D366" />
+              <a
+                href="https://wa.me/919876543210"
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-whatsapp-cta"
+              >
+                <WhatsAppIcon size={18} color="#ffffff" />
                 WhatsApp Us
               </a>
             </div>

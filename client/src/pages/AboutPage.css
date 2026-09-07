@@ -50,6 +50,10 @@
   padding: 3.5rem 0;
 }
 
+#facilities {
+  scroll-margin-top: 90px;
+}
+
 /* Hero Section */
 .about-hero {
   background: linear-gradient(135deg, #240840 0%, #451271 60%, #350d58 100%);

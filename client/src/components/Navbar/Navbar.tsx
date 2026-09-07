@@ -20,7 +20,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -35,18 +34,7 @@ export default function Navbar() {
   useEffect(() => {
     setMenuOpen(false);
     setActiveMobileDropdown(null);
-    setOpenDropdown(null);
   }, [location]);
-
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest('.navbar__menu-item-wrap')) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('click', handleOutsideClick);
-    return () => document.removeEventListener('click', handleOutsideClick);
-  }, []);
 
   const navMenuItems: MenuItem[] = [
     { label: 'Home', path: '/' },
@@ -149,27 +137,14 @@ export default function Navbar() {
                 className={`navbar__link ${location.pathname === item.path ? 'navbar__link--active' : ''}`}
               >
                 {item.label}
+                {item.subItems && <ChevronDown size={14} className="navbar__chevron" />}
               </Link>
-              {item.subItems && (
-                <button
-                  type="button"
-                  className={`navbar__chevron-btn ${openDropdown === item.label ? 'navbar__chevron-btn--active' : ''}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setOpenDropdown(prev => prev === item.label ? null : item.label);
-                  }}
-                  aria-label={`Toggle ${item.label} menu`}
-                >
-                  <ChevronDown size={13} className="navbar__chevron" />
-                </button>
-              )}
 
               {item.subItems && (
-                <div className={`navbar__dropdown ${openDropdown === item.label ? 'navbar__dropdown--open' : ''}`}>
+                <div className="navbar__dropdown">
                   <div className="navbar__dropdown-inner">
                     {item.subItems.map((sub, i) => (
-                      <Link key={i} to={sub.path} className="navbar__dropdown-item" onClick={() => setOpenDropdown(null)}>
+                      <Link key={i} to={sub.path} className="navbar__dropdown-item">
                         {sub.label}
                       </Link>
                     ))}

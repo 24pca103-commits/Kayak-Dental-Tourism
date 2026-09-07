@@ -105,16 +105,17 @@ const ServiceDetailPage: React.FC = () => {
   return (
     <div style={{ paddingTop: '70px' }}>
       {/* Header / Hero Section */}
-      <div style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
-        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <div className="service-detail-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem' }}>
+        <div className="container">
           <button
+            className="service-detail-back-btn"
             onClick={() => navigate('/services')}
-            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.75)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', marginBottom: '1.25rem', padding: '0.25rem 0.5rem', margin: '0 auto 1.25rem auto' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.75)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', marginBottom: '1.5rem', padding: 0 }}
           >
             <ArrowLeft size={16} /> Back to Services
           </button>
-          <h1 className="section-title text-white" style={{ textAlign: 'center', margin: '0 auto' }}>{service.name}</h1>
-          <p style={{ color: 'rgba(255,255,255,0.85)', marginTop: '0.75rem', maxWidth: 600, textAlign: 'center', margin: '0.75rem auto 0' }}>{service.shortDescription}</p>
+          <h1 className="section-title text-white">{service.name}</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', maxWidth: 600 }}>{service.shortDescription}</p>
           <button className="btn btn-primary btn-lg" style={{ marginTop: '1.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => setShowModal(true)}>
             Book Appointment <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
           </button>
@@ -127,7 +128,7 @@ const ServiceDetailPage: React.FC = () => {
             <div>
               {/* Description */}
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1rem' }}>What is {service.name}?</h2>
-              <p className="service-detail__desc" style={{ color: 'var(--gray-600)', lineHeight: 1.8, textIndent: '2rem', textAlign: 'start' }}>
+              <p className="service-detail__desc" style={{ color: 'var(--gray-600)', lineHeight: 1.8 }}>
                 {service.description || service.shortDescription}
               </p>
 

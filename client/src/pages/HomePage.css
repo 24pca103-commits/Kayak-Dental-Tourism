@@ -101,9 +101,6 @@
   margin: 4px 0 8px 0;
   max-width: 480px;
   letter-spacing: 0.1px;
-  text-indent: 2rem !important;
-  text-align: start !important;
-  text-align: left !important;
   animation: fadeInUp 0.7s 0.1s ease both;
 }
 

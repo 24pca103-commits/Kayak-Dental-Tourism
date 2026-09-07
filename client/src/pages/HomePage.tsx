@@ -365,7 +365,7 @@ const HomePage: React.FC = () => {
 
                 <img
                   src="/assets/about-doctor-founder.png"
-                  alt="Dr. Kayal Anandhi - Founder & Chief Dental Surgeon"
+                  alt="Dr. V.Sahaana - Founder &amp; Chief Dental Surgeon"
                   style={{ width: '100%', height: '400px', objectFit: 'cover', display: 'block' }}
                 />
 
@@ -379,11 +379,13 @@ const HomePage: React.FC = () => {
                   padding: '2rem 1.25rem 1rem',
                   color: '#ffffff'
                 }}>
-                  <div style={{ fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
-                    Dr. Kayal Anandhi
+                  <div style={{ fontWeight: 800, fontSize: '1.15rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
+                    Dr. V.Sahaana
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600 }}>
-                    Founder &amp; Chief Dentist · BDS, MDS (Prosthodontics)
+                  <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600, marginTop: '3px', lineHeight: 1.45 }}>
+                    <div>BDS., FDS., FMC.</div>
+                    <div>Dental surgeon certified.</div>
+                    <div>Root Canal Specialist</div>
                   </div>
                 </div>
               </div>

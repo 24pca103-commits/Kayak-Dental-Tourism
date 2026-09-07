@@ -39,7 +39,7 @@ const AboutPage: React.FC = () => {
   ];
 
   const doctors = [
-    { name: "Dr. Kayal Anandhi", role: "Founder", specialty: "Implantology & Cosmetic", exp: "15+ yrs", initials: "KA", degree: "BDS MDS Prosthodontics", image: "/assets/dr-kayal-anandhi.jpg" },
+    { name: "Dr. V.Sahaana", role: "Dental Surgeon Certified", specialty: "Root Canal Specialist", exp: "10+ yrs", initials: "VS", degree: "BDS., FDS., FMC.", image: "/assets/dr-kayal-anandhi.jpg" },
     { name: "Dr. Rajesh Kumar", role: "Senior Implantologist", specialty: "Oral Surgery", exp: "12+ yrs", initials: "RK", degree: "BDS MDS" },
     { name: "Dr. Priya Sharma", role: "Cosmetic Dentist", specialty: "Veneers & Smile Design", exp: "10+ yrs", initials: "PS", degree: "BDS" },
     { name: "Dr. Suresh Babu", role: "Orthodontist", specialty: "Braces & Aligners", exp: "8+ yrs", initials: "SB", degree: "BDS MDS" },
@@ -121,7 +121,7 @@ const AboutPage: React.FC = () => {
 
                 <img
                   src="/assets/about-doctor-founder.png"
-                  alt="Dr. Kayal Anandhi - Founder & Chief Dental Surgeon"
+                  alt="Dr. V.Sahaana - Founder &amp; Chief Dental Surgeon"
                   style={{ width: '100%', height: '400px', objectFit: 'cover', display: 'block' }}
                 />
 
@@ -135,11 +135,13 @@ const AboutPage: React.FC = () => {
                   padding: '2rem 1.25rem 1rem',
                   color: '#ffffff'
                 }}>
-                  <div style={{ fontWeight: 800, fontSize: '1.1rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
-                    Dr. Kayal Anandhi
+                  <div style={{ fontWeight: 800, fontSize: '1.15rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
+                    Dr. V.Sahaana
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600 }}>
-                    Founder &amp; Chief Dentist · BDS, MDS (Prosthodontics)
+                  <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600, marginTop: '3px', lineHeight: 1.45 }}>
+                    <div>BDS., FDS., FMC.</div>
+                    <div>Dental surgeon certified.</div>
+                    <div>Root Canal Specialist</div>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, ChevronUp, Check, ShieldCheck, Sparkles, HeartPulse, Smile, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Check, ShieldCheck, Sparkles, HeartPulse, Smile, CheckCircle2, Lock } from 'lucide-react';
+import toast from 'react-hot-toast';
 import './PatientResourcesPage.css';
 
 const PatientResourcesPage: React.FC = () => {
@@ -8,8 +9,60 @@ const PatientResourcesPage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
 
+  const beforeTravelChecklist = [
+    { id: 'bt1', label: "Complete online consultation with Kayal Dental" },
+    { id: 'bt2', label: "Receive and review your treatment plan" },
+    { id: 'bt3', label: "Apply for Medical Visa (if required)" },
+    { id: 'bt4', label: "Book flights and accommodation" },
+    { id: 'bt5', label: "Gather medical records and recent X-rays" },
+    { id: 'bt6', label: "List current medications and allergies" },
+    { id: 'bt7', label: "Arrange travel insurance" },
+    { id: 'bt8', label: "Download Kayal Dental contact information" }
+  ];
+
+  const dayBeforeChecklist = [
+    { id: 'db1', label: "Avoid alcohol 24 hours before surgery" },
+    { id: 'db2', label: "Get good rest the night before" },
+    { id: 'db3', label: "Prepare loose, comfortable clothing" },
+    { id: 'db4', label: "Keep documents and ID ready" }
+  ];
+
+  // Combined full order of checklist items
+  const allOrderedItems = [...beforeTravelChecklist, ...dayBeforeChecklist];
+
   const toggleChecklist = (id: string) => {
-    setChecklist(prev => ({ ...prev, [id]: !prev[id] }));
+    const itemIndex = allOrderedItems.findIndex(item => item.id === id);
+    if (itemIndex === -1) return;
+
+    const isCurrentlyChecked = !!checklist[id];
+
+    if (!isCurrentlyChecked) {
+      // User is trying to CHECK this item: verify all previous items are checked first
+      for (let i = 0; i < itemIndex; i++) {
+        const prevId = allOrderedItems[i].id;
+        if (!checklist[prevId]) {
+          toast.error(`Please complete Step ${i + 1}: "${allOrderedItems[i].label}" first!`, {
+            duration: 3500,
+            id: 'checklist-order-toast',
+          });
+          return;
+        }
+      }
+      setChecklist(prev => ({ ...prev, [id]: true }));
+    } else {
+      // User is UNCHECKING: verify no subsequent items are already checked
+      for (let i = itemIndex + 1; i < allOrderedItems.length; i++) {
+        const nextId = allOrderedItems[i].id;
+        if (checklist[nextId]) {
+          toast.error(`Please uncheck subsequent steps first starting from Step ${i + 1}`, {
+            duration: 3500,
+            id: 'checklist-order-toast',
+          });
+          return;
+        }
+      }
+      setChecklist(prev => ({ ...prev, [id]: false }));
+    }
   };
 
   const faqs = {
@@ -33,24 +86,6 @@ const PatientResourcesPage: React.FC = () => {
       { question: "Hidden costs?", answer: "Never. We pride ourselves on transparent, all-inclusive quotes provided before you even book your flight." }
     ]
   };
-
-  const beforeTravelChecklist = [
-    { id: 'bt1', label: "Complete online consultation with Kayal Dental" },
-    { id: 'bt2', label: "Receive and review your treatment plan" },
-    { id: 'bt3', label: "Apply for Medical Visa (if required)" },
-    { id: 'bt4', label: "Book flights and accommodation" },
-    { id: 'bt5', label: "Gather medical records and recent X-rays" },
-    { id: 'bt6', label: "List current medications and allergies" },
-    { id: 'bt7', label: "Arrange travel insurance" },
-    { id: 'bt8', label: "Download Kayal Dental contact information" }
-  ];
-
-  const dayBeforeChecklist = [
-    { id: 'db1', label: "Avoid alcohol 24 hours before surgery" },
-    { id: 'db2', label: "Get good rest the night before" },
-    { id: 'db3', label: "Prepare loose, comfortable clothing" },
-    { id: 'db4', label: "Keep documents and ID ready" }
-  ];
 
   const careGuides = [
     {
@@ -189,38 +224,64 @@ const PatientResourcesPage: React.FC = () => {
           <div className="checklist-container">
             <div className="checklist-box">
               <h3>Before You Travel</h3>
-              {beforeTravelChecklist.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="checklist-item"
-                  onClick={() => toggleChecklist(item.id)}
-                >
-                  <div className={`checkbox-custom ${checklist[item.id] ? 'checked' : ''}`}>
-                    <Check size={16} strokeWidth={3} />
+              {beforeTravelChecklist.map((item, idx) => {
+                const globalIndex = allOrderedItems.findIndex(i => i.id === item.id);
+                const isChecked = !!checklist[item.id];
+                const isLocked = globalIndex > 0 && !checklist[allOrderedItems[globalIndex - 1].id] && !isChecked;
+
+                return (
+                  <div 
+                    key={item.id} 
+                    className={`checklist-item ${isLocked ? 'checklist-item--locked' : ''}`}
+                    onClick={() => toggleChecklist(item.id)}
+                    title={isLocked ? `Complete Step ${globalIndex} first` : undefined}
+                  >
+                    <div className={`checkbox-custom ${isChecked ? 'checked' : ''} ${isLocked ? 'locked' : ''}`}>
+                      {isChecked ? (
+                        <Check size={16} strokeWidth={3} />
+                      ) : isLocked ? (
+                        <Lock size={12} color="#9ca3af" />
+                      ) : (
+                        <span className="checklist-step-num">{idx + 1}</span>
+                      )}
+                    </div>
+                    <span className={`checklist-label ${isChecked ? 'checked' : ''} ${isLocked ? 'locked' : ''}`}>
+                      {item.label}
+                    </span>
                   </div>
-                  <span className={`checklist-label ${checklist[item.id] ? 'checked' : ''}`}>
-                    {item.label}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="checklist-box">
               <h3>Day Before Treatment</h3>
-              {dayBeforeChecklist.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="checklist-item"
-                  onClick={() => toggleChecklist(item.id)}
-                >
-                  <div className={`checkbox-custom ${checklist[item.id] ? 'checked' : ''}`}>
-                    <Check size={16} strokeWidth={3} />
+              {dayBeforeChecklist.map((item, idx) => {
+                const globalIndex = allOrderedItems.findIndex(i => i.id === item.id);
+                const isChecked = !!checklist[item.id];
+                const isLocked = globalIndex > 0 && !checklist[allOrderedItems[globalIndex - 1].id] && !isChecked;
+
+                return (
+                  <div 
+                    key={item.id} 
+                    className={`checklist-item ${isLocked ? 'checklist-item--locked' : ''}`}
+                    onClick={() => toggleChecklist(item.id)}
+                    title={isLocked ? `Complete Step ${globalIndex} first` : undefined}
+                  >
+                    <div className={`checkbox-custom ${isChecked ? 'checked' : ''} ${isLocked ? 'locked' : ''}`}>
+                      {isChecked ? (
+                        <Check size={16} strokeWidth={3} />
+                      ) : isLocked ? (
+                        <Lock size={12} color="#9ca3af" />
+                      ) : (
+                        <span className="checklist-step-num">{beforeTravelChecklist.length + idx + 1}</span>
+                      )}
+                    </div>
+                    <span className={`checklist-label ${isChecked ? 'checked' : ''} ${isLocked ? 'locked' : ''}`}>
+                      {item.label}
+                    </span>
                   </div>
-                  <span className={`checklist-label ${checklist[item.id] ? 'checked' : ''}`}>
-                    {item.label}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

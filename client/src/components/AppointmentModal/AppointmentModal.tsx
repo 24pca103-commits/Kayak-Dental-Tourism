@@ -38,9 +38,64 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [bookedTimes, setBookedTimes] = useState<string[]>([]);
+  const [fetchingSlots, setFetchingSlots] = useState(false);
 
   const serviceList = services.length > 0 ? services.map(s => s.name) : SERVICE_OPTIONS;
   const doctorList = doctors.length > 0 ? doctors.map(d => d.name) : ['Any Available Doctor'];
+
+  // Query booked time slots whenever the appointment date changes
+  React.useEffect(() => {
+    if (!form.appointmentDate) {
+      setBookedTimes([]);
+      return;
+    }
+
+    let isMounted = true;
+    setFetchingSlots(true);
+
+    const loadBookedSlots = async () => {
+      const bookedSet = new Set<string>();
+
+      // 1. Check local storage bookings cache
+      try {
+        const localBookings = JSON.parse(localStorage.getItem('kayal_booked_appointments') || '[]');
+        localBookings.forEach((b: any) => {
+          if (b.date === form.appointmentDate && b.time) {
+            bookedSet.add(b.time);
+          }
+        });
+      } catch {
+        // ignore
+      }
+
+      // 2. Query backend API
+      try {
+        const res = await appointmentsAPI.getBookedSlots(form.appointmentDate);
+        if (res.data?.bookedTimes && Array.isArray(res.data.bookedTimes)) {
+          res.data.bookedTimes.forEach((t: string) => bookedSet.add(t));
+        }
+      } catch {
+        // backend offline or empty
+      }
+
+      if (isMounted) {
+        const bookedArray = Array.from(bookedSet);
+        setBookedTimes(bookedArray);
+        // If current selected time is already booked, reset it
+        if (form.appointmentTime && bookedSet.has(form.appointmentTime)) {
+          setForm(prev => ({ ...prev, appointmentTime: '' }));
+        }
+        setFetchingSlots(false);
+      }
+    };
+
+    loadBookedSlots();
+    return () => { isMounted = false; };
+  }, [form.appointmentDate]);
+
+  // Only display time slots that are NOT booked
+  const availableTimeSlots = TIME_SLOTS.filter(slot => !bookedTimes.includes(slot));
 
   const validate = () => {
     const e: Record<string, string> = {};
@@ -70,7 +125,16 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         message: `Appointment for ${form.serviceName} on ${form.appointmentDate} at ${form.appointmentTime}. ${form.message || ''}`,
       });
 
-      // 2. Also save to appointments API if available
+      // 2. Save to local storage registry so slot immediately hides
+      try {
+        const localBookings = JSON.parse(localStorage.getItem('kayal_booked_appointments') || '[]');
+        localBookings.push({ date: form.appointmentDate, time: form.appointmentTime, service: form.serviceName });
+        localStorage.setItem('kayal_booked_appointments', JSON.stringify(localBookings));
+      } catch {
+        // ignore
+      }
+
+      // 3. Also save to appointments API if available
       try {
         await appointmentsAPI.create({
           ...form,
@@ -225,23 +289,66 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                 {errors.appointmentDate && <span className="form-error">{errors.appointmentDate}</span>}
               </div>
 
-              {/* Time */}
+              {/* Time List Box */}
               <div className="form-group appt-form__time-group">
-                <label className="form-label">
-                  <Clock size={14} /> Preferred Time *
+                <label className="form-label" htmlFor="appointmentTimeSelect">
+                  <Clock size={14} /> Preferred Time (Available Slots) *
+                  {form.appointmentDate && (
+                    <span style={{ fontSize: '0.78rem', color: '#0284c7', marginLeft: 'auto', fontWeight: 600 }}>
+                      {fetchingSlots ? 'Checking slots...' : `${availableTimeSlots.length} available`}
+                    </span>
+                  )}
                 </label>
-                <div className="appt-form__time-grid">
-                  {TIME_SLOTS.map((slot) => (
-                    <button
-                      key={slot}
-                      type="button"
-                      className={`appt-form__time-btn ${form.appointmentTime === slot ? 'appt-form__time-btn--active' : ''}`}
-                      onClick={() => { setForm(p => ({ ...p, appointmentTime: slot })); setErrors(p => ({ ...p, appointmentTime: '' })); }}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div>
+
+                {!form.appointmentDate ? (
+                  <div style={{
+                    padding: '0.75rem 1rem',
+                    background: 'var(--gray-50)',
+                    border: '1.5px dashed var(--gray-300)',
+                    borderRadius: 'var(--radius-md)',
+                    color: 'var(--gray-500)',
+                    fontSize: '0.85rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                  }}>
+                    <Calendar size={14} /> Please select a date first to view available timings
+                  </div>
+                ) : availableTimeSlots.length === 0 ? (
+                  <div style={{
+                    padding: '0.75rem 1rem',
+                    background: '#fef2f2',
+                    border: '1.5px solid #fca5a5',
+                    borderRadius: 'var(--radius-md)',
+                    color: '#b91c1c',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                  }}>
+                    ⚠️ All time slots for this date are already booked. Please choose another date.
+                  </div>
+                ) : (
+                  <select
+                    id="appointmentTimeSelect"
+                    className={`form-input ${errors.appointmentTime ? 'error' : ''}`}
+                    name="appointmentTime"
+                    value={form.appointmentTime}
+                    onChange={handleChange}
+                    style={{
+                      cursor: 'pointer',
+                      fontSize: '0.92rem',
+                      fontWeight: 600,
+                      color: form.appointmentTime ? '#451271' : 'var(--gray-600)',
+                      background: 'white',
+                    }}
+                  >
+                    <option value="">-- Select Preferred Time Slot --</option>
+                    {availableTimeSlots.map((slot) => (
+                      <option key={slot} value={slot}>
+                        {slot} (Available)
+                      </option>
+                    ))}
+                  </select>
+                )}
                 {errors.appointmentTime && <span className="form-error">{errors.appointmentTime}</span>}
               </div>
 

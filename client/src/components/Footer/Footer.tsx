@@ -127,7 +127,7 @@ const Footer: React.FC = () => {
               title="Click for Emergency Care on WhatsApp (+91 98765 43210)"
             >
               <span className="footer__emergency-dot" />
-              Emergency care available
+              <span className="footer__emergency-text">Emergency care available</span>
             </a>
           </div>
         </div>

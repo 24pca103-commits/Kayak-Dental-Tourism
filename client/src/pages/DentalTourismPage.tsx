@@ -291,14 +291,14 @@ const DentalTourismPage: React.FC = () => {
             {/* Arrow Buttons */}
             <button
               className="slider-nav-btn slider-nav-btn--prev"
-              onClick={handlePrev}
+              onClick={(e) => { handlePrev(); e.currentTarget.blur(); }}
               aria-label="Previous Video Review"
             >
               <ChevronLeft size={22} />
             </button>
             <button
               className="slider-nav-btn slider-nav-btn--next"
-              onClick={handleNext}
+              onClick={(e) => { handleNext(); e.currentTarget.blur(); }}
               aria-label="Next Video Review"
             >
               <ChevronRight size={22} />

@@ -467,3 +467,261 @@ svg.lucide {
   color: #24E0E1;
 }
 /* Exceptions: icons with explicit inline color stay as-is via currentColor */
+
+/* ── Section Sub-content Left Alignment & Tab Space (Excluding All Hero Sections and Cards) ── */
+:not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) > * > .section-subtitle,
+:not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) > * > .section-title + p,
+:not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) .section-subtitle,
+:not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) .what-we-do__subtitle,
+:not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) .mission-subtitle,
+.section:not([class*="hero"]):not(.hero-section) > .container > .text-center > p,
+.section:not([class*="hero"]):not(.hero-section) > .container > .text-center > .section-subtitle,
+.section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align: center"] > p,
+.hero__desc,
+.about-hero__desc,
+.dt-hero__desc,
+.service-detail__desc,
+.section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align:center"] > p,
+.about-story .story-content > p,
+.welcome .section-title + p,
+.why-us-v4__subtitle,
+.why-us-v4__desc,
+.testimonials-v3__left h3,
+.testimonials-v3__left p {
+  text-align: start !important;
+  text-align: left !important;
+  text-indent: 2rem !important;
+}
+
+@media (max-width: 768px) {
+  .hero__desc,
+  .about-hero__desc,
+  .dt-hero__desc,
+  .service-detail__desc,
+  :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) > * > .section-subtitle,
+  :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) > * > .section-title + p,
+  :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) .section-subtitle,
+  :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) .what-we-do__subtitle,
+  :not([class*="hero"]):not([class*="card"]):not(.card):not(.hero):not(.hero-section) .mission-subtitle,
+  .section:not([class*="hero"]):not(.hero-section) > .container > .text-center > p,
+  .section:not([class*="hero"]):not(.hero-section) > .container > .text-center > .section-subtitle,
+  .section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align: center"] > p,
+  .section:not([class*="hero"]):not(.hero-section) > .container > [style*="text-align:center"] > p,
+  .about-story .story-content > p,
+  .welcome .section-title + p,
+  .why-us-v4__subtitle,
+  .why-us-v4__desc,
+  .testimonials-v3__left h3,
+  .testimonials-v3__left p {
+    text-indent: 1.5rem !important;
+  }
+}
+
+:not([class*="hero"]):not(.hero):not(.hero-section) .section-subtitle,
+:not([class*="hero"]):not(.hero):not(.hero-section) .what-we-do__subtitle,
+:not([class*="hero"]):not(.hero):not(.hero-section) .mission-subtitle,
+.section:not([class*="hero"]):not(.hero-section) .section-title + p,
+.about-story .story-content > p {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* Headings, buttons, badges, form inputs must NEVER have text-indent */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.badge,
+.btn,
+input,
+textarea,
+select {
+  text-indent: 0 !important;
+}
+
+/* ── ALL CARDS ACROSS ALL PAGES: Strictly NO tabspace, Text-Align Start ── */
+.card,
+.card *,
+[class*="card"],
+[class*="card"] *,
+[class*="Card"],
+[class*="Card"] *,
+.treatment-card-v,
+.treatment-card-v *,
+.travel-step-card,
+.travel-step-card *,
+.highlight-item-v5,
+.highlight-item-v5 .highlight-item-v5__desc,
+.highlight-item,
+.highlight-item *,
+.doctor-card,
+.doctor-card *,
+.facility-card,
+.facility-card *,
+.stat-card,
+.stat-card *,
+.testimonials-v3__slider-wrap,
+.testimonials-v3__slider-wrap *,
+.testimonials-v3__cards-grid,
+.testimonials-v3__cards-grid *,
+.testimonial-card-v3,
+.testimonial-card-v3 *,
+.care-card-v2,
+.care-card-v2 *,
+.cost-card,
+.cost-card *,
+.cost-chart-container,
+.cost-chart-container *,
+.timeline-content,
+.timeline-content *,
+.standard-card,
+.standard-card *,
+.video-slider-card,
+.video-slider-card *,
+.accordion-item,
+.accordion-item *,
+.accordion-content,
+.accordion-content *,
+.checklist-item,
+.checklist-item *,
+.checklist-card,
+.checklist-card *,
+.guide-card,
+.guide-card * {
+  text-indent: 0 !important;
+  text-align: start !important;
+  text-align: left !important;
+}
+
+/* ── ALL Hero Sections across ALL pages: Strictly Zero Indent & Retain Original Layout ── */
+.hero,
+.hero *,
+.hero-section,
+.hero-section *,
+.about-hero,
+.about-hero *,
+.consultation-hero,
+.consultation-hero *,
+.resources-hero,
+.resources-hero *,
+.treatment-hero,
+.treatment-hero *,
+[class*="hero"],
+[class*="hero"] *,
+[class*="Hero"],
+[class*="Hero"] * {
+  text-indent: 0 !important;
+}
+
+/* ── Treatments Hero & Banner Centering Override ── */
+.treatment-hero,
+.treatment-hero .container,
+.treatment-hero h1,
+.treatment-hero p,
+.treatment-hero .treatment-hero__desc,
+.treatment-hero .section-title + p {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-indent: 0 !important;
+}
+
+/* ── Explicit Centering for Highlights & Travel Section Headings ── */
+.highlight-item-v5__title {
+  text-align: center !important;
+}
+
+.travel-home-section .section-title,
+.travel-home-section .badge-cyan,
+.travel-home-section .badge {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* ── Universal Slider Arrow Buttons: Color Interchange on Hover & Click ── */
+.slider-nav-btn,
+.testimonials-v3__arrow-btn,
+.what-we-do-slider__arrow,
+[class*="slider-nav-btn"] {
+  background: #451271 !important;
+  border: 1.5px solid rgba(36, 224, 225, 0.5) !important;
+  color: #24E0E1 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 15px rgba(69, 18, 113, 0.25) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  outline: none !important;
+}
+
+.slider-nav-btn svg,
+.testimonials-v3__arrow-btn svg,
+.what-we-do-slider__arrow svg,
+[class*="slider-nav-btn"] svg {
+  color: #24E0E1 !important;
+  stroke: #24E0E1 !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* On Active / Pressing (Click): Button becomes Light Sky Blue, Arrow becomes Dark Blue */
+.slider-nav-btn:active,
+.testimonials-v3__arrow-btn:active,
+.what-we-do-slider__arrow:active,
+[class*="slider-nav-btn"]:active {
+  background: #24E0E1 !important;
+  border-color: #451271 !important;
+  color: #451271 !important;
+  box-shadow: 0 6px 20px rgba(36, 224, 225, 0.5) !important;
+}
+
+.slider-nav-btn:active svg,
+.testimonials-v3__arrow-btn:active svg,
+.what-we-do-slider__arrow:active svg,
+[class*="slider-nav-btn"]:active svg {
+  color: #451271 !important;
+  stroke: #451271 !important;
+}
+
+/* Hover only on devices supporting hover (avoids mobile tap sticking) */
+@media (hover: hover) and (pointer: fine) {
+  .slider-nav-btn:hover,
+  .testimonials-v3__arrow-btn:hover,
+  .what-we-do-slider__arrow:hover,
+  [class*="slider-nav-btn"]:hover {
+    background: #24E0E1 !important;
+    border-color: #451271 !important;
+    color: #451271 !important;
+    box-shadow: 0 6px 20px rgba(36, 224, 225, 0.5) !important;
+  }
+
+  .slider-nav-btn:hover svg,
+  .testimonials-v3__arrow-btn:hover svg,
+  .what-we-do-slider__arrow:hover svg,
+  [class*="slider-nav-btn"]:hover svg {
+    color: #451271 !important;
+    stroke: #451271 !important;
+  }
+}
+
+/* When focus is retained after click, reset background to dark blue resting state unless active */
+.slider-nav-btn:focus:not(:active):not(:hover),
+.testimonials-v3__arrow-btn:focus:not(:active):not(:hover),
+.what-we-do-slider__arrow:focus:not(:active):not(:hover),
+[class*="slider-nav-btn"]:focus:not(:active):not(:hover) {
+  background: #451271 !important;
+  border-color: rgba(36, 224, 225, 0.5) !important;
+  color: #24E0E1 !important;
+}
+
+.slider-nav-btn:focus:not(:active):not(:hover) svg,
+.testimonials-v3__arrow-btn:focus:not(:active):not(:hover) svg,
+.what-we-do-slider__arrow:focus:not(:active):not(:hover) svg,
+[class*="slider-nav-btn"]:focus:not(:active):not(:hover) svg {
+  color: #24E0E1 !important;
+  stroke: #24E0E1 !important;
+}
+
+.testimonials-v3__arrow-btn:active,
+.what-we-do-slider__arrow:active,
+.slider-nav-btn:active,
+[class*="slider-nav-btn"]:active {
+  transform: translateY(-50%) scale(0.92) !important;
+}
+

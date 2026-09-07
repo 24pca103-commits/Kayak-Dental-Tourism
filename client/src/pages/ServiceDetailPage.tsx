@@ -27,6 +27,42 @@ const SLUG_DATA: Record<string, Partial<Service>> = {
   },
 };
 
+const parseTreatmentSteps = (processStr: string) => {
+  if (!processStr) return [];
+  let rawSteps: string[] = [];
+  if (/[→\n\r]|->/.test(processStr)) {
+    rawSteps = processStr.split(/[→\n\r]+|\s*->\s*/);
+  } else if (/Step\s*\d+/i.test(processStr)) {
+    rawSteps = processStr.split(/(?=Step\s*\d+)/i);
+  } else {
+    rawSteps = [processStr];
+  }
+
+  return rawSteps
+    .map(s => s.trim())
+    .filter(Boolean)
+    .map((step, idx) => {
+      const match = step.match(/^Step\s*(\d+)[\s:-]*(.*)$/i);
+      if (match) {
+        return {
+          stepNum: match[1],
+          content: match[2].trim() || step,
+        };
+      }
+      const numMatch = step.match(/^(\d+)[\s.:-]+(.*)$/);
+      if (numMatch) {
+        return {
+          stepNum: numMatch[1],
+          content: numMatch[2].trim() || step,
+        };
+      }
+      return {
+        stepNum: String(idx + 1),
+        content: step,
+      };
+    });
+};
+
 const ServiceDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -68,16 +104,19 @@ const ServiceDetailPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      {/* Header */}
-      <div style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem' }}>
-        <div className="container">
-          <button onClick={() => navigate('/services')} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.7)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', marginBottom: '1.5rem', padding: 0 }}>
+      {/* Header / Hero Section */}
+      <div style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
+        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+          <button
+            onClick={() => navigate('/services')}
+            style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.75)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', marginBottom: '1.25rem', padding: '0.25rem 0.5rem', margin: '0 auto 1.25rem auto' }}
+          >
             <ArrowLeft size={16} /> Back to Services
           </button>
-          <h1 className="section-title text-white">{service.name}</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', maxWidth: 600 }}>{service.shortDescription}</p>
-          <button className="btn btn-primary btn-lg" style={{ marginTop: '1.5rem' }} onClick={() => setShowModal(true)}>
-            Book Appointment <ArrowRight size={16} />
+          <h1 className="section-title text-white" style={{ textAlign: 'center', margin: '0 auto' }}>{service.name}</h1>
+          <p style={{ color: 'rgba(255,255,255,0.85)', marginTop: '0.75rem', maxWidth: 600, textAlign: 'center', margin: '0.75rem auto 0' }}>{service.shortDescription}</p>
+          <button className="btn btn-primary btn-lg" style={{ marginTop: '1.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => setShowModal(true)}>
+            Book Appointment <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
           </button>
         </div>
       </div>
@@ -88,7 +127,9 @@ const ServiceDetailPage: React.FC = () => {
             <div>
               {/* Description */}
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1rem' }}>What is {service.name}?</h2>
-              <p style={{ color: 'var(--gray-600)', lineHeight: 1.8 }}>{service.description || service.shortDescription}</p>
+              <p className="service-detail__desc" style={{ color: 'var(--gray-600)', lineHeight: 1.8, textIndent: '2rem', textAlign: 'start' }}>
+                {service.description || service.shortDescription}
+              </p>
 
               {/* Benefits */}
               {service.benefits && service.benefits.length > 0 && (
@@ -109,7 +150,30 @@ const ServiceDetailPage: React.FC = () => {
               {service.treatmentProcess && (
                 <div style={{ marginTop: '2rem' }}>
                   <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1rem' }}>Treatment Process</h2>
-                  <p style={{ color: 'var(--gray-600)', lineHeight: 1.8 }}>{service.treatmentProcess}</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {parseTreatmentSteps(service.treatmentProcess).map((step, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          background: 'var(--purple-50)',
+                          border: '1.5px solid var(--purple-100)',
+                          borderRadius: 'var(--radius-md)',
+                          padding: '0.9rem 1.25rem',
+                          display: 'flex',
+                          gap: '0.6rem',
+                          alignItems: 'flex-start',
+                          textAlign: 'start',
+                        }}
+                      >
+                        <strong style={{ fontWeight: 800, color: 'var(--purple-700)', flexShrink: 0, fontSize: '0.95rem' }}>
+                          Step {step.stepNum}:
+                        </strong>
+                        <span style={{ color: 'var(--gray-700)', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                          {step.content}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

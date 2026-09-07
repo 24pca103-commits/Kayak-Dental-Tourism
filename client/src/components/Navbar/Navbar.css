@@ -78,14 +78,49 @@
   white-space: nowrap;
 }
 
-.navbar__chevron {
-  transition: transform 0.2s ease;
-  opacity: 0.8;
+/* ── Desktop Chevron Button ── */
+.navbar__chevron-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(36, 224, 225, 0.15);
+  border: 1px solid rgba(36, 224, 225, 0.35);
+  color: #24E0E1;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 2px;
+  transition: all 0.15s ease;
+  outline: none;
 }
 
-.navbar__menu-item-wrap:hover .navbar__chevron {
+.navbar__chevron-btn svg {
+  color: #24E0E1;
+  stroke: #24E0E1;
+  transition: transform 0.2s ease, color 0.15s ease, stroke 0.15s ease;
+}
+
+/* Color Interchange on Hover, Click (:active), and Open: Light Sky Blue button, Dark Blue arrow */
+.navbar__chevron-btn:active,
+.navbar__chevron-btn--active,
+.navbar__menu-item-wrap:hover .navbar__chevron-btn {
+  background: #24E0E1 !important;
+  border-color: #451271 !important;
+  color: #451271 !important;
+}
+
+.navbar__chevron-btn:active svg,
+.navbar__chevron-btn--active svg,
+.navbar__menu-item-wrap:hover .navbar__chevron-btn svg {
+  color: #451271 !important;
+  stroke: #451271 !important;
+}
+
+.navbar__chevron-btn--active svg,
+.navbar__menu-item-wrap:hover .navbar__chevron-btn svg {
   transform: rotate(180deg);
-  opacity: 1;
 }
 
 .navbar__link:hover,
@@ -119,11 +154,12 @@
   right: 0;
 }
 
-.navbar__menu-item-wrap:hover > .navbar__dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
+.navbar__menu-item-wrap:hover > .navbar__dropdown,
+.navbar__dropdown--open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
 }
 
 .navbar__dropdown-inner {
@@ -300,7 +336,7 @@
 
 .navbar__mobile-toggle {
   background: rgba(36, 224, 225, 0.15);
-  border: 1px solid rgba(36, 224, 225, 0.3);
+  border: 1px solid rgba(36, 224, 225, 0.35);
   color: #24E0E1;
   width: 32px;
   height: 32px;
@@ -309,12 +345,40 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  outline: none;
 }
 
-.navbar__mobile-toggle:hover {
-  background: #24E0E1;
-  color: #451271;
+.navbar__mobile-toggle svg {
+  color: #24E0E1;
+  stroke: #24E0E1;
+  transition: transform 0.2s ease, color 0.15s ease, stroke 0.15s ease;
+}
+
+/* Immediate Color Interchange on Click (:active), Open (--active), or Hover */
+.navbar__mobile-toggle:active,
+.navbar__mobile-toggle--active {
+  background: #24E0E1 !important;
+  border-color: #451271 !important;
+  color: #451271 !important;
+}
+
+.navbar__mobile-toggle:active svg,
+.navbar__mobile-toggle--active svg {
+  color: #451271 !important;
+  stroke: #451271 !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar__mobile-toggle:hover {
+    background: #24E0E1 !important;
+    border-color: #451271 !important;
+    color: #451271 !important;
+  }
+  .navbar__mobile-toggle:hover svg {
+    color: #451271 !important;
+    stroke: #451271 !important;
+  }
 }
 
 .navbar__mobile-sublist {

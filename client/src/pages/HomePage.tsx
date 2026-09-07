@@ -106,6 +106,30 @@ const HomePage: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
+  const [whatWeDoIdx, setWhatWeDoIdx] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) {
+      setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
+    } else if (isRightSwipe) {
+      setWhatWeDoIdx(prev => (prev - 1 + ALL_TREATMENTS.length) % ALL_TREATMENTS.length);
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -372,6 +396,76 @@ const HomePage: React.FC = () => {
               </motion.div>
             ))}
           </div>
+
+          {/* Mobile View: Single Row Sliding Carousel with Left & Right Arrow Buttons */}
+          <div className="what-we-do-mobile-slider">
+            <div className="what-we-do-slider-container">
+              {/* Left Arrow Button */}
+              <button
+                className="what-we-do-slider__arrow what-we-do-slider__arrow--prev"
+                onClick={(e) => {
+                  setWhatWeDoIdx(prev => (prev - 1 + ALL_TREATMENTS.length) % ALL_TREATMENTS.length);
+                  e.currentTarget.blur();
+                }}
+                aria-label="Previous Treatment Card"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              {/* Sliding Card Wrap with Touch Swipe Support */}
+              <div
+                className="what-we-do-slider__track"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <div
+                  className="treatment-card-v what-we-do-slider__card"
+                  onClick={() => navigate(`/services/${ALL_TREATMENTS[whatWeDoIdx].slug}`)}
+                >
+                  <div className="treatment-card-v__img-box">
+                    <img
+                      src={ALL_TREATMENTS[whatWeDoIdx].img}
+                      alt={ALL_TREATMENTS[whatWeDoIdx].title}
+                      className="treatment-card-v__img"
+                    />
+                  </div>
+                  <div className="treatment-card-v__body">
+                    <h3 className="treatment-card-v__title">{ALL_TREATMENTS[whatWeDoIdx].title}</h3>
+                    <p className="treatment-card-v__desc">{ALL_TREATMENTS[whatWeDoIdx].desc}</p>
+                    <div className="treatment-card-v__footer">
+                      <span>Learn More</span>
+                      <ArrowRight size={15} color="#451271" style={{ color: '#451271', stroke: '#451271' }} className="treatment-card-v__arrow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Arrow Button */}
+              <button
+                className="what-we-do-slider__arrow what-we-do-slider__arrow--next"
+                onClick={(e) => {
+                  setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
+                  e.currentTarget.blur();
+                }}
+                aria-label="Next Treatment Card"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            {/* Indicator Dots */}
+            <div className="what-we-do-slider__dots">
+              {ALL_TREATMENTS.map((_, i) => (
+                <button
+                  key={i}
+                  className={`what-we-do-slider__dot ${i === whatWeDoIdx ? 'what-we-do-slider__dot--active' : ''}`}
+                  onClick={(e) => { setWhatWeDoIdx(i); e.currentTarget.blur(); }}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -440,62 +534,73 @@ const HomePage: React.FC = () => {
               </p>
             </div>
 
-            {/* Right Column: Auto-sliding Testimonial Cards */}
+            {/* Right Column: Auto-sliding Testimonial Cards with Side Arrows */}
             <div className="testimonials-v3__slider-wrap">
-              <div className="testimonials-v3__cards-grid">
-                {[0, 1].map((offset) => {
-                  const itemIndex = (activeTestimonialIdx + offset) % HOME_TESTIMONIALS.length;
-                  const item = HOME_TESTIMONIALS[itemIndex];
-                  return (
-                    <motion.div
-                      key={`${itemIndex}-${offset}`}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="testimonials-v3__card"
-                    >
-                      <p className="testimonials-v3__card-quote">
-                        "{item.quote}"
-                      </p>
-                      <div className="testimonials-v3__card-author-wrap">
-                        <span className="testimonials-v3__card-author">
-                          — {item.author}
-                        </span>
-                        <span className="testimonials-v3__card-location">
-                          {item.location}
-                        </span>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Slider Controls / Dots */}
-              <div className="testimonials-v3__controls">
+              <div className="testimonials-v3__cards-container">
+                {/* Left Arrow Button */}
                 <button
-                  className="testimonials-v3__arrow-btn"
-                  onClick={() => setActiveTestimonialIdx(prev => (prev - 1 + HOME_TESTIMONIALS.length) % HOME_TESTIMONIALS.length)}
+                  className="testimonials-v3__arrow-btn testimonials-v3__arrow-btn--prev"
+                  onClick={(e) => {
+                    setActiveTestimonialIdx(prev => (prev - 1 + HOME_TESTIMONIALS.length) % HOME_TESTIMONIALS.length);
+                    e.currentTarget.blur();
+                  }}
                   aria-label="Previous testimonial"
                 >
-                  <ChevronLeft size={18} />
+                  <ChevronLeft size={20} />
                 </button>
-                <div className="testimonials-v3__dots">
-                  {HOME_TESTIMONIALS.map((_, i) => (
-                    <button
-                      key={i}
-                      className={`testimonials-v3__dot ${i === activeTestimonialIdx ? 'testimonials-v3__dot--active' : ''}`}
-                      onClick={() => setActiveTestimonialIdx(i)}
-                      aria-label={`Go to slide ${i + 1}`}
-                    />
-                  ))}
+
+                {/* Cards Grid */}
+                <div className="testimonials-v3__cards-grid">
+                  {[0, 1].map((offset) => {
+                    const itemIndex = (activeTestimonialIdx + offset) % HOME_TESTIMONIALS.length;
+                    const item = HOME_TESTIMONIALS[itemIndex];
+                    return (
+                      <motion.div
+                        key={`${itemIndex}-${offset}`}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, ease: 'easeOut' }}
+                        className={`testimonials-v3__card ${offset === 1 ? 'testimonials-v3__card--desktop-only' : ''}`}
+                      >
+                        <p className="testimonials-v3__card-quote">
+                          "{item.quote}"
+                        </p>
+                        <div className="testimonials-v3__card-author-wrap">
+                          <span className="testimonials-v3__card-author">
+                            — {item.author}
+                          </span>
+                          <span className="testimonials-v3__card-location">
+                            {item.location}
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
+
+                {/* Right Arrow Button */}
                 <button
-                  className="testimonials-v3__arrow-btn"
-                  onClick={() => setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length)}
+                  className="testimonials-v3__arrow-btn testimonials-v3__arrow-btn--next"
+                  onClick={(e) => {
+                    setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
+                    e.currentTarget.blur();
+                  }}
                   aria-label="Next testimonial"
                 >
-                  <ChevronRight size={18} />
+                  <ChevronRight size={20} />
                 </button>
+              </div>
+
+              {/* Slider Dots */}
+              <div className="testimonials-v3__dots">
+                {HOME_TESTIMONIALS.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`testimonials-v3__dot ${i === activeTestimonialIdx ? 'testimonials-v3__dot--active' : ''}`}
+                    onClick={(e) => { setActiveTestimonialIdx(i); e.currentTarget.blur(); }}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -559,7 +664,7 @@ const HomePage: React.FC = () => {
               <div className="travel-step-card__content">
                 <h3 className="travel-step-card__title">2. Airport Pickup &amp; Hotel</h3>
                 <p className="travel-step-card__desc">
-                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to partner 3★–5★ hotels.
+                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to partner <br /><span style={{ whiteSpace: 'nowrap' }}>3★–5★ hotels.</span>
                 </p>
                 <span className="travel-step-card__tag">100% Free Transfer</span>
               </div>

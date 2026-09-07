@@ -141,3 +141,39 @@ export const deleteAppointment = async (req: Request, res: Response): Promise<vo
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+
+export const getBookedSlots = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { date } = req.query;
+    if (!date) {
+      res.status(400).json({ success: false, message: 'Date is required' });
+      return;
+    }
+
+    const startDate = new Date(date as string);
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 1);
+
+    const bookedAppointments = await prisma.appointment.findMany({
+      where: {
+        appointmentDate: {
+          gte: startDate,
+          lt: endDate,
+        },
+        status: {
+          notIn: ['cancelled'],
+        },
+      } as any,
+      select: {
+        appointmentTime: true,
+      },
+    });
+
+    const bookedTimes = bookedAppointments.map((a) => a.appointmentTime).filter(Boolean);
+    res.json({ success: true, bookedTimes });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch booked slots', error });
+  }
+};
+

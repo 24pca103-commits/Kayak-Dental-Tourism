@@ -12,3 +12,15 @@
     gap: 2rem;
   }
 }
+
+.service-detail__desc {
+  text-indent: 2rem !important;
+  text-align: start !important;
+  text-align: left !important;
+}
+
+@media (max-width: 768px) {
+  .service-detail__desc {
+    text-indent: 1.5rem !important;
+  }
+}

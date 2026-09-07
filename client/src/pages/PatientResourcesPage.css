@@ -141,6 +141,27 @@
   border-color: #24E0E1;
 }
 
+.checkbox-custom.locked {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.checklist-step-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #451271;
+  user-select: none;
+}
+
+.checklist-item--locked {
+  opacity: 0.7;
+}
+
+.checklist-item--locked:hover {
+  opacity: 0.85;
+}
+
 .checkbox-custom svg {
   color: #451271;
   opacity: 0;
@@ -148,6 +169,10 @@
 }
 
 .checkbox-custom.checked svg {
+  opacity: 1;
+}
+
+.checkbox-custom.locked svg {
   opacity: 1;
 }
 
@@ -161,6 +186,10 @@
 .checklist-label.checked {
   text-decoration: line-through;
   color: #999;
+}
+
+.checklist-label.locked {
+  color: #6b7280;
 }
 
 .care-guide-grid {

@@ -2,7 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Globe,
+  Target,
+  Eye,
   Users,
   Award,
   Clock,
@@ -120,9 +121,9 @@ const AboutPage: React.FC = () => {
                 </div>
 
                 <img
-                  src="/assets/about-doctor-founder.png"
+                  src="/assets/about-doctor-founder.jpeg"
                   alt="Dr. V.Sahaana - Founder &amp; Chief Dental Surgeon"
-                  style={{ width: '100%', height: '400px', objectFit: 'cover', display: 'block' }}
+                  style={{ width: '100%', height: '430px', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
                 />
 
                 {/* Bottom info INSIDE the card */}
@@ -154,9 +155,29 @@ const AboutPage: React.FC = () => {
       <section id="mission" className="section about-mission">
         <div className="container">
           <motion.div className="mission-header text-center" {...fadeInUp}>
-            <Globe size={48} className="mission-icon mx-auto" />
+            <Target size={48} className="mission-icon mx-auto" />
             <h2 className="section-title text-white">Creating Smiles Across the Globe</h2>
             <p className="mission-subtitle">Our mission is to be the premier destination for dental tourism, offering uncompromising quality and personalized care.</p>
+
+            {/* Vision pill */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.6rem 1.25rem',
+              borderRadius: '50px',
+              background: 'linear-gradient(135deg, #451271 0%, #350d58 100%)',
+              color: '#ffffff',
+              fontFamily: 'var(--font-main)',
+              fontSize: '0.88rem',
+              fontWeight: 600,
+              boxShadow: '0 6px 20px rgba(69,18,113,0.25)',
+              marginTop: '1rem',
+              border: '1px solid rgba(36,224,225,0.4)',
+            }}>
+              <Eye size={16} style={{ color: '#24E0E1', flexShrink: 0 }} />
+              <span>Vision - Connecting the World Through Confident Smiles.</span>
+            </div>
           </motion.div>
 
           <motion.div

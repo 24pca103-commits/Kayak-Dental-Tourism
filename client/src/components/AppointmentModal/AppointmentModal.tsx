@@ -125,7 +125,31 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         message: `Appointment for ${form.serviceName} on ${form.appointmentDate} at ${form.appointmentTime}. ${form.message || ''}`,
       });
 
-      // 2. Save to local storage registry so slot immediately hides
+      // 2. Save to appointments API in MongoDB
+      try {
+        await appointmentsAPI.create({
+          ...form,
+          appointmentDate: new Date(form.appointmentDate).toISOString(),
+        });
+      } catch (err: any) {
+        if (err?.response?.status === 409) {
+          const conflictMsg = err.response.data?.message || 'This time slot is already booked. Please choose another slot.';
+          setErrors(prev => ({ ...prev, appointmentTime: conflictMsg }));
+          // Refresh booked slots immediately
+          try {
+            const res = await appointmentsAPI.getBookedSlots(form.appointmentDate);
+            if (res.data?.bookedTimes && Array.isArray(res.data.bookedTimes)) {
+              setBookedTimes(res.data.bookedTimes);
+            }
+          } catch {
+            // ignore
+          }
+          setLoading(false);
+          return;
+        }
+      }
+
+      // 3. Cache booked slot in localStorage for instant local reflect
       try {
         const localBookings = JSON.parse(localStorage.getItem('kayal_booked_appointments') || '[]');
         localBookings.push({ date: form.appointmentDate, time: form.appointmentTime, service: form.serviceName });
@@ -134,18 +158,8 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         // ignore
       }
 
-      // 3. Also save to appointments API if available
-      try {
-        await appointmentsAPI.create({
-          ...form,
-          appointmentDate: new Date(form.appointmentDate).toISOString(),
-        });
-      } catch {
-        // backend optional
-      }
       setSuccess(true);
     } catch {
-      // Show success even on network error (demo mode)
       setSuccess(true);
     } finally {
       setLoading(false);

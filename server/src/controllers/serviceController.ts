@@ -1,20 +1,13 @@
 import { Request, Response } from 'express';
-import prisma from '../config/prisma';
+import Service from '../models/Service';
 
 const slugify = (name: string): string =>
   name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
 export const getServices = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const services = await prisma.service.findMany({
-      where: { status: 'active' },
-      orderBy: { createdAt: 'desc' },
-    });
-    const formatted = services.map((s) => ({
-      ...s,
-      _id: s.id,
-      benefits: typeof s.benefits === 'string' ? JSON.parse(s.benefits || '[]') : s.benefits,
-    }));
+    const services = await Service.find({ status: 'active' }).sort({ createdAt: -1 });
+    const formatted = services.map(s => ({ ...s.toObject(), _id: s.id }));
     res.json({ success: true, data: formatted });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });
@@ -23,14 +16,8 @@ export const getServices = async (_req: Request, res: Response): Promise<void> =
 
 export const getAllServices = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const services = await prisma.service.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
-    const formatted = services.map((s) => ({
-      ...s,
-      _id: s.id,
-      benefits: typeof s.benefits === 'string' ? JSON.parse(s.benefits || '[]') : s.benefits,
-    }));
+    const services = await Service.find().sort({ createdAt: -1 });
+    const formatted = services.map(s => ({ ...s.toObject(), _id: s.id }));
     res.json({ success: true, data: formatted });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });
@@ -39,19 +26,12 @@ export const getAllServices = async (_req: Request, res: Response): Promise<void
 
 export const getServiceBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
-    const service = await prisma.service.findUnique({
-      where: { slug: req.params.slug },
-    });
-    if (!service || service.status !== 'active') {
+    const service = await Service.findOne({ slug: req.params.slug, status: 'active' });
+    if (!service) {
       res.status(404).json({ success: false, message: 'Service not found' });
       return;
     }
-    const formatted = {
-      ...service,
-      _id: service.id,
-      benefits: typeof service.benefits === 'string' ? JSON.parse(service.benefits || '[]') : service.benefits,
-    };
-    res.json({ success: true, data: formatted });
+    res.json({ success: true, data: { ...service.toObject(), _id: service.id } });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });
   }
@@ -59,25 +39,13 @@ export const getServiceBySlug = async (req: Request, res: Response): Promise<voi
 
 export const createService = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, shortDescription, description, benefits, treatmentProcess, whoNeeds, duration, status } = req.body;
-    const slug = slugify(name);
-    const benefitsStr = Array.isArray(benefits) ? JSON.stringify(benefits) : typeof benefits === 'string' ? benefits : '[]';
-
-    const service = await prisma.service.create({
-      data: {
-        name,
-        slug,
-        image: req.file ? `/uploads/${req.file.filename}` : req.body.image || '',
-        shortDescription: shortDescription || '',
-        description: description || '',
-        benefits: benefitsStr,
-        treatmentProcess: treatmentProcess || '',
-        whoNeeds: whoNeeds || '',
-        duration: duration || '',
-        status: status || 'active',
-      },
+    const slug = req.body.slug || slugify(req.body.name);
+    const service = await Service.create({
+      ...req.body,
+      slug,
+      image: req.file ? `/uploads/${req.file.filename}` : req.body.image || '',
     });
-    res.status(201).json({ success: true, data: { ...service, _id: service.id } });
+    res.status(201).json({ success: true, data: { ...service.toObject(), _id: service.id } });
   } catch (error) {
     res.status(400).json({ success: false, message: 'Failed to create service', error });
   }
@@ -85,34 +53,19 @@ export const createService = async (req: Request, res: Response): Promise<void> 
 
 export const updateService = async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
-    const dataToUpdate: Record<string, unknown> = {};
-    const allowed = ['name', 'shortDescription', 'description', 'treatmentProcess', 'whoNeeds', 'duration', 'status'];
+    const updateData: Record<string, unknown> = { ...req.body };
+    if (req.file) updateData.image = `/uploads/${req.file.filename}`;
+    if (req.body.name && !req.body.slug) updateData.slug = slugify(req.body.name);
 
-    allowed.forEach((field) => {
-      if (req.body[field] !== undefined) dataToUpdate[field] = req.body[field];
+    const service = await Service.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+      runValidators: true,
     });
-
-    if (req.body.name) {
-      dataToUpdate.slug = slugify(req.body.name);
+    if (!service) {
+      res.status(404).json({ success: false, message: 'Service not found' });
+      return;
     }
-
-    if (req.body.benefits !== undefined) {
-      dataToUpdate.benefits = Array.isArray(req.body.benefits) ? JSON.stringify(req.body.benefits) : req.body.benefits;
-    }
-
-    if (req.file) {
-      dataToUpdate.image = `/uploads/${req.file.filename}`;
-    } else if (req.body.image !== undefined) {
-      dataToUpdate.image = req.body.image;
-    }
-
-    const service = await prisma.service.update({
-      where: { id },
-      data: dataToUpdate as any,
-    });
-
-    res.json({ success: true, data: { ...service, _id: service.id } });
+    res.json({ success: true, data: { ...service.toObject(), _id: service.id } });
   } catch (error) {
     res.status(400).json({ success: false, message: 'Failed to update service', error });
   }
@@ -120,10 +73,11 @@ export const updateService = async (req: Request, res: Response): Promise<void> 
 
 export const deleteService = async (req: Request, res: Response): Promise<void> => {
   try {
-    const id = parseInt(req.params.id, 10);
-    await prisma.service.delete({
-      where: { id },
-    });
+    const service = await Service.findByIdAndDelete(req.params.id);
+    if (!service) {
+      res.status(404).json({ success: false, message: 'Service not found' });
+      return;
+    }
     res.json({ success: true, message: 'Service deleted' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });

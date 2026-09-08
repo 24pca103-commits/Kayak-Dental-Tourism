@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight, Globe, Heart, Sparkles, Award, ShieldCheck, ChevronLeft, ChevronRight, BookOpen
+  ArrowRight, Globe, Target, Heart, Sparkles, Award, ShieldCheck, ChevronLeft, ChevronRight, BookOpen, Eye
 } from 'lucide-react';
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { servicesAPI, doctorsAPI } from '../services/api';
@@ -316,8 +316,14 @@ const HomePage: React.FC = () => {
 
               {/* Mission Pill */}
               <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap', marginTop: '1.25rem' }}>
-                <Globe size={16} />
+                <Target size={16} />
                 <span>Mission - Creating Smiles Across the Globe.</span>
+              </div>
+
+              {/* Vision Pill */}
+              <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap', marginTop: '0.6rem' }}>
+                <Eye size={16} />
+                <span>Vision - Connecting the World Through Confident Smiles.</span>
               </div>
 
               {/* Buttons */}
@@ -364,9 +370,9 @@ const HomePage: React.FC = () => {
                 </div>
 
                 <img
-                  src="/assets/about-doctor-founder.png"
+                  src="/assets/about-doctor-founder.jpeg"
                   alt="Dr. V.Sahaana - Founder &amp; Chief Dental Surgeon"
-                  style={{ width: '100%', height: '400px', objectFit: 'cover', display: 'block' }}
+                  style={{ width: '100%', height: '430px', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
                 />
 
                 {/* Bottom info INSIDE the card */}
@@ -509,7 +515,7 @@ const HomePage: React.FC = () => {
             <div className="why-us-v4__visual">
               <div className="why-us-v4__img-box" style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(69,18,113,0.18)', border: '2.5px solid rgba(36,224,225,0.4)', background: '#ffffff', cursor: 'pointer' }} onClick={() => navigate('/dental-tourism')}>
                 <img
-                  src="/assets/why-india-doctor-checkup.png"
+                  src="/assets/why-india-doctor-checkup.jpg"
                   alt="Why India for Dental Care - Incredible India"
                   className="why-us-v4__doc-img"
                   style={{ borderRadius: '24px', width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
@@ -520,7 +526,7 @@ const HomePage: React.FC = () => {
             {/* Right Column: Single Line Heading + Content + 2 Button Rows */}
             <div className="why-us-v4__content">
               <h2 className="why-us-v4__title" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(20px, 2.7vw, 34px)', letterSpacing: '0.02em' }}>
-                WHY INDIA FOR DENTAL CARE?
+                Why India For Dental Care?
               </h2>
               <h3 className="why-us-v4__subtitle">World-class treatments at 70% lower cost</h3>
               <p className="why-us-v4__desc">

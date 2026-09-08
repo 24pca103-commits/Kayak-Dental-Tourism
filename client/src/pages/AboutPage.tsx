@@ -98,24 +98,7 @@ const AboutPage: React.FC = () => {
                 position: 'relative'
               }}>
                 {/* Tag INSIDE the card (top-left rounded cyan pill) */}
-                <div style={{
-                  position: 'absolute',
-                  top: '16px',
-                  left: '16px',
-                  zIndex: 2,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  padding: '0.45rem 1rem',
-                  borderRadius: '50px',
-                  background: '#24E0E1',
-                  color: '#451271',
-                  fontWeight: 800,
-                  fontSize: '0.85rem',
-                  fontFamily: 'var(--font-main)',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
-                  border: '1.5px solid rgba(255,255,255,0.8)'
-                }}>
+                <div className="founder-card__badge">
                   <Award size={16} color="#451271" />
                   <span>Founder &amp; Chief Dental Surgeon</span>
                 </div>
@@ -123,7 +106,7 @@ const AboutPage: React.FC = () => {
                 <img
                   src="/assets/about-doctor-founder.jpeg"
                   alt="Dr. V.Sahaana - Founder &amp; Chief Dental Surgeon"
-                  style={{ width: '100%', height: '430px', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+                  className="founder-card__img"
                 />
 
                 {/* Bottom info INSIDE the card */}

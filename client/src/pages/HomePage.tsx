@@ -347,24 +347,7 @@ const HomePage: React.FC = () => {
                 position: 'relative'
               }}>
                 {/* Tag INSIDE the card (top-left rounded cyan pill) */}
-                <div style={{
-                  position: 'absolute',
-                  top: '16px',
-                  left: '16px',
-                  zIndex: 2,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.45rem',
-                  padding: '0.45rem 1rem',
-                  borderRadius: '50px',
-                  background: '#24E0E1',
-                  color: '#451271',
-                  fontWeight: 800,
-                  fontSize: '0.85rem',
-                  fontFamily: 'var(--font-main)',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
-                  border: '1.5px solid rgba(255,255,255,0.8)'
-                }}>
+                <div className="founder-card__badge">
                   <Award size={16} color="#451271" />
                   <span>Founder &amp; Chief Dental Surgeon</span>
                 </div>
@@ -372,7 +355,7 @@ const HomePage: React.FC = () => {
                 <img
                   src="/assets/about-doctor-founder.jpeg"
                   alt="Dr. V.Sahaana - Founder &amp; Chief Dental Surgeon"
-                  style={{ width: '100%', height: '430px', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+                  className="founder-card__img"
                 />
 
                 {/* Bottom info INSIDE the card */}
@@ -518,14 +501,14 @@ const HomePage: React.FC = () => {
                   src="/assets/why-india-doctor-checkup.jpg"
                   alt="Why India for Dental Care - Incredible India"
                   className="why-us-v4__doc-img"
-                  style={{ borderRadius: '24px', width: '100%', height: '380px', objectFit: 'cover', display: 'block' }}
+                  style={{ borderRadius: '24px', width: '100%', height: 'auto', display: 'block' }}
                 />
               </div>
             </div>
 
             {/* Right Column: Single Line Heading + Content + 2 Button Rows */}
             <div className="why-us-v4__content">
-              <h2 className="why-us-v4__title" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(20px, 2.7vw, 34px)', letterSpacing: '0.02em' }}>
+              <h2 className="why-us-v4__title" style={{ fontSize: 'clamp(20px, 2.7vw, 34px)', letterSpacing: '0.02em' }}>
                 Why India For Dental Care?
               </h2>
               <h3 className="why-us-v4__subtitle">World-class treatments at 70% lower cost</h3>

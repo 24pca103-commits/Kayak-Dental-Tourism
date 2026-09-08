@@ -146,17 +146,18 @@ const AboutPage: React.FC = () => {
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.6rem',
-              padding: '0.6rem 1.25rem',
+              gap: '0.5rem',
+              padding: '0.5rem 1rem',
               borderRadius: '50px',
               background: 'linear-gradient(135deg, #451271 0%, #350d58 100%)',
               color: '#ffffff',
               fontFamily: 'var(--font-main)',
-              fontSize: '0.88rem',
+              fontSize: 'clamp(0.68rem, 2.7vw, 0.88rem)',
               fontWeight: 600,
               boxShadow: '0 6px 20px rgba(69,18,113,0.25)',
               marginTop: '1rem',
               border: '1px solid rgba(36,224,225,0.4)',
+              whiteSpace: 'nowrap',
             }}>
               <Eye size={16} style={{ color: '#24E0E1', flexShrink: 0 }} />
               <span>Vision - Connecting the World Through Confident Smiles.</span>

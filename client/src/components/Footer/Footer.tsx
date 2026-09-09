@@ -1,17 +1,33 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import './Footer.css';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+
+  const handleLinkClick = (path: string) => {
+    if (path.includes('#')) {
+      const [basePath, hash] = path.split('#');
+      if (location.pathname === basePath) {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <footer className="footer">
       <div className="footer__inner">
         <div className="footer__grid">
-          {/* Column 1 – Brand */}
+          {/* Column 1 – Brand & About Stories */}
           <div className="footer__col footer__col--brand">
-            <Link to="/" className="footer__logo" onClick={() => window.scrollTo(0, 0)}>
+            <Link to="/" className="footer__logo" onClick={() => handleLinkClick('/')}>
               <img src="/assets/kayal-brand-logo.png" alt="KAYAL Dental Care" style={{ height: '56px', width: 'auto', objectFit: 'contain' }} />
             </Link>
             <p className="footer__tagline">
@@ -19,7 +35,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="footer__social">
               <a
-                href="https://wa.me/919876543210?text=Hello%20Kayal%20Dental%20Care"
+                href="https://wa.me/917867926159?text=Hello%20Kayal%20Dental%20Care"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -30,7 +46,7 @@ const Footer: React.FC = () => {
                 </svg>
               </a>
               <a
-                href="https://www.instagram.com/"
+                href="https://www.instagram.com/kayal_dentalcare/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -43,66 +59,67 @@ const Footer: React.FC = () => {
                 </svg>
               </a>
             </div>
-          </div>
 
-          {/* Column 2 – Quick Links */}
-          <div className="footer__col">
-            <h4 className="footer__heading">Quick Links</h4>
+            <h4 className="footer__heading" style={{ marginTop: '1.5rem', marginBottom: '0.75rem' }}>About &amp; Stories</h4>
             <ul className="footer__links">
-              {[
-                { label: 'Home', to: '/' },
-                { label: 'About Us', to: '/about' },
-                { label: 'Treatments', to: '/services' },
-                { label: 'Dental Tourism', to: '/dental-tourism' },
-                { label: 'Our Team', to: '/team' },
-                { label: 'Online Consultation', to: '/online-consultation' },
-                { label: 'Contact', to: '/contact' },
-              ].map((link) => (
-                <li key={link.to}>
-                  <Link to={link.to} className="footer__link" onClick={() => window.scrollTo(0, 0)}>{link.label}</Link>
-                </li>
-              ))}
+              <li><Link to="/about" className="footer__link" onClick={() => handleLinkClick('/about')}>About Us</Link></li>
+              <li><Link to="/team" className="footer__link" onClick={() => handleLinkClick('/team')}>Our Doctors</Link></li>
+              <li><Link to="/about#facilities" className="footer__link" onClick={() => handleLinkClick('/about#facilities')}>Clinic Facilities</Link></li>
+              <li><Link to="/about#mission" className="footer__link" onClick={() => handleLinkClick('/about#mission')}>Mission &amp; Vision</Link></li>
+              <li><Link to="/testimonials#reviews" className="footer__link" onClick={() => handleLinkClick('/testimonials#reviews')}>Patient Reviews</Link></li>
+              <li><Link to="/testimonials#feedback" className="footer__link" onClick={() => handleLinkClick('/testimonials#feedback')}>Patient Feedback</Link></li>
+              <li><Link to="/testimonials#videos" className="footer__link" onClick={() => handleLinkClick('/testimonials#videos')}>Review Videos</Link></li>
             </ul>
           </div>
 
-          {/* Column 3 – Services */}
+          {/* Column 2 – Treatments (All 12 Submenus) */}
           <div className="footer__col">
-            <h4 className="footer__heading">Our Treatments</h4>
+            <h4 className="footer__heading">Treatments</h4>
             <ul className="footer__links">
-              {[
-                { label: 'Dental Implants', slug: 'dental-implants' },
-                { label: 'Full Mouth Rehab', slug: 'full-mouth-rehabilitation' },
-                { label: 'Cosmetic Dentistry', slug: 'cosmetic-dentistry' },
-                { label: 'Crowns & Bridges', slug: 'crowns-and-bridges' },
-                { label: 'Orthodontics', slug: 'orthodontics' },
-                { label: 'Root Canal', slug: 'root-canal-treatment' },
-              ].map((s) => (
-                <li key={s.slug}>
-                  <Link to={`/services/${s.slug}`} className="footer__link">{s.label}</Link>
-                </li>
-              ))}
+              <li><Link to="/services/dental-implants" className="footer__link" onClick={() => handleLinkClick('/services/dental-implants')}>Dental Implants</Link></li>
+              <li><Link to="/services/teeth-alignment" className="footer__link" onClick={() => handleLinkClick('/services/teeth-alignment')}>Teeth Alignment</Link></li>
+              <li><Link to="/services/smile-designing" className="footer__link" onClick={() => handleLinkClick('/services/smile-designing')}>Smile Designing</Link></li>
+              <li><Link to="/services/teeth-replacement" className="footer__link" onClick={() => handleLinkClick('/services/teeth-replacement')}>Teeth Replacement</Link></li>
+              <li><Link to="/services/root-canal-treatment" className="footer__link" onClick={() => handleLinkClick('/services/root-canal-treatment')}>Root Canal Treatment</Link></li>
+              <li><Link to="/services/teeth-whitening" className="footer__link" onClick={() => handleLinkClick('/services/teeth-whitening')}>Teeth Whitening</Link></li>
+              <li><Link to="/services/braces" className="footer__link" onClick={() => handleLinkClick('/services/braces')}>Braces</Link></li>
+              <li><Link to="/services/clear-aligners" className="footer__link" onClick={() => handleLinkClick('/services/clear-aligners')}>Clear Aligners</Link></li>
+              <li><Link to="/services/pediatric-dentistry" className="footer__link" onClick={() => handleLinkClick('/services/pediatric-dentistry')}>Pediatric Dentistry</Link></li>
+              <li><Link to="/services/preventive-dentistry" className="footer__link" onClick={() => handleLinkClick('/services/preventive-dentistry')}>Preventive Dentistry</Link></li>
+              <li><Link to="/services/cosmetic-dentistry" className="footer__link" onClick={() => handleLinkClick('/services/cosmetic-dentistry')}>Cosmetic Dentistry</Link></li>
+              <li><Link to="/services/emergency-dental-care" className="footer__link" onClick={() => handleLinkClick('/services/emergency-dental-care')}>Emergency Dental Care</Link></li>
             </ul>
           </div>
 
-          {/* Column 3b – For Tourists */}
+          {/* Column 3 – Dental Tourism */}
           <div className="footer__col">
-            <h4 className="footer__heading">For Tourists</h4>
+            <h4 className="footer__heading">Dental Tourism</h4>
             <ul className="footer__links">
-              {[
-                { label: 'Why India?', to: '/dental-tourism' },
-                { label: 'Travel & Visa Info', to: '/travel-visa' },
-                { label: 'Patient Resources', to: '/patient-resources' },
-                { label: 'FAQs', to: '/faqs' },
-                { label: 'Testimonials', to: '/testimonials' },
-              ].map((link) => (
-                <li key={link.to}>
-                  <Link to={link.to} className="footer__link">{link.label}</Link>
-                </li>
-              ))}
+              <li><Link to="/dental-tourism#why-india" className="footer__link" onClick={() => handleLinkClick('/dental-tourism#why-india')}>Why Choose India</Link></li>
+              <li><Link to="/dental-tourism#cost-comparison" className="footer__link" onClick={() => handleLinkClick('/dental-tourism#cost-comparison')}>Cost Comparison</Link></li>
+              <li><Link to="/dental-tourism#journey" className="footer__link" onClick={() => handleLinkClick('/dental-tourism#journey')}>Patient Journey</Link></li>
+              <li><Link to="/dental-tourism#safety" className="footer__link" onClick={() => handleLinkClick('/dental-tourism#safety')}>Quality &amp; Safety</Link></li>
+              <li><Link to="/dental-tourism#testimonials" className="footer__link" onClick={() => handleLinkClick('/dental-tourism#testimonials')}>Patient Testimonials</Link></li>
+              <li><Link to="/online-consultation" className="footer__link" onClick={() => handleLinkClick('/online-consultation')}>Online Consultation</Link></li>
             </ul>
           </div>
 
-          {/* Column 4 – Contact */}
+          {/* Column 4 – Patient Resources */}
+          <div className="footer__col">
+            <h4 className="footer__heading">Patient Resources</h4>
+            <ul className="footer__links">
+              <li><Link to="/patient-resources#checklist" className="footer__link" onClick={() => handleLinkClick('/patient-resources#checklist')}>Pre-Treatment Checklist</Link></li>
+              <li><Link to="/patient-resources#care-guide" className="footer__link" onClick={() => handleLinkClick('/patient-resources#care-guide')}>Post-Treatment Care Guide</Link></li>
+              <li><Link to="/patient-resources#visa" className="footer__link" onClick={() => handleLinkClick('/patient-resources#visa')}>Medical Visa Guide</Link></li>
+              <li><Link to="/patient-resources#invitation" className="footer__link" onClick={() => handleLinkClick('/patient-resources#invitation')}>Visa Invitation</Link></li>
+              <li><Link to="/patient-resources#pickup" className="footer__link" onClick={() => handleLinkClick('/patient-resources#pickup')}>Airport Pickup &amp; Transport</Link></li>
+              <li><Link to="/patient-resources#hotels" className="footer__link" onClick={() => handleLinkClick('/patient-resources#hotels')}>Accommodation</Link></li>
+              <li><Link to="/patient-resources#tips" className="footer__link" onClick={() => handleLinkClick('/patient-resources#tips')}>Local Travel Tips</Link></li>
+              <li><Link to="/patient-resources#faqs" className="footer__link" onClick={() => handleLinkClick('/patient-resources#faqs')}>FAQs</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 5 – Contact & Reach Us */}
           <div className="footer__col">
             <h4 className="footer__heading">Contact Us</h4>
             <ul className="footer__contact-list">
@@ -112,19 +129,28 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Phone size={14} />
-                <a href="tel:+919876543210">+91 98765 43210</a>
+                <a href="tel:+917867926159">+91 78679 26159</a>
               </li>
               <li>
                 <Mail size={14} />
                 <a href="mailto:hello@kayaldental.com">hello@kayaldental.com</a>
               </li>
             </ul>
+
+            <h4 className="footer__heading" style={{ marginTop: '1.25rem', marginBottom: '0.6rem', fontSize: '0.9rem' }}>Reach Us</h4>
+            <ul className="footer__links">
+              <li><Link to="/contact#enquiry" className="footer__link" onClick={() => handleLinkClick('/contact#enquiry')}>Enquiry Form</Link></li>
+              <li><a href="https://wa.me/917867926159" target="_blank" rel="noopener noreferrer" className="footer__link">WhatsApp Chat</a></li>
+              <li><Link to="/contact#details" className="footer__link" onClick={() => handleLinkClick('/contact#details')}>Phone &amp; Email</Link></li>
+              <li><Link to="/contact#map" className="footer__link" onClick={() => handleLinkClick('/contact#map')}>Map / Location</Link></li>
+            </ul>
+
             <a
-              href="https://wa.me/919876543210?text=Hello%20Kayal%20Dental%20Care,%20I%20need%20emergency%20dental%20assistance."
+              href="https://wa.me/917867926159?text=Hello%20Kayal%20Dental%20Care,%20I%20need%20emergency%20dental%20assistance."
               target="_blank"
               rel="noopener noreferrer"
               className="footer__emergency footer__emergency--clickable"
-              title="Click for Emergency Care on WhatsApp (+91 98765 43210)"
+              title="Click for Emergency Care on WhatsApp (+91 78679 26159)"
             >
               <span className="footer__emergency-dot" />
               <span className="footer__emergency-text">Emergency care available</span>

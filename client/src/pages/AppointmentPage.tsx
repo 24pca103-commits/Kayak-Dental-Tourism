@@ -10,6 +10,30 @@ import { appointmentsAPI } from '../services/api';
 import { sendRealtimeEmail } from '../services/emailService';
 import './AppointmentPage.css';
 
+const COUNTRY_CODES = [
+  { code: '+91', country: 'India', flag: '🇮🇳' },
+  { code: '+1', country: 'USA', flag: '🇺🇸' },
+  { code: '+44', country: 'UK', flag: '🇬🇧' },
+  { code: '+61', country: 'Australia', flag: '🇦🇺' },
+  { code: '+1', country: 'Canada', flag: '🇨🇦' },
+  { code: '+971', country: 'UAE', flag: '🇦🇪' },
+  { code: '+65', country: 'Singapore', flag: '🇸🇬' },
+  { code: '+60', country: 'Malaysia', flag: '🇲🇾' },
+  { code: '+49', country: 'Germany', flag: '🇩🇪' },
+  { code: '+33', country: 'France', flag: '🇫🇷' },
+  { code: '+64', country: 'New Zealand', flag: '🇳🇿' },
+  { code: '+966', country: 'Saudi Arabia', flag: '🇸🇦' },
+  { code: '+974', country: 'Qatar', flag: '🇶🇦' },
+  { code: '+968', country: 'Oman', flag: '🇴🇲' },
+  { code: '+965', country: 'Kuwait', flag: '🇰🇼' },
+  { code: '+94', country: 'Sri Lanka', flag: '🇱🇰' },
+  { code: '+960', country: 'Maldives', flag: '🇲🇻' },
+  { code: '+27', country: 'South Africa', flag: '🇿🇦' },
+  { code: '+41', country: 'Switzerland', flag: '🇨🇭' },
+  { code: '+31', country: 'Netherlands', flag: '🇳🇱' },
+  { code: '+353', country: 'Ireland', flag: '🇮🇪' },
+];
+
 const AppointmentPage: React.FC = () => {
   const [form, setForm] = useState({
     name: '',
@@ -17,6 +41,7 @@ const AppointmentPage: React.FC = () => {
     email: '',
     issue: '',
   });
+  const [countryCode, setCountryCode] = useState('+91');
   const [files, setFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -56,12 +81,13 @@ const AppointmentPage: React.FC = () => {
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
+    const fullPhone = form.phone.startsWith('+') ? form.phone : `${countryCode} ${form.phone}`;
     try {
       // 1. Send real-time confirmation email to user
       await sendRealtimeEmail({
         name: form.name,
         email: form.email,
-        phone: form.phone,
+        phone: fullPhone,
         subject: 'Free Online Consultation Request',
         message: form.issue,
       });
@@ -70,7 +96,7 @@ const AppointmentPage: React.FC = () => {
       try {
         await appointmentsAPI.create({
           patientName: form.name,
-          phone: form.phone,
+          phone: fullPhone,
           email: form.email,
           serviceName: 'Free Online Consultation',
           appointmentDate: new Date().toISOString(),
@@ -99,12 +125,12 @@ const AppointmentPage: React.FC = () => {
     <div className="consultation-page" style={{ paddingTop: '70px' }}>
       {/* Hero */}
       <section className="consultation-hero">
-        <div className="container">
-          <div className="badge badge-white" style={{ marginBottom: '1rem' }}>
-            <Video size={12} /> Free Video Consultation
+        <div className="container" style={{ textAlign: 'left' }}>
+          <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <Video size={13} /> Free Video Consultation
           </div>
-          <h1 className="section-title text-white">Book Free Online Consultation</h1>
-          <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.75rem', maxWidth: 600, margin: '0.75rem auto 0', fontSize: '18px', lineHeight: 1.7 }}>
+          <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Book Free Online Consultation</h1>
+          <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', fontSize: '1.1rem', lineHeight: 1.6, textAlign: 'left' }}>
             Share your dental concerns and receive a personalized treatment plan from our expert specialists — all from the comfort of your home.
           </p>
         </div>
@@ -147,31 +173,46 @@ const AppointmentPage: React.FC = () => {
                       {errors.name && <span className="form-error">{errors.name}</span>}
                     </div>
 
-                    <div className="consultation-form-row">
-                      <div className="form-group">
-                        <label className="form-label"><Phone size={14} /> Phone / WhatsApp *</label>
+                    <div className="form-group">
+                      <label className="form-label"><Phone size={14} /> Phone / WhatsApp *</label>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch' }}>
+                        <select
+                          value={countryCode}
+                          onChange={(e) => setCountryCode(e.target.value)}
+                          className="form-input"
+                          style={{ width: '130px', flexShrink: 0, padding: '0 8px', fontSize: '0.85rem', cursor: 'pointer' }}
+                          aria-label="Country Code"
+                        >
+                          {COUNTRY_CODES.map((c, i) => (
+                            <option key={i} value={c.code}>
+                              {c.flag} {c.code} ({c.country})
+                            </option>
+                          ))}
+                        </select>
                         <input
                           className={`form-input ${errors.phone ? 'error' : ''}`}
                           type="tel"
                           name="phone"
-                          placeholder="+1 234 567 8900"
+                          placeholder="78679 26159"
                           value={form.phone}
                           onChange={handleChange}
+                          style={{ flex: 1, minWidth: 0 }}
                         />
-                        {errors.phone && <span className="form-error">{errors.phone}</span>}
                       </div>
-                      <div className="form-group">
-                        <label className="form-label">Email Address *</label>
-                        <input
-                          className={`form-input ${errors.email ? 'error' : ''}`}
-                          type="email"
-                          name="email"
-                          placeholder="your@email.com"
-                          value={form.email}
-                          onChange={handleChange}
-                        />
-                        {errors.email && <span className="form-error">{errors.email}</span>}
-                      </div>
+                      {errors.phone && <span className="form-error">{errors.phone}</span>}
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">Email Address *</label>
+                      <input
+                        className={`form-input ${errors.email ? 'error' : ''}`}
+                        type="email"
+                        name="email"
+                        placeholder="your@email.com"
+                        value={form.email}
+                        onChange={handleChange}
+                      />
+                      {errors.email && <span className="form-error">{errors.email}</span>}
                     </div>
 
                     <div className="form-group">
@@ -270,25 +311,27 @@ const AppointmentPage: React.FC = () => {
               </div>
 
               <div className="consultation-side-card consultation-side-card--accent">
-                <h4>Need Immediate Help?</h4>
-                <p>Chat with us on WhatsApp for instant assistance.</p>
+                <h4 style={{ color: '#451271' }}>Need Immediate Help?</h4>
+                <p style={{ color: '#000000' }}>Chat with us on WhatsApp for instant assistance.</p>
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/917867926159"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn"
                   style={{
                     marginTop: '0.75rem',
-                    background: '#451271',
+                    background: '#25D366',
+                    borderColor: '#25D366',
                     color: '#ffffff',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
                     fontWeight: 700,
-                    boxShadow: '0 4px 14px rgba(69, 18, 113, 0.35)',
+                    borderRadius: '50px',
+                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
                   }}
                 >
-                  <WhatsAppIcon size={18} color="#25D366" /> WhatsApp Us
+                  <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp Us
                 </a>
               </div>
             </div>

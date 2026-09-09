@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Smile, Filter } from 'lucide-react';
+import { ArrowRight, Filter } from 'lucide-react';
 import { servicesAPI } from '../services/api';
 import type { Service } from '../types';
+
+const SERVICE_IMAGES: Record<string, string> = {
+  'teeth-alignment': '/assets/card-orthodontics-hd.png',
+  'teeth-replacement': '/assets/card-replacement.png',
+  'smile-designing': '/assets/card-smile.png',
+  'dental-implants': '/assets/treatment-implants-hd.png',
+  'root-canal-treatment': '/assets/treatment-5-root-canal.jpg',
+  'teeth-whitening': '/assets/treatment-cosmetic-dentistry.png',
+  'braces': '/assets/card-braces.png',
+  'clear-aligners': '/assets/treatment-orthodontics.jpg',
+  'pediatric-dentistry': '/assets/treatment-8-pediatric-child.jpg',
+  'preventive-dentistry': '/assets/hero-child-smile.jpg',
+  'cosmetic-dentistry': '/assets/treatment-3-cosmetic.png',
+  'emergency-dental-care': '/assets/about-clinic-real.jpg',
+};
 
 const DEMO_SERVICES: Service[] = [
   { _id: '1', name: 'Teeth Alignment', slug: 'teeth-alignment', shortDescription: 'Correct misaligned teeth with braces or modern orthodontic solutions for a healthier, confident smile.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
@@ -38,12 +53,25 @@ const ServicesPage: React.FC = () => {
   return (
     <div style={{ paddingTop: '70px' }}>
       {/* Header */}
-      <section className="treatment-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
-        <div className="container" style={{ textAlign: 'center' }}>
+      <section className="treatment-hero" style={{
+        position: 'relative',
+        backgroundColor: '#240840',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-2.jpg')",
+        backgroundSize: 'auto 115%',
+        backgroundPosition: 'right 30%',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '330px',
+        padding: '4.5rem 0 3.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'left',
+        borderBottom: '2px solid #24E0E1'
+      }}>
+        <div className="container" style={{ textAlign: 'left' }}>
           <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Our Treatments</div>
-          <h1 className="treatment-hero__title font-display text-white" style={{ textAlign: 'center', margin: '0 auto', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700 }}>Comprehensive Dental Services</h1>
-          <p className="treatment-hero__desc" style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', maxWidth: 500, margin: '0.75rem auto 0', textAlign: 'center' }}>
-            From routine check-ups to advanced cosmetic treatments — we cover all your dental needs.
+          <h1 className="treatment-hero__title font-display text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 700 }}>Comprehensive Dental Services</h1>
+          <p className="treatment-hero__desc" style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6 }}>
+            From routine check-ups to advanced cosmetic transformations — we provide world-class dental care with gentle hands.
           </p>
         </div>
       </section>
@@ -62,24 +90,44 @@ const ServicesPage: React.FC = () => {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '1.5rem' }}>
-            {list.map(service => (
-              <div
-                key={service._id}
-                onClick={() => navigate(`/services/${service.slug}`)}
-                style={{ background: 'white', border: '1.5px solid var(--gray-100)', borderRadius: 'var(--radius-lg)', padding: '1.75rem', cursor: 'pointer', transition: 'var(--transition)' }}
-                className="card"
-              >
-                <div style={{ width: 52, height: 52, borderRadius: 12, background: 'linear-gradient(135deg,var(--purple-100),var(--cyan-100))', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', color: 'var(--purple-600)' }}>
-                  <Smile size={24} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '1.75rem' }}>
+            {list.map(service => {
+              const imgSrc = SERVICE_IMAGES[service.slug] || service.image || '/assets/about-clinic-real.jpg';
+
+              return (
+                <div
+                  key={service._id}
+                  onClick={() => navigate(`/services/${service.slug}`)}
+                  style={{
+                    background: 'white',
+                    border: '1.5px solid var(--gray-100)',
+                    borderRadius: 'var(--radius-lg)',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transition: 'var(--transition)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxShadow: 'var(--shadow-sm)',
+                  }}
+                  className="card"
+                >
+                  <div style={{ height: 180, width: '100%', overflow: 'hidden', background: '#f3f4f6', position: 'relative' }}>
+                    <img
+                      src={imgSrc}
+                      alt={service.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                    <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--gray-800)', marginBottom: '0.5rem' }}>{service.name}</h2>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', lineHeight: 1.6, marginBottom: '1.25rem', flexGrow: 1 }}>{service.shortDescription}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--cyan-600)', marginTop: 'auto' }}>
+                      Learn More <ArrowRight size={14} color="#18b8b9" style={{ color: '#18b8b9', stroke: '#18b8b9', flexShrink: 0 }} />
+                    </div>
+                  </div>
                 </div>
-                <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)', marginBottom: '0.5rem' }}>{service.name}</h2>
-                <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', lineHeight: 1.6, marginBottom: '1.25rem' }}>{service.shortDescription}</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--cyan-600)' }}>
-                  Learn More <ArrowRight size={14} color="#18b8b9" style={{ color: '#18b8b9', stroke: '#18b8b9', flexShrink: 0 }} />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {list.length === 0 && (

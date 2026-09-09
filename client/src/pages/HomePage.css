@@ -72,7 +72,19 @@
 }
 
 .hero__badge {
-  display: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(36, 224, 225, 0.4) !important;
+  border-radius: 9999px;
+  color: #24E0E1 !important;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-display, 'Comfortaa', sans-serif);
+  backdrop-filter: blur(8px);
+  margin-bottom: 2px;
 }
 
 .hero__heading {
@@ -98,6 +110,7 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  white-space: nowrap !important;
 }
 
 .hero__desc {
@@ -293,6 +306,10 @@
     top: 12%;
     right: 0px;
   }
+  .hero__badge-floating--bl {
+    bottom: 12%;
+    left: 0px;
+  }
   .hero__badge-floating--br {
     bottom: 2%;
     right: 0px;
@@ -410,10 +427,10 @@
   padding: 0;
 }
 
-/* Dark navy blue icons only for highlights bar — overrides global sky-blue */
+/* Purple icons for highlights bar */
 .highlights svg.lucide,
 .highlights .highlight-item-v5__icon-svg-single {
-  color: #0d1b5e !important;
+  color: #451271 !important;
 }
 
 .highlights__inner {
@@ -550,7 +567,7 @@
 }
 
 .highlight-item-v5__icon-svg-single {
-  color: #0d1b5e !important;
+  color: #451271 !important;
 }
 
 .highlight-item-v5__icon--looping {
@@ -932,7 +949,7 @@
   font-weight: 700;
   color: #24E0E1;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  text-transform: none;
   margin-bottom: 0.5rem;
 }
 
@@ -1337,10 +1354,10 @@
   padding: 0.75rem 1.5rem;
   border-radius: 50px;
   background: #24E0E1;
-  color: #ffffff;
+  color: #451271 !important;
   font-family: var(--font-main);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   box-shadow: 0 4px 15px rgba(36,224,225,0.3);
   text-align: center;
   white-space: nowrap;
@@ -1869,7 +1886,7 @@
   color: #000000;
   line-height: 1.15;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .faq-v3__accordion-list {

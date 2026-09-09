@@ -193,12 +193,12 @@ const HomePage: React.FC = () => {
           <div className="hero__content">
             <div className="hero__text">
               <div className="badge badge-white hero__badge">
-                <Sparkles size={14} />
+                <Sparkles size={14} color="#24E0E1" />
                 Dental Excellence
               </div>
               <h1 className="hero__heading">
                 <span className="hero__heading-line">Advanced Dentistry</span>
-                <span className="hero__heading-accent hero__heading-line">International Standards</span>
+                <span className="hero__heading-accent hero__heading-line" style={{ whiteSpace: 'nowrap' }}>International Standards</span>
                 <span className="hero__heading-line">Fraction of a Cost</span>
               </h1>
               <p className="hero__desc">
@@ -220,27 +220,31 @@ const HomePage: React.FC = () => {
                 <StatItem value="10+" label="Years Experience" />
               </div>
             </div>
-            {/* ── HERO VISUAL (User HD Dental Tourism Image with 3 Floating Badges) ── */}
+            {/* ── HERO VISUAL (User HD Dental Tourism Image with 4 Floating Badges) ── */}
             <div className="hero__visual">
               <div className="hero__visual-circle hero__visual-circle--outer" />
               <div className="hero__visual-circle hero__visual-circle--inner" />
 
               <div className="hero-3d-wrapper hero-3d-wrapper--clickable" onClick={() => navigate('/dental-tourism')}>
                 <img
-                  src="/assets/hero-3d-tooth.png"
+                  src="/assets/hero-3d-tooth.jpg"
                   alt="Kayal Dental Tourism Excellence"
                   className="hero-3d-img"
                 />
               </div>
 
-              {/* 3 Animated Floating Badges (Global Care & Fly badge removed) */}
+              {/* 4 Animated Floating Badges */}
               <div className="hero__badge-floating hero__badge-floating--tl">
                 <Heart size={16} className="text-cyan" fill="#24E0E1" />
                 <span>Gentle Care</span>
               </div>
               <div className="hero__badge-floating hero__badge-floating--tr">
                 <Sparkles size={16} style={{ color: '#24E0E1' }} />
-                <span>SmileTech</span>
+                <span>ModernTech</span>
+              </div>
+              <div className="hero__badge-floating hero__badge-floating--bl">
+                <ShieldCheck size={16} style={{ color: '#4ade80' }} />
+                <span>Painless Treatment</span>
               </div>
               <div className="hero__badge-floating hero__badge-floating--br">
                 <Award size={16} style={{ color: '#fbbf24' }} />
@@ -261,21 +265,21 @@ const HomePage: React.FC = () => {
                 <Award size={36} className="highlight-item-v5__icon-svg-single" />
               </div>
               <div className="highlight-item-v5__content">
-                <h3 className="highlight-item-v5__title">World Class</h3>
-                <p className="highlight-item-v5__desc">
+                <h3 className="highlight-item-v5__title" style={{ color: '#350d58' }}>World Class</h3>
+                <p className="highlight-item-v5__desc" style={{ color: '#350d58' }}>
                   State-of-the-art dental care using premium Swiss &amp; German materials and technology.
                 </p>
               </div>
             </div>
 
-            {/* 2 - Accreditation (Normal Icon - No Blinking) */}
+            {/* 2 - Accreditation */}
             <div className="highlight-item-v5">
               <div className="highlight-item-v5__icon-wrap-img">
                 <ShieldCheck size={36} className="highlight-item-v5__icon-svg-single" />
               </div>
               <div className="highlight-item-v5__content">
-                <h3 className="highlight-item-v5__title">Accreditation</h3>
-                <p className="highlight-item-v5__desc">
+                <h3 className="highlight-item-v5__title" style={{ color: '#350d58' }}>Accreditation</h3>
+                <p className="highlight-item-v5__desc" style={{ color: '#350d58' }}>
                   NABH-accredited clinic certified in implantology, orthodontics &amp; oral surgery.
                 </p>
               </div>
@@ -287,8 +291,8 @@ const HomePage: React.FC = () => {
                 <Globe size={36} className="highlight-item-v5__icon-svg-single" />
               </div>
               <div className="highlight-item-v5__content">
-                <h3 className="highlight-item-v5__title">Global Expert</h3>
-                <p className="highlight-item-v5__desc">
+                <h3 className="highlight-item-v5__title" style={{ color: '#350d58' }}>Global Expert</h3>
+                <p className="highlight-item-v5__desc" style={{ color: '#350d58' }}>
                   Internationally trained specialist surgeons creating confident smiles worldwide.
                 </p>
               </div>
@@ -332,7 +336,7 @@ const HomePage: React.FC = () => {
                   Facility &amp; Technology
                 </button>
                 <button className="btn btn-cyan-pill" onClick={() => navigate('/team')}>
-                  Our Dentists <ArrowRight size={16} color="#0d1b5e" style={{ color: '#0d1b5e', stroke: '#0d1b5e' }} />
+                  Our Dentists <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
                 </button>
               </div>
             </div>
@@ -387,7 +391,7 @@ const HomePage: React.FC = () => {
       <section className="what-we-do-section">
         <div className="container">
           <div className="text-center" style={{ marginBottom: '2.5rem' }}>
-            <h2 className="what-we-do__title">WHAT WE DO</h2>
+            <h2 className="what-we-do__title">What We Do</h2>
             <p className="what-we-do__subtitle">Comprehensive dental treatments delivered with world-class international standards.</p>
           </div>
 
@@ -509,9 +513,9 @@ const HomePage: React.FC = () => {
             {/* Right Column: Single Line Heading + Content + 2 Button Rows */}
             <div className="why-us-v4__content">
               <h2 className="why-us-v4__title" style={{ fontSize: 'clamp(20px, 2.7vw, 34px)', letterSpacing: '0.02em' }}>
-                Why India For Dental Care?
+                Why India for Dental Care?
               </h2>
-              <h3 className="why-us-v4__subtitle">World-class treatments at 70% lower cost</h3>
+              <h3 className="why-us-v4__subtitle">World-Class Treatments at 70% Lower Cost</h3>
               <p className="why-us-v4__desc">
                 India is the leading destination for dental tourism. At Kayal Dental Care, we combine internationally trained specialists, advanced digital technology, and sterile hospital standards to deliver premium care.
               </p>
@@ -542,15 +546,15 @@ const HomePage: React.FC = () => {
       <section className="testimonials-v3-section" style={{ padding: '3rem 1.5rem', background: '#ffffff' }}>
         <div className="container">
           <div className="testimonials-v3__inner" style={{ background: '#24E0E1', borderRadius: '28px', padding: '3rem 2.5rem', display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '2.5rem', alignItems: 'center' }}>
-            {/* Left Column: Heading & Paragraph */}
+            {/* Left Column: Heading & Paragraph (Dark Blue Heading & Black Text on Cyan) */}
             <div className="testimonials-v3__left">
-              <h2 style={{ fontFamily: 'Comfortaa', fontSize: 'clamp(32px, 3.5vw, 44px)', fontWeight: 800, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.02em', margin: 0, lineHeight: 1.2 }}>
-                TESTIMONIALS
+              <h2 style={{ fontFamily: 'Comfortaa', fontSize: 'clamp(32px, 3.5vw, 44px)', fontWeight: 800, color: '#350d58', letterSpacing: '0.02em', margin: 0, lineHeight: 1.2 }}>
+                Testimonials
               </h2>
-              <h3 style={{ fontFamily: 'Comfortaa', fontSize: '20px', fontWeight: 600, color: '#ffffff', marginTop: '0.75rem', marginBottom: '1rem' }}>
-                What our happy patients say here
+              <h3 style={{ fontFamily: 'Comfortaa', fontSize: '20px', fontWeight: 600, color: '#350d58', marginTop: '0.75rem', marginBottom: '1rem' }}>
+                What Our Happy Patients Say Here
               </h3>
-              <p style={{ fontFamily: 'Comfortaa', fontSize: '17px', color: '#ffffff', lineHeight: 1.65, opacity: 0.95, margin: 0 }}>
+              <p style={{ fontFamily: 'Comfortaa', fontSize: '17px', color: '#350d58', lineHeight: 1.65, margin: 0 }}>
                 Discover real stories from patients who trusted us with their smiles and left happier than ever.
               </p>
             </div>
@@ -641,7 +645,7 @@ const HomePage: React.FC = () => {
               Global Dental Tourism Deck
             </div>
             <h2 className="section-title" style={{ color: '#451271', fontSize: 'clamp(30px, 3.5vw, 42px)', fontWeight: 800 }}>
-              YOUR DENTAL VACATION IN 4 SIMPLE STEPS
+              Your Dental Vacation in 4 Simple Steps
             </h2>
             <p style={{ color: 'var(--gray-600)', fontSize: '18px', maxWidth: '750px', margin: '0.75rem auto 0', lineHeight: 1.6 }}>
               Relax while our dedicated international team manages your visa invitation, private airport pickup, hotel stay, and guided sightseeing.
@@ -665,7 +669,7 @@ const HomePage: React.FC = () => {
                 <div className="travel-step-card__num">01</div>
               </div>
               <div className="travel-step-card__content">
-                <h3 className="travel-step-card__title">1. Online Consult &amp; E-Visa</h3>
+                <h3 className="travel-step-card__title">1. Online Consultation &amp; E-Visa</h3>
                 <p className="travel-step-card__desc">
                   Receive your customized treatment plan &amp; official Indian E-Medical Visa invitation letter within 24 hours.
                 </p>
@@ -681,7 +685,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
               whileHover={{ y: -8 }}
-              onClick={() => navigate('/travel-visa#pickup')}
+              onClick={() => navigate('/patient-resources#pickup')}
             >
               <div className="travel-step-card__img-header">
                 <img src="/assets/travel-step-2-airport.jpg" alt="VIP Airport Pickup & Hotel Stay" className="travel-step-card__top-img" />
@@ -727,7 +731,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
               whileHover={{ y: -8 }}
-              onClick={() => navigate('/travel-visa#tips')}
+              onClick={() => navigate('/patient-resources#tips')}
             >
               <div className="travel-step-card__img-header">
                 <img src="/assets/travel-step-4-adiyogi.png" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" />
@@ -751,11 +755,11 @@ const HomePage: React.FC = () => {
                 <p className="travel-concierge-banner__desc">Our dedicated Patient Concierge handles flight dates, hotel bookings, and custom treatment schedules for free.</p>
               </div>
               <div className="travel-concierge-banner__actions">
-                <button className="btn btn-cyan-pill" onClick={() => navigate('/travel-visa')}>
+                <button className="btn btn-cyan-pill" onClick={() => navigate('/patient-resources#visa')}>
                   Plan My Dental Trip <ArrowRight size={16} />
                 </button>
                 <a
-                  href="https://wa.me/919876543210?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20to%20plan%20my%20dental%20trip."
+                  href="https://wa.me/917867926159?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20to%20plan%20my%20dental%20trip."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-purple"

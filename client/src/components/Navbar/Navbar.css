@@ -15,11 +15,7 @@
   transition: all 0.3s ease;
 }
 
-.navbar--scrolled {
-  background: #451271;
-  border-bottom: 2px solid #24E0E1;
-  box-shadow: 0 4px 32px rgba(69,18,113,0.4);
-}
+
 
 .navbar__container {
   width: 100%;
@@ -76,6 +72,16 @@
   transition: all 0.2s ease;
   text-decoration: none;
   white-space: nowrap;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.navbar__link:focus,
+.navbar__link:focus-visible {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .navbar__chevron {
@@ -95,9 +101,56 @@
 }
 
 .navbar__link--active {
+  color: #24E0E1 !important;
+  background: transparent !important;
+  font-weight: 700;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Desktop Search Icon Button ── */
+.navbar__search-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(36, 224, 225, 0.14);
+  border: 1.5px solid rgba(36, 224, 225, 0.35);
   color: #24E0E1;
-  background: rgba(36, 224, 225, 0.12);
-  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.navbar__search-btn svg {
+  color: #24E0E1;
+  stroke: #24E0E1;
+  transition: all 0.2s ease;
+}
+
+.navbar__search-btn:hover {
+  background: #24E0E1;
+  border-color: #24E0E1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(36, 224, 225, 0.4) !important;
+}
+
+.navbar__search-btn:hover svg {
+  color: #451271 !important;
+  stroke: #451271 !important;
+}
+
+.navbar__search-btn:focus,
+.navbar__search-btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* ── Desktop Dropdown ── */
@@ -136,6 +189,24 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+}
+
+/* ── Two Column Dropdown (for Treatments) ── */
+.navbar__dropdown--two-col {
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+}
+
+.navbar__menu-item-wrap:hover > .navbar__dropdown--two-col {
+  transform: translateX(-50%) translateY(0);
+}
+
+.navbar__dropdown-inner--two-col {
+  min-width: 460px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.35rem 0.6rem;
+  padding: 0.85rem;
 }
 
 .navbar__dropdown-item {
@@ -400,4 +471,282 @@
   .navbar__mobile {
     display: flex;
   }
+}
+
+/* ─── GLOBAL SEARCH MODAL ────────────────────────────── */
+.navbar-search-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 4, 28, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 80px 16px 32px;
+  animation: searchFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+@keyframes searchFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-search-modal {
+  width: 100%;
+  max-width: 680px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(69, 18, 113, 0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: calc(100vh - 120px);
+  animation: searchModalSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes searchModalSlide {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.navbar-search-header {
+  display: flex;
+  align-items: center;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1.5px solid #f1f3f7;
+  gap: 12px;
+  position: relative;
+  background: #fafafa;
+}
+
+.navbar-search-input-icon {
+  color: #451271;
+  flex-shrink: 0;
+}
+
+.navbar-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: #240840;
+  outline: none;
+  font-weight: 600;
+}
+
+.navbar-search-input::placeholder {
+  color: #8c8599;
+  font-weight: 400;
+}
+
+.navbar-search-clear-btn {
+  background: #ede9f3;
+  border: none;
+  color: #451271;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.navbar-search-clear-btn:hover {
+  background: #dfd8ea;
+}
+
+.navbar-search-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: #726b80;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  line-height: 1;
+  transition: all 0.2s;
+}
+
+.navbar-search-close-btn:hover {
+  background: #f0eaf7;
+  color: #451271;
+}
+
+/* Categories Pills */
+.navbar-search-categories {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1.4rem;
+  background: #ffffff;
+  border-bottom: 1px solid #f0f0f5;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navbar-search-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-search-cat-btn {
+  background: #f4f2f8;
+  border: 1px solid transparent;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #554466;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.navbar-search-cat-btn:hover {
+  background: #ede8f5;
+  color: #451271;
+}
+
+.navbar-search-cat-btn--active {
+  background: #451271 !important;
+  color: #ffffff !important;
+  border-color: #451271 !important;
+}
+
+/* Results List */
+.navbar-search-results {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem;
+  max-height: 420px;
+}
+
+.navbar-search-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+  gap: 12px;
+}
+
+.navbar-search-result-item:hover {
+  background: #f7f4fc;
+  border-color: rgba(69, 18, 113, 0.12);
+  transform: translateX(4px);
+}
+
+.navbar-search-result-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.navbar-search-result-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+
+.navbar-search-result-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #240840;
+}
+
+.navbar-search-result-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(36, 224, 225, 0.2);
+  color: #0c7576;
+}
+
+.navbar-search-result-desc {
+  font-size: 0.82rem;
+  color: #6a6478;
+  margin: 0;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar-search-result-arrow {
+  color: #b5adc2;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.navbar-search-result-item:hover .navbar-search-result-arrow {
+  color: #451271;
+  transform: translateX(3px);
+}
+
+.navbar-search-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #726b80;
+}
+
+.navbar-search-empty p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #350d58;
+  margin-bottom: 0.4rem;
+}
+
+.navbar-search-empty span {
+  font-size: 0.85rem;
+  color: #8c8599;
+}
+
+.navbar-search-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.4rem;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f5;
+  font-size: 0.78rem;
+  color: #8c8599;
+  font-weight: 500;
+}
+
+.navbar-search-footer kbd {
+  background: #eae7f0;
+  border: 1px solid #d4cde2;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.72rem;
+  font-family: inherit;
+  color: #451271;
+  font-weight: 700;
 }

@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Target,
-  Eye,
   Users,
   Award,
   Clock,
@@ -12,8 +10,8 @@ import {
   Activity,
   ShieldCheck,
   Monitor,
-  Cpu,
-  ArrowRight
+  ArrowRight,
+  Eye
 } from 'lucide-react';
 import './AboutPage.css';
 
@@ -53,8 +51,7 @@ const AboutPage: React.FC = () => {
     { icon: <Camera size={32} />, title: "Intra-oral Camera", desc: "Real-time visual tour of your mouth to help you understand your dental health." },
     { icon: <Monitor size={32} />, title: "Intra-oral Scanner", desc: "Digital impressions without messy molds, perfect for crowns and aligners." },
     { icon: <Monitor size={32} />, title: "Digital X-Ray", desc: "Advanced panoramic imaging for comprehensive treatment planning." },
-    { icon: <ShieldCheck size={32} />, title: "Advanced Sterilization", desc: "Class B Autoclave and UV technology ensuring 100% infection control." },
-    { icon: <Cpu size={32} />, title: "CAD/CAM Technology", desc: "Same-day crowns and bridges designed with computer-aided precision." }
+    { icon: <ShieldCheck size={32} />, title: "Advanced Sterilization", desc: "Class B Autoclave and UV technology ensuring 100% infection control." }
   ];
 
   return (
@@ -64,10 +61,11 @@ const AboutPage: React.FC = () => {
         <div className="container">
           <motion.div
             className="about-hero-content"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
+            <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>About Kayal Dental</div>
             <h1>About Kayal Dental Tourism</h1>
             <p>Committed to providing gentle care, advanced technology, and world-class dental treatments for patients across the globe.</p>
           </motion.div>
@@ -99,7 +97,7 @@ const AboutPage: React.FC = () => {
               }}>
                 {/* Tag INSIDE the card (top-left rounded cyan pill) */}
                 <div className="founder-card__badge">
-                  <Award size={16} color="#451271" />
+                  <Award size={16} color="#350d58" />
                   <span>Founder &amp; Chief Dental Surgeon</span>
                 </div>
 
@@ -137,30 +135,31 @@ const AboutPage: React.FC = () => {
       {/* Mission & Stats */}
       <section id="mission" className="section about-mission">
         <div className="container">
-          <motion.div className="mission-header text-center" {...fadeInUp}>
-            <Target size={48} className="mission-icon mx-auto" />
+          <motion.div className="mission-header text-center" {...fadeInUp} style={{ marginBottom: '2.5rem' }}>
             <h2 className="section-title text-white">Creating Smiles Across the Globe</h2>
-            <p className="mission-subtitle">Our mission is to be the premier destination for dental tourism, offering uncompromising quality and personalized care.</p>
-
-            {/* Vision pill */}
+            <p className="mission-subtitle" style={{ marginTop: '0.75rem', marginBottom: '1rem', color: 'rgba(255,255,255,0.9)' }}>
+              Our mission is to be the premier destination for dental tourism, offering uncompromising quality and personalized care.
+            </p>
             <div style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.5rem 1rem',
+              gap: '0.4rem',
+              padding: '0.45rem clamp(0.5rem, 2vw, 1.25rem)',
               borderRadius: '50px',
-              background: 'linear-gradient(135deg, #451271 0%, #350d58 100%)',
+              background: 'rgba(255, 255, 255, 0.12)',
+              backdropFilter: 'blur(8px)',
               color: '#ffffff',
               fontFamily: 'var(--font-main)',
-              fontSize: 'clamp(0.68rem, 2.7vw, 0.88rem)',
+              fontSize: 'clamp(0.6rem, 2.7vw, 0.9rem)',
               fontWeight: 600,
-              boxShadow: '0 6px 20px rgba(69,18,113,0.25)',
-              marginTop: '1rem',
-              border: '1px solid rgba(36,224,225,0.4)',
+              border: '1px solid rgba(36, 224, 225, 0.4)',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.15)',
               whiteSpace: 'nowrap',
+              maxWidth: '100%',
+              boxSizing: 'border-box',
             }}>
-              <Eye size={16} style={{ color: '#24E0E1', flexShrink: 0 }} />
-              <span>Vision - Connecting the World Through Confident Smiles.</span>
+              <Eye size={15} style={{ color: '#24E0E1', flexShrink: 0 }} />
+              <span style={{ whiteSpace: 'nowrap' }}>Vision - Connecting the World Through Confident Smiles.</span>
             </div>
           </motion.div>
 
@@ -249,7 +248,7 @@ const AboutPage: React.FC = () => {
       <section className="about-cta">
         <div className="container">
           <motion.div className="cta-content text-center" {...fadeInUp}>
-            <h2 className="text-white mb-4">Ready to experience world-class dental care?</h2>
+            <h2 className="text-white mb-4">Ready to Experience World-Class Dental Care?</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto opacity-90">Schedule your consultation today and take the first step towards a healthier, more beautiful smile.</p>
             <button className="btn btn-cyan btn-lg" onClick={() => navigate('/online-consultation')}>
               Book Online Consultation <ArrowRight size={18} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />

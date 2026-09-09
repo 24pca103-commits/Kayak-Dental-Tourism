@@ -65,11 +65,24 @@ const ContactPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      <section className="contact-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
-        <div className="container" style={{ textAlign: 'center' }}>
+      <section className="contact-hero" style={{
+        position: 'relative',
+        backgroundColor: '#240840',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-2.jpg')",
+        backgroundSize: 'auto 115%',
+        backgroundPosition: 'right 30%',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '330px',
+        padding: '4.5rem 0 3.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'left',
+        borderBottom: '2px solid #24E0E1'
+      }}>
+        <div className="container" style={{ textAlign: 'left' }}>
           <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Contact Us</div>
-          <h1 className="section-title text-white" style={{ textAlign: 'center' }}>Get In Touch</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto', maxWidth: '600px' }}>We'd love to hear from you. Reach out and our team will respond promptly.</p>
+          <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Get In Touch</h1>
+          <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', textAlign: 'left', maxWidth: '620px', fontSize: '1.1rem', lineHeight: 1.6 }}>We'd love to hear from you. Reach out and our dental team will respond promptly.</p>
         </div>
       </section>
 
@@ -82,7 +95,7 @@ const ContactPage: React.FC = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 {[
                   { icon: <MapPin size={20} />, title: 'Address', info: '123 Seaside Road, Chennai, Tamil Nadu - 600001' },
-                  { icon: <Phone size={20} />, title: 'Phone', info: '+91 98765 43210', href: 'tel:+919876543210' },
+                  { icon: <Phone size={20} />, title: 'Phone', info: '+91 78679 26159', href: 'tel:+917867926159' },
                   { icon: <Mail size={20} />, title: 'Email', info: 'hello@kayaldental.com', href: 'mailto:hello@kayaldental.com' },
                   { icon: <Clock size={20} />, title: 'Working Hours', info: 'Monday – Saturday: 9:00 AM – 7:00 PM\nSunday: Closed (Emergency available)' },
                 ].map((item, i) => (

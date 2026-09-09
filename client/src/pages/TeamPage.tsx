@@ -4,11 +4,13 @@ import { doctorsAPI } from '../services/api';
 import type { Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
 
+const ALL_WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 const DEMO: Doctor[] = [
-  { _id: '0', name: 'Dr. V.Sahaana', qualification: 'BDS., FDS., FMC.', specialization: 'Dental Surgeon Certified & Root Canal Specialist', experience: 10, image: '/assets/dr-kayal-anandhi.jpg', description: 'Dental surgeon certified and root canal specialist dedicated to advanced painless endodontic treatments and comprehensive dental care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], status: 'active', createdAt: '' },
-  { _id: '1', name: 'Dr. Priya Sharma', qualification: 'BDS, MDS', specialization: 'General & Cosmetic Dentist', experience: 12, image: '', description: 'Dr. Priya is a highly experienced general and cosmetic dentist passionate about creating beautiful smiles with personalized patient care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], status: 'active', createdAt: '' },
+  { _id: '0', name: 'Dr. V.Sahaana', qualification: 'BDS., FDS., FMC.', specialization: 'Dental Surgeon Certified & Root Canal Specialist', experience: 10, image: '/assets/dr-kayal-anandhi.jpg', description: 'Dental surgeon certified and root canal specialist dedicated to advanced painless endodontic treatments and comprehensive dental care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], status: 'active', createdAt: '' },
+  { _id: '1', name: 'Dr. Priya Sharma', qualification: 'BDS, MDS', specialization: 'General & Cosmetic Dentist', experience: 12, image: '', description: 'Dr. Priya is a highly experienced general and cosmetic dentist passionate about creating beautiful smiles with personalized patient care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
   { _id: '2', name: 'Dr. Ramesh Kumar', qualification: 'BDS, MDS (Orthodontics)', specialization: 'Orthodontist', experience: 10, image: '', description: 'Dr. Ramesh specializes in braces and clear aligners, helping patients achieve straighter smiles with modern orthodontic techniques.', availability: ['Mon', 'Wed', 'Fri', 'Sat'], status: 'active', createdAt: '' },
-  { _id: '3', name: 'Dr. Anitha Rao', qualification: 'BDS, MDS (Implantology)', specialization: 'Implantologist', experience: 8, image: '', description: 'Dr. Anitha is an expert in dental implants, offering patients a permanent solution for missing teeth with natural-looking results.', availability: ['Tue', 'Thu', 'Sat'], status: 'active', createdAt: '' },
+  { _id: '3', name: 'Dr. Anitha Rao', qualification: 'BDS, MDS (Implantology)', specialization: 'Implantologist', experience: 8, image: '', description: 'Dr. Anitha is an expert in dental implants, offering patients a permanent solution for missing teeth with natural-looking results.', availability: ['Tue', 'Thu', 'Sat', 'Sun'], status: 'active', createdAt: '' },
   { _id: '4', name: 'Dr. Karthik Nair', qualification: 'BDS, MDS (Pediatric)', specialization: 'Pediatric Dentist', experience: 7, image: '', description: "Dr. Karthik specializes in children's dentistry, creating a fun, comfortable environment to build healthy dental habits from an early age.", availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], status: 'active', createdAt: '' },
 ];
 
@@ -25,11 +27,24 @@ const TeamPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      <section className="team-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
-        <div className="container">
-          <div className="badge badge-white" style={{ marginBottom: '1rem' }}>Our Specialists</div>
-          <h1 className="section-title text-white">Meet Our Expert Dental Team</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem' }}>Experienced, caring professionals dedicated to your oral health and confidence</p>
+      <section className="team-hero" style={{
+        position: 'relative',
+        backgroundColor: '#240840',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-team-collage.jpg')",
+        backgroundSize: 'auto 115%',
+        backgroundPosition: 'right 25%',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '330px',
+        padding: '4.5rem 0 3.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'left',
+        borderBottom: '2px solid #24E0E1'
+      }}>
+        <div className="container" style={{ textAlign: 'left' }}>
+          <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Our Specialists</div>
+          <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Meet Our Expert Dental Team</h1>
+          <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6 }}>Experienced, caring professionals dedicated to your oral health and confidence</p>
         </div>
       </section>
 
@@ -57,19 +72,54 @@ const TeamPage: React.FC = () => {
                       <Award size={13} />{doc.experience} years experience
                     </div>
                     {doc.description && <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)', lineHeight: 1.6, marginBottom: '1rem' }}>{doc.description}</p>}
-                    {doc.availability.length > 0 && (
-                      <div style={{ marginBottom: '1.25rem' }}>
-                        <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', marginBottom: '0.4rem' }}>Available:</p>
-                        <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                          {doc.availability.map(d => (
-                            <span key={d} style={{ padding: '0.2rem 0.5rem', background: 'var(--purple-50)', color: 'var(--purple-600)', fontSize: '0.7rem', fontWeight: 600, borderRadius: '4px' }}>{d.slice(0,3)}</span>
-                          ))}
-                        </div>
+                    <div style={{ marginBottom: '1.25rem' }}>
+                      <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', marginBottom: '0.4rem' }}>Available:</p>
+                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                        {ALL_WEEK_DAYS.map(day => {
+                          const isAvailable = (doc.availability || []).some(
+                            d => d.toLowerCase().startsWith(day.toLowerCase().slice(0, 3))
+                          );
+                          return isAvailable ? (
+                            <span
+                              key={day}
+                              title="Available"
+                              style={{
+                                padding: '0.2rem 0.5rem',
+                                background: 'var(--purple-50)',
+                                color: 'var(--purple-600)',
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                borderRadius: '4px',
+                                border: '1px solid var(--purple-200)',
+                              }}
+                            >
+                              {day}
+                            </span>
+                          ) : (
+                            <span
+                              key={day}
+                              title="Unavailable"
+                              style={{
+                                padding: '0.2rem 0.5rem',
+                                background: '#f3f4f6',
+                                color: '#9ca3af',
+                                fontSize: '0.7rem',
+                                fontWeight: 500,
+                                borderRadius: '4px',
+                                border: '1px dashed #d1d5db',
+                                opacity: 0.65,
+                                textDecoration: 'line-through',
+                              }}
+                            >
+                              {day}
+                            </span>
+                          );
+                        })}
                       </div>
-                    )}
+                    </div>
                   </div>
                   <button className="btn btn-primary btn-sm w-full" style={{ marginTop: 'auto' }} onClick={() => setShowModal(true)}>
-                    Book with {doc.name.split(' ')[1]}
+                    Book a Consultation
                   </button>
                 </div>
               </div>

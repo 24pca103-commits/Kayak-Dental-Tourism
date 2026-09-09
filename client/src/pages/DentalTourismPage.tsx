@@ -107,10 +107,11 @@ const DentalTourismPage: React.FC = () => {
         <div className="container">
           <motion.div
             className="hero-content"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
+            <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Global Dental Tourism</div>
             <h1 className="hero-title font-display">Why Choose India for Dental Care</h1>
             <p className="hero-subtitle">World-class dental treatments at a fraction of the cost, combining your smile transformation with a memorable vacation.</p>
             <div className="hero-stats">
@@ -387,7 +388,7 @@ const DentalTourismPage: React.FC = () => {
                 Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
               </Link>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/917867926159"
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-whatsapp-cta"

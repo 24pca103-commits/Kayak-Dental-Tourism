@@ -4,23 +4,39 @@
 }
 
 .travel-hero {
-  background: linear-gradient(135deg, #240840 0%, #451271 60%, #350d58 100%);
+  position: relative;
+  background-color: #240840;
+  background-image: 
+    linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%),
+    url('/assets/banner-tourism-collage.jpg');
+  background-size: auto 115%;
+  background-position: right 30%;
+  background-repeat: no-repeat;
   color: white;
-  padding: 80px 0;
-  text-align: center;
+  min-height: 330px;
+  padding: 4.5rem 0 3.5rem;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  border-bottom: 2px solid #24E0E1;
 }
 
 .travel-hero h1 {
   font-family: var(--font-display, 'Comfortaa', sans-serif);
-  font-size: 3rem;
-  margin-bottom: 20px;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+  text-align: left;
 }
 
 .travel-hero p {
-  font-size: 1.2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  opacity: 0.9;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 620px;
+  margin: 0;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .visa-guide {
@@ -102,6 +118,11 @@
   margin-bottom: 15px;
 }
 
+.invitation-content p {
+  text-indent: 2.5rem !important;
+  line-height: 1.65;
+}
+
 .invitation-icon {
   color: #24E0E1;
   flex-shrink: 0;
@@ -123,6 +144,14 @@
   color: #24E0E1;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.transport-text p {
+  text-align: justify;
+  text-justify: inter-word;
+  text-align-last: left;
+  text-indent: 2.5rem;
+  line-height: 1.65;
 }
 
 .transport-features {
@@ -250,7 +279,9 @@
     flex-direction: column;
     text-align: center;
   }
-  .invitation-content p {
+  .invitation-content p,
+  .transport-text p {
+    text-indent: 2.5rem !important;
     text-align: justify !important;
     text-justify: inter-word !important;
     text-align-last: left !important;

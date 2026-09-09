@@ -89,7 +89,7 @@ const TravelVisaPage: React.FC = () => {
             </div>
             <div className="invitation-content">
               <h3>Visa Invitation Letter</h3>
-              <p>Kayal Dental provides official medical invitation letters for your visa application. Contact our coordination team with your passport details, and we'll prepare your letter within 24 hours to expedite your visa process.</p>
+              <p style={{ textIndent: '2.5rem' }}>Kayal Dental provides official medical invitation letters for your visa application. Contact our coordination team with your passport details, and we'll prepare your letter within 24 hours to expedite your visa process.</p>
               <button
                 className="btn btn-purple"
                 style={{ marginTop: '1rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
@@ -106,7 +106,7 @@ const TravelVisaPage: React.FC = () => {
         <div className="container transport-content">
           <div className="transport-text">
             <h2 style={{ textAlign: 'center' }}>Airport Pickup & Transport</h2>
-            <p>Your comfort is our priority from the moment you land. We provide complimentary VIP airport transfers for all our international patients.</p>
+            <p className="transport-desc" style={{ textAlign: 'justify', textJustify: 'inter-word', textAlignLast: 'left', textIndent: '2.5rem' }}>Your comfort is our priority from the moment you land. We provide complimentary VIP airport transfers for all our international patients.</p>
             
             <div className="transport-features">
               <div className="transport-feature">
@@ -115,7 +115,7 @@ const TravelVisaPage: React.FC = () => {
               </div>
               <div className="transport-feature">
                 <MapPin className="transport-feature-icon" />
-                <span>Pickup from Chennai or Madurai airports</span>
+                <span>Pickup from Coimbatore International Airport (CJB)</span>
               </div>
               <div className="transport-feature">
                 <Star className="transport-feature-icon" />
@@ -134,7 +134,7 @@ const TravelVisaPage: React.FC = () => {
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center' }}>
             <h2 className="section-title" style={{ textAlign: 'center' }}>Accommodation Partnerships</h2>
-            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>In Partnership with Rebel Packages, we offer specially negotiated rates at trusted hotels near our clinic.</p>
+            <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>We offer specially negotiated rates at trusted hotels near our clinic.</p>
           </div>
 
           <div className="accommodation-grid">

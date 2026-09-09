@@ -4,23 +4,40 @@
 }
 
 .resources-hero {
-  background: linear-gradient(135deg, #240840 0%, #451271 60%, #350d58 100%);
+  position: relative;
+  background-color: #240840;
+  background-image: 
+    linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%),
+    url('/assets/banner-resources-collage.jpg');
+  background-size: auto 115%;
+  background-position: right 30%;
+  background-repeat: no-repeat;
   color: white;
-  padding: 80px 0;
-  text-align: center;
+  min-height: 330px;
+  padding: 4.5rem 0 3.5rem;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  border-bottom: 2px solid #24E0E1;
 }
 
 .resources-hero h1 {
   font-family: var(--font-display, 'Comfortaa', sans-serif);
-  font-size: 3rem;
-  margin-bottom: 20px;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+  text-align: left;
+  color: #ffffff;
 }
 
 .resources-hero p {
-  font-size: 1.2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  opacity: 0.9;
+  font-size: 1.1rem;
+  max-width: 620px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  text-align: left;
 }
 
 .faq-tabs {
@@ -32,7 +49,11 @@
 }
 
 .faq-tab-btn {
-  padding: 12px 25px;
+  width: 220px;
+  min-width: 220px;
+  max-width: 220px;
+  height: 48px;
+  padding: 0 16px;
   border: none;
   border-radius: 30px;
   font-weight: 600;
@@ -41,12 +62,33 @@
   background-color: #e0e0e0;
   color: #555;
   font-family: var(--font-main, 'Comfortaa', sans-serif);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
 .faq-tab-btn.active {
   background-color: #24E0E1;
   color: #451271;
   box-shadow: 0 4px 15px rgba(36, 224, 225, 0.4);
+}
+
+@media (max-width: 768px) {
+  .faq-tabs {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .faq-tab-btn {
+    width: 260px;
+    min-width: 260px;
+    max-width: 260px;
+    height: 46px;
+  }
 }
 
 .faq-accordion {
@@ -230,7 +272,7 @@
   height: 48px;
   border-radius: 14px;
   background: #24E0E1;
-  color: #1B2B65;
+  color: #451271;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,8 +282,8 @@
 
 .care-card-v2__icon-box svg,
 .care-card-v2__icon-box svg.lucide {
-  color: #1B2B65 !important;
-  stroke: #1B2B65 !important;
+  color: #451271 !important;
+  stroke: #451271 !important;
 }
 
 .care-card-v2__badge {

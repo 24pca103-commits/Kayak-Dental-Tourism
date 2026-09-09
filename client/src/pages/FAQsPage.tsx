@@ -32,11 +32,24 @@ const FAQsPage: React.FC = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      <section className="faqs-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem', textAlign: 'center' }}>
-        <div className="container">
-          <div className="badge badge-white" style={{ marginBottom: '1rem' }}>FAQs</div>
-          <h1 className="section-title text-white">Frequently Asked Questions</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem' }}>Everything you need to know about dental care at KAYAL</p>
+      <section className="faqs-hero" style={{
+        position: 'relative',
+        backgroundColor: '#240840',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-1.jpg')",
+        backgroundSize: 'auto 115%',
+        backgroundPosition: 'right 30%',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '330px',
+        padding: '4.5rem 0 3.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'left',
+        borderBottom: '2px solid #24E0E1'
+      }}>
+        <div className="container" style={{ textAlign: 'left' }}>
+          <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>FAQs</div>
+          <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Frequently Asked Questions</h1>
+          <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6 }}>Everything you need to know about dental care and treatments at KAYAL Dental Care</p>
         </div>
       </section>
 

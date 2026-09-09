@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Clock, Users, ChevronDown, ChevronUp, ArrowRight, Phone } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Clock, Users, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { servicesAPI, doctorsAPI } from '../services/api';
 import type { Service, Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
@@ -105,17 +106,30 @@ const ServiceDetailPage: React.FC = () => {
   return (
     <div style={{ paddingTop: '70px' }}>
       {/* Header / Hero Section */}
-      <div className="service-detail-hero" style={{ background: 'linear-gradient(135deg,var(--purple-900),var(--purple-700))', padding: '3rem 1.5rem' }}>
-        <div className="container">
+      <div className="service-detail-hero" style={{
+        position: 'relative',
+        backgroundColor: '#240840',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-1.jpg')",
+        backgroundSize: 'auto 115%',
+        backgroundPosition: 'right 30%',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '330px',
+        padding: '4.5rem 0 3.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        textAlign: 'left',
+        borderBottom: '2px solid #24E0E1'
+      }}>
+        <div className="container" style={{ textAlign: 'left' }}>
           <button
             className="service-detail-back-btn"
             onClick={() => navigate('/services')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.75)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '0.875rem', marginBottom: '1.5rem', padding: 0 }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#24E0E1', background: 'rgba(36,224,225,0.1)', padding: '0.35rem 0.85rem', borderRadius: '20px', border: '1px solid rgba(36,224,225,0.3)', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, marginBottom: '1.25rem' }}
           >
-            <ArrowLeft size={16} /> Back to Services
+            <ArrowLeft size={15} /> Back to Services
           </button>
-          <h1 className="section-title text-white">{service.name}</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', marginTop: '0.75rem', maxWidth: 600 }}>{service.shortDescription}</p>
+          <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.6rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>{service.name}</h1>
+          <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.05rem', lineHeight: 1.6 }}>{service.shortDescription}</p>
           <button className="btn btn-primary btn-lg" style={{ marginTop: '1.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }} onClick={() => setShowModal(true)}>
             Book Appointment <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
           </button>
@@ -233,9 +247,26 @@ const ServiceDetailPage: React.FC = () => {
 
               <div style={{ background: 'var(--cyan-50)', border: '1.5px solid var(--cyan-100)', borderRadius: 'var(--radius-lg)', padding: '1.25rem' }}>
                 <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--cyan-700)', marginBottom: '0.4rem' }}>Need help deciding?</p>
-                <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)' }}>Call us and speak to a dental expert.</p>
-                <a href="tel:+919876543210" className="btn btn-primary btn-sm" style={{ marginTop: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                  <Phone size={14} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} /> Call Now
+                <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)' }}>Chat with us on WhatsApp to speak to a dental expert.</p>
+                <a
+                  href="https://wa.me/917867926159?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20more%20information%20about%20dental%20treatments."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-sm"
+                  style={{
+                    marginTop: '0.75rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: '#25D366',
+                    borderColor: '#25D366',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    borderRadius: '50px',
+                    boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
+                  }}
+                >
+                  <WhatsAppIcon size={16} color="#ffffff" /> WhatsApp Us
                 </a>
               </div>
             </div>

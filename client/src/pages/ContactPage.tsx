@@ -97,7 +97,7 @@ const ContactPage: React.FC = () => {
                   { icon: <MapPin size={20} />, title: 'Address', info: '123 Seaside Road, Chennai, Tamil Nadu - 600001' },
                   { icon: <Phone size={20} />, title: 'Phone', info: '+91 78679 26159', href: 'tel:+917867926159' },
                   { icon: <Mail size={20} />, title: 'Email', info: 'hello@kayaldental.com', href: 'mailto:hello@kayaldental.com' },
-                  { icon: <Clock size={20} />, title: 'Working Hours', info: 'Monday – Saturday: 9:00 AM – 7:00 PM\nSunday: Closed (Emergency available)' },
+                  { icon: <Clock size={20} />, title: 'Working Hours', info: 'All Days Available: 9:00 AM – 7:00 PM\n(Monday – Sunday)' },
                 ].map((item, i) => (
                   <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
                     <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--purple-50)', border: '1.5px solid var(--purple-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--purple-600)', flexShrink: 0 }}>{item.icon}</div>

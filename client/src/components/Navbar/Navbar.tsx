@@ -289,9 +289,28 @@ export default function Navbar() {
               <div className="navbar__dropdown navbar__dropdown--right">
                 <div className="navbar__dropdown-inner">
                   {contactSubItems.map((sub, i) => (
-                    sub.isExternal ? (
+                    sub.label === 'WhatsApp' ? (
+                      <a
+                        key={i}
+                        href={sub.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="navbar__dropdown-item"
+                        style={{
+                          justifyContent: 'flex-start',
+                          gap: '8px',
+                          background: '#25D366',
+                          color: '#ffffff',
+                          fontWeight: 700,
+                          borderRadius: '8px',
+                          margin: '3px 0',
+                        }}
+                      >
+                        <WhatsAppIcon size={16} color="#ffffff" />
+                        <span style={{ color: '#ffffff' }}>{sub.label} ↗</span>
+                      </a>
+                    ) : sub.isExternal ? (
                       <a key={i} href={sub.path} target="_blank" rel="noopener noreferrer" className="navbar__dropdown-item" style={{ justifyContent: 'flex-start', gap: '8px' }}>
-                        {sub.label === 'WhatsApp' && <WhatsAppIcon size={16} color="#25D366" />}
                         <span>{sub.label} ↗</span>
                       </a>
                     ) : (
@@ -313,6 +332,16 @@ export default function Navbar() {
               Book Online Consultation <ArrowRight size={16} className="navbar__cta-arrow" color="#350d58" style={{ color: '#350d58', stroke: '#350d58', flexShrink: 0 }} />
             </button>
           </div>
+
+          {/* Mobile Search Icon (visible only on mobile, before hamburger) */}
+          <button
+            type="button"
+            className="navbar__mobile-search-icon"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search"
+          >
+            <Search size={20} />
+          </button>
 
           {/* Hamburger */}
           <button
@@ -344,13 +373,14 @@ export default function Navbar() {
                 background: 'rgba(255,255,255,0.12)',
                 border: '1px solid rgba(36, 224, 225, 0.4)',
                 color: '#24E0E1',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
                 cursor: 'pointer',
-                textAlign: 'left'
+                textAlign: 'left',
+                overflow: 'hidden',
               }}
             >
-              <Search size={16} />
-              <span style={{ color: 'rgba(255,255,255,0.85)' }}>Search treatments, doctors, tourism...</span>
+              <Search size={16} style={{ flexShrink: 0 }} />
+              <span style={{ color: 'rgba(255,255,255,0.85)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Search treatments, doctors...</span>
             </button>
           </div>
 
@@ -412,8 +442,8 @@ export default function Navbar() {
             </button>
             <div className="navbar__mobile-contact-links">
               <Link to="/contact" className="navbar__mobile-subitem">Contact Us</Link>
-              <a href="https://wa.me/917867926159" target="_blank" rel="noopener noreferrer" className="navbar__mobile-subitem" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                <WhatsAppIcon size={16} color="#25D366" /> WhatsApp Us ↗
+              <a href="https://wa.me/917867926159" target="_blank" rel="noopener noreferrer" className="navbar__mobile-whatsapp-btn">
+                <WhatsAppIcon size={16} color="#ffffff" /> WhatsApp Us ↗
               </a>
             </div>
           </div>

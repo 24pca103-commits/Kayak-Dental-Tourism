@@ -157,7 +157,9 @@ const TestimonialsPage: React.FC = () => {
         <div className="container">
           <div className="text-center" style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <div className="badge badge-cyan" style={{ marginBottom: '0.75rem', display: 'inline-flex' }}>Patient Feedback</div>
-            <h2 className="section-title text-white" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)' }}>Trusted Quality &amp; Patient Satisfaction</h2>
+            <h2 className="section-title text-white" style={{ fontSize: 'clamp(1.3rem, 4.2vw, 2.4rem)' }}>
+              Trusted Quality &amp; <span style={{ whiteSpace: 'nowrap' }}>Patient Satisfaction</span>
+            </h2>
             <p style={{ color: 'rgba(255,255,255,0.85)', maxWidth: '620px', margin: '0.5rem auto 0', fontSize: '0.95rem' }}>
               Our commitment to painless treatments and world-class dental care reflects in every smile we create.
             </p>

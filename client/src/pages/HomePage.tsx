@@ -567,18 +567,6 @@ const HomePage: React.FC = () => {
                 onTouchMove={handleTestTouchMove}
                 onTouchEnd={handleTestTouchEnd}
               >
-                {/* Left Arrow Button */}
-                <button
-                  className="testimonials-v3__arrow-btn testimonials-v3__arrow-btn--prev"
-                  onClick={(e) => {
-                    setActiveTestimonialIdx(prev => (prev - 1 + HOME_TESTIMONIALS.length) % HOME_TESTIMONIALS.length);
-                    e.currentTarget.blur();
-                  }}
-                  aria-label="Previous testimonial"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-
                 {/* Cards Grid */}
                 <div className="testimonials-v3__cards-grid">
                   {[0, 1].map((offset) => {
@@ -607,18 +595,6 @@ const HomePage: React.FC = () => {
                     );
                   })}
                 </div>
-
-                {/* Right Arrow Button */}
-                <button
-                  className="testimonials-v3__arrow-btn testimonials-v3__arrow-btn--next"
-                  onClick={(e) => {
-                    setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
-                    e.currentTarget.blur();
-                  }}
-                  aria-label="Next testimonial"
-                >
-                  <ChevronRight size={20} />
-                </button>
               </div>
 
               {/* Slider Dots */}

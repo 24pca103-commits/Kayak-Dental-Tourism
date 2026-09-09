@@ -286,6 +286,16 @@
   cursor: pointer;
   color: #ffffff;
   padding: 0.25rem;
+  margin-left: 0;
+}
+
+.navbar__mobile-search-icon {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #24E0E1;
+  padding: 0.35rem;
   margin-left: auto;
 }
 
@@ -457,6 +467,30 @@
   margin-top: 0.5rem;
 }
 
+.navbar__mobile-whatsapp-btn {
+  padding: 0.45rem 1rem !important;
+  border-radius: 20px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  background: #25D366 !important;
+  border: 1px solid #25D366 !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+.navbar__mobile-whatsapp-btn:hover,
+.navbar__mobile-whatsapp-btn:focus {
+  background: #1eb956 !important;
+  border-color: #1eb956 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
 /* ── Responsive Hamburger Breakpoint ── */
 @media (max-width: 1240px) {
   .navbar__nav,
@@ -464,6 +498,11 @@
     display: none !important;
   }
   .navbar__hamburger {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  .navbar__mobile-search-icon {
     display: flex !important;
     align-items: center;
     justify-content: center;

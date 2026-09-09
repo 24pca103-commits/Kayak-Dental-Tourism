@@ -277,13 +277,13 @@
 @media (max-width: 768px) {
   .footer__grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 2rem 1.25rem !important;
+    gap: 1.75rem 1rem !important;
   }
   .footer__col--brand {
     grid-column: 1 / -1 !important;
   }
   .footer__link {
-    font-size: clamp(0.78rem, 2.8vw, 0.875rem) !important;
+    font-size: clamp(0.74rem, 2.7vw, 0.85rem) !important;
     white-space: normal !important;
     word-break: break-word;
   }
@@ -310,7 +310,10 @@
 
 @media (max-width: 520px) {
   .footer__grid {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem 0.85rem !important;
+  }
+  .footer__col--brand {
+    grid-column: 1 / -1 !important;
   }
 }

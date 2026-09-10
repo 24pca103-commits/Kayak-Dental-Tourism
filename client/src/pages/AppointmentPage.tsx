@@ -281,10 +281,10 @@ const AppointmentPage: React.FC = () => {
                     </div>
 
                     <div className="form-group">
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
                         <label className="form-label" style={{ marginBottom: 0 }}>Describe Your Dental Issue *</label>
-                        <span style={{ fontSize: '0.78rem', color: form.issue.trim().split(/\s+/).filter(Boolean).length > 500 ? '#ef4444' : 'var(--gray-500)' }}>
-                          {form.issue.trim() ? form.issue.trim().split(/\s+/).filter(Boolean).length : 0} / 500 words ({form.issue.length}/3000 chars)
+                        <span style={{ fontSize: '0.75rem', whiteSpace: 'nowrap', flexShrink: 0, color: form.issue.trim().split(/\s+/).filter(Boolean).length > 500 ? '#ef4444' : 'var(--gray-500)' }}>
+                          {form.issue.trim() ? form.issue.trim().split(/\s+/).filter(Boolean).length : 0}/500 words
                         </span>
                       </div>
                       <textarea

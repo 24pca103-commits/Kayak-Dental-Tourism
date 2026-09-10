@@ -98,9 +98,9 @@ export const getAppointments = async (req: Request, res: Response): Promise<void
     }));
 
     res.json({ success: true, data: formattedData, total, page: Number(page), limit: take });
-  } catch (error) {
+  } catch (error: any) {
     console.error('getAppointments error:', error);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Server error', error: error?.message || String(error) });
   }
 };
 
@@ -114,9 +114,9 @@ export const getAppointmentStats = async (_req: Request, res: Response): Promise
       prisma.appointment.count({ where: { status: 'cancelled' } }),
     ]);
     res.json({ success: true, data: { total, pending, confirmed, completed, cancelled } });
-  } catch (error) {
+  } catch (error: any) {
     console.error('getAppointmentStats error:', error);
-    res.status(500).json({ success: false, message: 'Server error' });
+    res.status(500).json({ success: false, message: 'Server error', error: error?.message || String(error) });
   }
 };
 

@@ -1,13 +1,43 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronDown, Phone, ArrowRight, Search } from 'lucide-react';
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Phone,
+  ArrowRight,
+  Search,
+  Info,
+  Users,
+  Building2,
+  Target,
+  Star,
+  MessageSquare,
+  Video,
+  ClipboardList,
+  HeartPulse,
+  FileText,
+  Mail,
+  Plane,
+  Hotel,
+  Compass,
+  HelpCircle,
+  Globe,
+  DollarSign,
+  Navigation,
+  ShieldCheck,
+  PhoneCall,
+  MapPin,
+} from 'lucide-react';
 import WhatsAppIcon from '../icons/WhatsAppIcon';
-import './Navbar.css';
+import '../../styles/Navbar.css';
 
 interface SubMenuItem {
   label: string;
   path: string;
   isExternal?: boolean;
+  image?: string;
+  icon?: React.ReactNode;
 }
 
 interface MenuItem {
@@ -116,19 +146,19 @@ export default function Navbar() {
       label: 'About',
       path: '/about',
       subItems: [
-        { label: 'About Us', path: '/about' },
-        { label: 'Our Doctors', path: '/team' },
-        { label: 'Facilities', path: '/about#facilities' },
-        { label: 'Mission & Vision', path: '/about#mission' },
+        { label: 'About Us', path: '/about', icon: <Info size={15} /> },
+        { label: 'Our Doctors', path: '/team', icon: <Users size={15} /> },
+        { label: 'Facilities', path: '/about#facilities', icon: <Building2 size={15} /> },
+        { label: 'Mission & Vision', path: '/about#mission', icon: <Target size={15} /> },
       ],
     },
     {
       label: 'Testimonials',
       path: '/testimonials',
       subItems: [
-        { label: 'Patient Reviews', path: '/testimonials#reviews' },
-        { label: 'Patient Feedback', path: '/testimonials#feedback' },
-        { label: 'Review Videos', path: '/testimonials#videos' },
+        { label: 'Patient Reviews', path: '/testimonials#reviews', icon: <Star size={15} /> },
+        { label: 'Patient Feedback', path: '/testimonials#feedback', icon: <MessageSquare size={15} /> },
+        { label: 'Review Videos', path: '/testimonials#videos', icon: <Video size={15} /> },
       ],
     },
     {
@@ -136,52 +166,52 @@ export default function Navbar() {
       path: '/services',
       isTwoColumn: true,
       subItems: [
-        { label: 'Dental Implants', path: '/services/dental-implants' },
-        { label: 'Teeth Alignment', path: '/services/teeth-alignment' },
-        { label: 'Smile Designing', path: '/services/smile-designing' },
-        { label: 'Teeth Replacement', path: '/services/teeth-replacement' },
-        { label: 'Root Canal Treatment', path: '/services/root-canal-treatment' },
-        { label: 'Teeth Whitening', path: '/services/teeth-whitening' },
-        { label: 'Braces', path: '/services/braces' },
-        { label: 'Clear Aligners', path: '/services/clear-aligners' },
-        { label: 'Pediatric Dentistry', path: '/services/pediatric-dentistry' },
-        { label: 'Preventive Dentistry', path: '/services/preventive-dentistry' },
-        { label: 'Cosmetic Dentistry', path: '/services/cosmetic-dentistry' },
-        { label: 'Emergency Dental Care', path: '/services/emergency-dental-care' },
+        { label: 'Dental Implants', path: '/services/dental-implants', image: '/assets/treatment-implants-hd.png' },
+        { label: 'Teeth Alignment', path: '/services/teeth-alignment', image: '/assets/card-orthodontics-hd.jpg' },
+        { label: 'Smile Designing', path: '/services/smile-designing', image: '/assets/card-smile.png' },
+        { label: 'Teeth Replacement', path: '/services/teeth-replacement', image: '/assets/card-replacement.png' },
+        { label: 'Root Canal Treatment', path: '/services/root-canal-treatment', image: '/assets/treatment-5-root-canal.jpg' },
+        { label: 'Teeth Whitening', path: '/services/teeth-whitening', image: '/assets/treatment-cosmetic-dentistry.jpg' },
+        { label: 'Braces', path: '/services/braces', image: '/assets/card-braces.png' },
+        { label: 'Clear Aligners', path: '/services/clear-aligners', image: '/assets/treatment-orthodontics.jpg' },
+        { label: 'Pediatric Dentistry', path: '/services/pediatric-dentistry', image: '/assets/treatment-8-pediatric-child.jpg' },
+        { label: 'Preventive Dentistry', path: '/services/preventive-dentistry', image: '/assets/hero-child-smile.png' },
+        { label: 'Cosmetic Dentistry', path: '/services/cosmetic-dentistry', image: '/assets/treatment-3-cosmetic.png' },
+        { label: 'Emergency Dental Care', path: '/services/emergency-dental-care', image: '/assets/about-clinic-real.jpg' },
       ],
     },
     {
       label: 'Patient Resources',
       path: '/patient-resources',
       subItems: [
-        { label: 'Pre-Treatment Checklist', path: '/patient-resources#checklist' },
-        { label: 'Post-Treatment Care Guide', path: '/patient-resources#care-guide' },
-        { label: 'Medical Visa Guide', path: '/patient-resources#visa' },
-        { label: 'Visa Invitation', path: '/patient-resources#invitation' },
-        { label: 'Airport Pickup & Transport', path: '/patient-resources#pickup' },
-        { label: 'Accommodation', path: '/patient-resources#hotels' },
-        { label: 'Local Travel Tips', path: '/patient-resources#tips' },
-        { label: 'FAQs', path: '/patient-resources#faqs' },
+        { label: 'Pre-Treatment Checklist', path: '/patient-resources#checklist', icon: <ClipboardList size={15} /> },
+        { label: 'Post-Treatment Care Guide', path: '/patient-resources#care-guide', icon: <HeartPulse size={15} /> },
+        { label: 'Medical Visa Guide', path: '/patient-resources#visa', icon: <FileText size={15} /> },
+        { label: 'Visa Invitation', path: '/patient-resources#invitation', icon: <Mail size={15} /> },
+        { label: 'Airport Pickup & Transport', path: '/patient-resources#pickup', icon: <Plane size={15} /> },
+        { label: 'Accommodation', path: '/patient-resources#hotels', icon: <Hotel size={15} /> },
+        { label: 'Local Travel Tips', path: '/patient-resources#tips', icon: <Compass size={15} /> },
+        { label: 'FAQs', path: '/patient-resources#faqs', icon: <HelpCircle size={15} /> },
       ],
     },
     {
       label: 'Dental Tourism',
       path: '/dental-tourism',
       subItems: [
-        { label: 'Why Choose India', path: '/dental-tourism#why-india' },
-        { label: 'Cost Comparison', path: '/dental-tourism#cost-comparison' },
-        { label: 'Patient Journey', path: '/dental-tourism#journey' },
-        { label: 'Quality & Safety', path: '/dental-tourism#safety' },
-        { label: 'Patient Testimonials (Videos)', path: '/dental-tourism#testimonials' },
+        { label: 'Why Choose India', path: '/dental-tourism#why-india', icon: <Globe size={15} /> },
+        { label: 'Cost Comparison', path: '/dental-tourism#cost-comparison', icon: <DollarSign size={15} /> },
+        { label: 'Patient Journey', path: '/dental-tourism#journey', icon: <Navigation size={15} /> },
+        { label: 'Quality & Safety', path: '/dental-tourism#safety', icon: <ShieldCheck size={15} /> },
+        { label: 'Patient Testimonials (Videos)', path: '/dental-tourism#testimonials', icon: <Video size={15} /> },
       ],
     },
   ];
 
   const contactSubItems: SubMenuItem[] = [
-    { label: 'Enquiry Form', path: '/contact#enquiry' },
+    { label: 'Enquiry Form', path: '/contact#enquiry', icon: <Mail size={15} /> },
     { label: 'WhatsApp', path: 'https://wa.me/917867926159', isExternal: true },
-    { label: 'Phone & Email', path: '/contact#details' },
-    { label: 'Map / Location', path: '/contact#map' },
+    { label: 'Phone & Email', path: '/contact#details', icon: <PhoneCall size={15} /> },
+    { label: 'Map / Location', path: '/contact#map', icon: <MapPin size={15} /> },
   ];
 
   if (isAdmin) return null;
@@ -258,7 +288,16 @@ export default function Navbar() {
                     <div className={`navbar__dropdown-inner ${item.isTwoColumn ? 'navbar__dropdown-inner--two-col' : ''}`}>
                       {item.subItems.map((sub, i) => (
                         <Link key={i} to={sub.path} className="navbar__dropdown-item">
-                          {sub.label}
+                          {sub.image ? (
+                            <span className="navbar__dropdown-thumb">
+                              <img src={sub.image} alt={sub.label} />
+                            </span>
+                          ) : sub.icon ? (
+                            <span className="navbar__dropdown-icon-box">
+                              {sub.icon}
+                            </span>
+                          ) : null}
+                          <span>{sub.label}</span>
                         </Link>
                       ))}
                     </div>
@@ -311,11 +350,13 @@ export default function Navbar() {
                       </a>
                     ) : sub.isExternal ? (
                       <a key={i} href={sub.path} target="_blank" rel="noopener noreferrer" className="navbar__dropdown-item" style={{ justifyContent: 'flex-start', gap: '8px' }}>
+                        {sub.icon && <span className="navbar__dropdown-icon-box">{sub.icon}</span>}
                         <span>{sub.label} ↗</span>
                       </a>
                     ) : (
                       <Link key={i} to={sub.path} className="navbar__dropdown-item">
-                        {sub.label}
+                        {sub.icon && <span className="navbar__dropdown-icon-box">{sub.icon}</span>}
+                        <span>{sub.label}</span>
                       </Link>
                     )
                   ))}
@@ -423,8 +464,18 @@ export default function Navbar() {
                       to={sub.path}
                       className="navbar__mobile-subitem"
                       onClick={() => setMenuOpen(false)}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                     >
-                      {sub.label}
+                      {sub.image ? (
+                        <span className="navbar__dropdown-thumb" style={{ width: 20, height: 20, minWidth: 20 }}>
+                          <img src={sub.image} alt={sub.label} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 4 }} />
+                        </span>
+                      ) : sub.icon ? (
+                        <span className="navbar__mobile-subitem-icon">
+                          {sub.icon}
+                        </span>
+                      ) : null}
+                      <span>{sub.label}</span>
                     </Link>
                   ))}
                 </div>
@@ -441,7 +492,9 @@ export default function Navbar() {
               Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
             </button>
             <div className="navbar__mobile-contact-links">
-              <Link to="/contact" className="navbar__mobile-subitem">Contact Us</Link>
+              <Link to="/contact" className="navbar__mobile-subitem" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <PhoneCall size={14} /> Contact Us
+              </Link>
               <a href="https://wa.me/917867926159" target="_blank" rel="noopener noreferrer" className="navbar__mobile-whatsapp-btn">
                 <WhatsAppIcon size={16} color="#ffffff" /> WhatsApp Us ↗
               </a>

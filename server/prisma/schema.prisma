@@ -84,6 +84,7 @@ model Appointment {
   message         String?           @db.Text
   status          AppointmentStatus @default(pending)
   adminNote       String?           @db.Text
+  attachments     String?           @db.LongText
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 }

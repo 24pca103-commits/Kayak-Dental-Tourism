@@ -8,7 +8,7 @@ import {
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { appointmentsAPI } from '../services/api';
 import { sendRealtimeEmail } from '../services/emailService';
-import './AppointmentPage.css';
+import '../styles/AppointmentPage.css';
 
 const COUNTRY_CODES = [
   { code: '+91', country: 'India', flag: '🇮🇳' },
@@ -76,13 +76,56 @@ const AppointmentPage: React.FC = () => {
     return e;
   };
 
+  const readFileAsDataURL = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve((reader.result as string) || '');
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
     const fullPhone = form.phone.startsWith('+') ? form.phone : `${countryCode} ${form.phone}`;
+
     try {
+      // Upload attached files if any
+      let uploadedAttachments: Array<{ name: string; url: string; size?: number; type?: string }> = [];
+
+      if (files.length > 0) {
+        try {
+          const formData = new FormData();
+          files.forEach((f) => formData.append('files', f));
+          const uploadRes = await appointmentsAPI.uploadAttachments(formData);
+          if (uploadRes.data?.success && Array.isArray(uploadRes.data.files)) {
+            uploadedAttachments = uploadRes.data.files;
+          }
+        } catch (uploadErr) {
+          console.warn('Backend file upload fallback:', uploadErr);
+        }
+
+        // Fallback to Data URL previews if server upload returned empty
+        if (uploadedAttachments.length === 0) {
+          for (const f of files) {
+            try {
+              const dataUrl = await readFileAsDataURL(f);
+              uploadedAttachments.push({
+                name: f.name,
+                url: dataUrl,
+                size: f.size,
+                type: f.type,
+              });
+            } catch {}
+          }
+        }
+      }
+
+      const attachmentsJson = uploadedAttachments.length > 0 ? JSON.stringify(uploadedAttachments) : undefined;
+
       // 1. Send real-time confirmation email to user
       await sendRealtimeEmail({
         name: form.name,
@@ -92,7 +135,25 @@ const AppointmentPage: React.FC = () => {
         message: form.issue,
       });
 
-      // 2. Also save to appointments API if available
+      // 2. Also save to appointments API and local storage
+      const newBooking = {
+        _id: 'bk_' + Date.now(),
+        patientName: form.name,
+        phone: fullPhone,
+        email: form.email,
+        serviceName: 'Free Online Consultation',
+        appointmentDate: new Date().toISOString(),
+        appointmentTime: 'Online Consultation',
+        message: form.issue,
+        attachments: attachmentsJson,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+      try {
+        const stored = JSON.parse(localStorage.getItem('kayal_local_appointments') || '[]');
+        localStorage.setItem('kayal_local_appointments', JSON.stringify([newBooking, ...stored]));
+      } catch {}
+
       try {
         await appointmentsAPI.create({
           patientName: form.name,
@@ -102,6 +163,7 @@ const AppointmentPage: React.FC = () => {
           appointmentDate: new Date().toISOString(),
           appointmentTime: 'Online Consultation',
           message: form.issue,
+          attachments: attachmentsJson,
         });
       } catch {
         // silent
@@ -169,6 +231,7 @@ const AppointmentPage: React.FC = () => {
                         placeholder="Your full name"
                         value={form.name}
                         onChange={handleChange}
+                        required
                       />
                       {errors.name && <span className="form-error">{errors.name}</span>}
                     </div>
@@ -196,6 +259,7 @@ const AppointmentPage: React.FC = () => {
                           placeholder="78679 26159"
                           value={form.phone}
                           onChange={handleChange}
+                          required
                           style={{ flex: 1, minWidth: 0 }}
                         />
                       </div>
@@ -211,12 +275,18 @@ const AppointmentPage: React.FC = () => {
                         placeholder="your@email.com"
                         value={form.email}
                         onChange={handleChange}
+                        required
                       />
                       {errors.email && <span className="form-error">{errors.email}</span>}
                     </div>
 
                     <div className="form-group">
-                      <label className="form-label">Describe Your Dental Issue *</label>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <label className="form-label" style={{ marginBottom: 0 }}>Describe Your Dental Issue *</label>
+                        <span style={{ fontSize: '0.78rem', color: form.issue.trim().split(/\s+/).filter(Boolean).length > 500 ? '#ef4444' : 'var(--gray-500)' }}>
+                          {form.issue.trim() ? form.issue.trim().split(/\s+/).filter(Boolean).length : 0} / 500 words ({form.issue.length}/3000 chars)
+                        </span>
+                      </div>
                       <textarea
                         className={`form-input ${errors.issue ? 'error' : ''}`}
                         name="issue"
@@ -224,6 +294,9 @@ const AppointmentPage: React.FC = () => {
                         placeholder="Tell us about your dental concern, what treatments you're interested in, any relevant medical history, and your preferred timeline..."
                         value={form.issue}
                         onChange={handleChange}
+                        maxLength={3000}
+                        required
+                        style={{ marginTop: '0.35rem' }}
                       />
                       {errors.issue && <span className="form-error">{errors.issue}</span>}
                     </div>

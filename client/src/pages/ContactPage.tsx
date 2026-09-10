@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { appointmentsAPI } from '../services/api';
 import { sendRealtimeEmail } from '../services/emailService';
-import './ContactPage.css';
+import '../styles/ContactPage.css';
 
 const ContactPage: React.FC = () => {
   const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
@@ -35,7 +35,24 @@ const ContactPage: React.FC = () => {
         message: form.message,
       });
 
-      // 2. Also save to appointments API if available
+      // 2. Also save to appointments API and local storage
+      const newInquiry = {
+        _id: 'inq_' + Date.now(),
+        patientName: form.name,
+        phone: form.phone,
+        email: form.email,
+        serviceName: form.subject || 'General Inquiry',
+        appointmentDate: new Date().toISOString(),
+        appointmentTime: '10:00 AM',
+        message: form.message,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+      try {
+        const stored = JSON.parse(localStorage.getItem('kayal_local_appointments') || '[]');
+        localStorage.setItem('kayal_local_appointments', JSON.stringify([newInquiry, ...stored]));
+      } catch {}
+
       try {
         await appointmentsAPI.create({
           patientName: form.name,
@@ -68,11 +85,11 @@ const ContactPage: React.FC = () => {
       <section className="contact-hero" style={{
         position: 'relative',
         backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-2.jpg')",
-        backgroundSize: 'auto 115%',
-        backgroundPosition: 'right 30%',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-contact-collage.jpg')",
+        backgroundSize: 'auto 100%',
+        backgroundPosition: 'right center',
         backgroundRepeat: 'no-repeat',
-        minHeight: '330px',
+        minHeight: '360px',
         padding: '4.5rem 0 3.5rem',
         display: 'flex',
         alignItems: 'center',
@@ -163,18 +180,18 @@ const ContactPage: React.FC = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div className="form-group">
                         <label className="form-label">Full Name *</label>
-                        <input className={`form-input ${errors.name ? 'error' : ''}`} name="name" placeholder="Your full name" value={form.name} onChange={handleChange} />
+                        <input className={`form-input ${errors.name ? 'error' : ''}`} name="name" placeholder="Your full name" value={form.name} onChange={handleChange} required />
                         {errors.name && <span className="form-error">{errors.name}</span>}
                       </div>
                       <div className="form-group">
                         <label className="form-label">Phone *</label>
-                        <input className={`form-input ${errors.phone ? 'error' : ''}`} name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} />
+                        <input className={`form-input ${errors.phone ? 'error' : ''}`} name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} required />
                         {errors.phone && <span className="form-error">{errors.phone}</span>}
                       </div>
                     </div>
                     <div className="form-group">
                       <label className="form-label">Email *</label>
-                      <input className={`form-input ${errors.email ? 'error' : ''}`} name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleChange} />
+                      <input className={`form-input ${errors.email ? 'error' : ''}`} name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleChange} required />
                       {errors.email && <span className="form-error">{errors.email}</span>}
                     </div>
                     <div className="form-group">
@@ -183,7 +200,7 @@ const ContactPage: React.FC = () => {
                     </div>
                     <div className="form-group">
                       <label className="form-label">Message *</label>
-                      <textarea className={`form-input ${errors.message ? 'error' : ''}`} name="message" rows={4} placeholder="Tell us more..." value={form.message} onChange={handleChange} />
+                      <textarea className={`form-input ${errors.message ? 'error' : ''}`} name="message" rows={4} placeholder="Tell us more..." value={form.message} onChange={handleChange} required />
                       {errors.message && <span className="form-error">{errors.message}</span>}
                     </div>
                     <button type="submit" className="btn btn-purple btn-lg" disabled={loading} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>

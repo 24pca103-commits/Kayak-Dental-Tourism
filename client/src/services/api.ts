@@ -63,6 +63,8 @@ export const appointmentsAPI = {
   getAll: (params?: Record<string, string | number>) => api.get('/appointments', { params }),
   getStats: () => api.get('/appointments/stats'),
   getBookedSlots: (date: string) => api.get('/appointments/booked-slots', { params: { date } }),
+  uploadAttachments: (formData: FormData) =>
+    api.post('/appointments/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
   create: (data: Record<string, unknown>) => api.post('/appointments', data),
   update: (id: string, data: Record<string, unknown>) => api.put(`/appointments/${id}`, data),
   delete: (id: string) => api.delete(`/appointments/${id}`),

@@ -971,3 +971,44 @@ select {
   }
 }
 
+/* ── Patient Reviews & Stories Responsive Carousel ── */
+.reviews-desktop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.reviews-mobile-slider {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .reviews-desktop-grid {
+    display: none !important;
+  }
+
+  .reviews-mobile-slider {
+    display: block !important;
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Universal Page Hero Banner Mobile Background */
+  .about-hero,
+  .consultation-hero,
+  .hero-section,
+  .travel-hero,
+  .resources-hero,
+  .treatment-hero,
+  .testimonials-hero,
+  .team-hero,
+  .contact-hero,
+  .faqs-hero,
+  .service-detail-hero {
+    background-position: center !important;
+    background-size: cover !important;
+  }
+}
+
+

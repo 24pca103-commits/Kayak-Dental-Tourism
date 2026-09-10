@@ -3,7 +3,7 @@ import { X, Calendar, Clock, User, Phone, Mail, ChevronDown, CheckCircle } from 
 import { appointmentsAPI } from '../../services/api';
 import { sendRealtimeEmail } from '../../services/emailService';
 import type { Service, Doctor } from '../../types';
-import './AppointmentModal.css';
+import '../../styles/AppointmentModal.css';
 
 interface Props {
   onClose: () => void;
@@ -149,11 +149,26 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         }
       }
 
-      // 3. Cache booked slot in localStorage for instant local reflect
+      // 3. Cache booked slot in localStorage for instant local reflect and admin sync
       try {
         const localBookings = JSON.parse(localStorage.getItem('kayal_booked_appointments') || '[]');
         localBookings.push({ date: form.appointmentDate, time: form.appointmentTime, service: form.serviceName });
         localStorage.setItem('kayal_booked_appointments', JSON.stringify(localBookings));
+
+        const fullBookings = JSON.parse(localStorage.getItem('kayal_local_appointments') || '[]');
+        fullBookings.unshift({
+          _id: 'bk_' + Date.now(),
+          patientName: form.patientName,
+          phone: form.phone,
+          email: form.email,
+          serviceName: form.serviceName,
+          appointmentDate: form.appointmentDate,
+          appointmentTime: form.appointmentTime,
+          message: form.message,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+        localStorage.setItem('kayal_local_appointments', JSON.stringify(fullBookings));
       } catch {
         // ignore
       }
@@ -216,6 +231,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   placeholder="Your full name"
                   value={form.patientName}
                   onChange={handleChange}
+                  required
                 />
                 {errors.patientName && <span className="form-error">{errors.patientName}</span>}
               </div>
@@ -232,6 +248,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   placeholder="10-digit mobile number"
                   value={form.phone}
                   onChange={handleChange}
+                  required
                 />
                 {errors.phone && <span className="form-error">{errors.phone}</span>}
               </div>
@@ -248,6 +265,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={handleChange}
+                  required
                 />
                 {errors.email && <span className="form-error">{errors.email}</span>}
               </div>
@@ -262,6 +280,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   name="serviceName"
                   value={form.serviceName}
                   onChange={handleChange}
+                  required
                 >
                   <option value="">Choose a service</option>
                   {serviceList.map((s) => (
@@ -299,6 +318,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   min={minDateStr}
                   value={form.appointmentDate}
                   onChange={handleChange}
+                  required
                 />
                 {errors.appointmentDate && <span className="form-error">{errors.appointmentDate}</span>}
               </div>

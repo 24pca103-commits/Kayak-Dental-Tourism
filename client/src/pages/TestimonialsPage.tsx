@@ -38,6 +38,28 @@ const TestimonialsPage: React.FC = () => {
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
+  const list = testimonials.length > 0 ? testimonials : DEMO;
+  const avg = (list.reduce((a, t) => a + t.rating, 0) / list.length).toFixed(1);
+
+  // Review cards slider state (auto & manual sliding for mobile view)
+  const [activeReviewIdx, setActiveReviewIdx] = useState(0);
+  const reviewTouchStartX = useRef<number | null>(null);
+  const reviewTouchEndX = useRef<number | null>(null);
+  const isDraggingReview = useRef(false);
+  const isPausedReview = useRef(false);
+
+  // Auto-sliding every 4.5s for review cards
+  useEffect(() => {
+    if (list.length <= 1) return;
+    const timer = setInterval(() => {
+      if (!isPausedReview.current) {
+        setActiveReviewIdx(prev => (prev < list.length - 1 ? prev + 1 : 0));
+      }
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [list.length]);
+
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
   };
@@ -60,13 +82,69 @@ const TestimonialsPage: React.FC = () => {
     touchEndX.current = null;
   };
 
+  // Review card touch handlers (manual sliding / swipe)
+  const handleReviewTouchStart = (e: React.TouchEvent) => {
+    isPausedReview.current = true;
+    reviewTouchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleReviewTouchMove = (e: React.TouchEvent) => {
+    reviewTouchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleReviewTouchEnd = () => {
+    if (reviewTouchStartX.current !== null && reviewTouchEndX.current !== null) {
+      const diff = reviewTouchStartX.current - reviewTouchEndX.current;
+      if (diff > 40) {
+        // swipe left -> next
+        setActiveReviewIdx(prev => (prev < list.length - 1 ? prev + 1 : 0));
+      } else if (diff < -40) {
+        // swipe right -> prev
+        setActiveReviewIdx(prev => (prev > 0 ? prev - 1 : list.length - 1));
+      }
+    }
+    reviewTouchStartX.current = null;
+    reviewTouchEndX.current = null;
+    setTimeout(() => {
+      isPausedReview.current = false;
+    }, 1200);
+  };
+
+  // Mouse drag handlers for desktop / testing
+  const handleReviewMouseDown = (e: React.MouseEvent) => {
+    isPausedReview.current = true;
+    isDraggingReview.current = true;
+    reviewTouchStartX.current = e.clientX;
+  };
+
+  const handleReviewMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingReview.current) return;
+    reviewTouchEndX.current = e.clientX;
+  };
+
+  const handleReviewMouseUp = () => {
+    if (isDraggingReview.current) {
+      if (reviewTouchStartX.current !== null && reviewTouchEndX.current !== null) {
+        const diff = reviewTouchStartX.current - reviewTouchEndX.current;
+        if (diff > 40) {
+          setActiveReviewIdx(prev => (prev < list.length - 1 ? prev + 1 : 0));
+        } else if (diff < -40) {
+          setActiveReviewIdx(prev => (prev > 0 ? prev - 1 : list.length - 1));
+        }
+      }
+      isDraggingReview.current = false;
+      reviewTouchStartX.current = null;
+      reviewTouchEndX.current = null;
+      setTimeout(() => {
+        isPausedReview.current = false;
+      }, 1200);
+    }
+  };
+
   useEffect(() => {
     document.title = 'Testimonials & Reviews | KAYAL Dental Care';
     testimonialsAPI.getAll().then(r => setTestimonials(r.data?.data || [])).catch(() => setTestimonials(DEMO));
   }, []);
-
-  const list = testimonials.length > 0 ? testimonials : DEMO;
-  const avg = (list.reduce((a, t) => a + t.rating, 0) / list.length).toFixed(1);
 
   return (
     <div style={{ paddingTop: '70px' }}>
@@ -74,11 +152,11 @@ const TestimonialsPage: React.FC = () => {
       <section className="testimonials-hero" style={{
         position: 'relative',
         backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-1.jpg')",
-        backgroundSize: 'auto 115%',
-        backgroundPosition: 'right 30%',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-smile-collage-1.jpg')",
+        backgroundSize: 'auto 100%',
+        backgroundPosition: 'right center',
         backgroundRepeat: 'no-repeat',
-        minHeight: '330px',
+        minHeight: '360px',
         padding: '4.5rem 0 3.5rem',
         display: 'flex',
         alignItems: 'center',
@@ -105,7 +183,8 @@ const TestimonialsPage: React.FC = () => {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: '1.5rem' }}>
+          {/* Desktop Grid Layout (hidden on mobile via CSS) */}
+          <div className="reviews-desktop-grid">
             {list.map((t, i) => (
               <div
                 key={t._id || i}
@@ -148,6 +227,107 @@ const TestimonialsPage: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Mobile Auto & Manual Swipe Sliding Carousel (Hidden on desktop, no arrow icons) */}
+          <div
+            className="reviews-mobile-slider"
+            onMouseEnter={() => { isPausedReview.current = true; }}
+            onMouseLeave={() => { isPausedReview.current = false; }}
+          >
+            <div
+              className="reviews-slider-track"
+              onTouchStart={handleReviewTouchStart}
+              onTouchMove={handleReviewTouchMove}
+              onTouchEnd={handleReviewTouchEnd}
+              onMouseDown={handleReviewMouseDown}
+              onMouseMove={handleReviewMouseMove}
+              onMouseUp={handleReviewMouseUp}
+              onMouseLeave={handleReviewMouseUp}
+              style={{
+                overflow: 'hidden',
+                borderRadius: '16px',
+                cursor: 'grab',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                padding: '4px 2px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  transform: `translateX(-${activeReviewIdx * 100}%)`,
+                  transition: 'transform 0.45s cubic-bezier(0.25, 1, 0.5, 1)',
+                  width: '100%',
+                }}
+              >
+                {list.map((t, i) => (
+                  <div
+                    key={t._id || i}
+                    style={{
+                      flex: '0 0 100%',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      padding: '0 4px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: '#ffffff',
+                        border: '1.5px solid rgba(69,18,113,0.12)',
+                        borderRadius: '16px',
+                        padding: '1.65rem 1.35rem',
+                        boxShadow: '0 8px 24px rgba(69,18,113,0.08)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minHeight: '260px',
+                      }}
+                    >
+                      <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '0.85rem' }}>
+                        {Array.from({ length: t.rating }).map((_, j) => (
+                          <Star key={j} size={15} fill="#fbbf24" color="#fbbf24" />
+                        ))}
+                      </div>
+                      <p style={{ color: 'var(--gray-700)', fontSize: '0.92rem', lineHeight: 1.65, fontStyle: 'italic', marginBottom: '1.25rem', flexGrow: 1 }}>
+                        "{t.review}"
+                      </p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: 'auto', borderTop: '1px solid #f3f4f6', paddingTop: '0.85rem' }}>
+                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#451271,#350d58)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.95rem', color: '#24E0E1', flexShrink: 0 }}>
+                          {t.patientName.charAt(0)}
+                        </div>
+                        <div>
+                          <span style={{ fontWeight: 700, color: '#451271', fontSize: '0.92rem', display: 'block' }}>{t.patientName}</span>
+                          <span style={{ fontSize: '0.76rem', color: 'var(--gray-500)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <CheckCircle2 size={12} color="#25D366" /> Verified Patient
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Slider Dots (No arrow icons) */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', marginTop: '1.35rem' }}>
+              {list.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveReviewIdx(idx)}
+                  aria-label={`Go to review ${idx + 1}`}
+                  style={{
+                    width: activeReviewIdx === idx ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '4px',
+                    background: activeReviewIdx === idx ? '#451271' : '#cbd5e1',
+                    border: activeReviewIdx === idx ? '1px solid #24E0E1' : 'none',
+                    transition: 'all 0.3s ease',
+                    padding: 0,
+                    cursor: 'pointer',
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -235,7 +415,7 @@ const TestimonialsPage: React.FC = () => {
                     >
                       <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%', background: '#0f0f0f' }}>
                         <iframe
-                          src={item.videoUrl}
+                          src={""}
                           title={item.name}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen

@@ -20,9 +20,27 @@ const AdminAppointments: React.FC = () => {
     setLoading(true);
     const params: Record<string, string | number> = { limit: 100 };
     if (filterStatus) params.status = filterStatus;
+
+    const getLocal = (): Appointment[] => {
+      try {
+        return JSON.parse(localStorage.getItem('kayal_local_appointments') || '[]');
+      } catch {
+        return [];
+      }
+    };
+
     appointmentsAPI.getAll(params)
-      .then(r => setAppointments(r.data?.data || []))
-      .catch(() => setAppointments([]))
+      .then(r => {
+        const apiData: Appointment[] = r.data?.data || [];
+        const localData = getLocal();
+        const existingIds = new Set(apiData.map(a => a._id));
+        const merged = [...apiData, ...localData.filter(l => !existingIds.has(l._id))];
+        setAppointments(filterStatus ? merged.filter(a => a.status === filterStatus) : merged);
+      })
+      .catch(() => {
+        const localData = getLocal();
+        setAppointments(filterStatus ? localData.filter(a => a.status === filterStatus) : localData);
+      })
       .finally(() => setLoading(false));
   };
 
@@ -31,16 +49,28 @@ const AdminAppointments: React.FC = () => {
   const handleStatusChange = async (id: string, status: string) => {
     try {
       await appointmentsAPI.update(id, { status });
-      setAppointments(prev => prev.map(a => a._id === id ? { ...a, status: status as Appointment['status'] } : a));
     } catch {}
+    setAppointments(prev => {
+      const updated = prev.map(a => a._id === id ? { ...a, status: status as Appointment['status'] } : a);
+      try {
+        localStorage.setItem('kayal_local_appointments', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   const handleDelete = async (id: string) => {
     if (!window.confirm('Delete this appointment?')) return;
     try {
       await appointmentsAPI.delete(id);
-      setAppointments(prev => prev.filter(a => a._id !== id));
     } catch {}
+    setAppointments(prev => {
+      const updated = prev.filter(a => a._id !== id);
+      try {
+        localStorage.setItem('kayal_local_appointments', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   const filtered = appointments.filter(a =>

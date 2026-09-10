@@ -6,12 +6,15 @@ import {
   updateAppointment,
   deleteAppointment,
   getBookedSlots,
+  upload,
+  uploadAppointmentFiles,
 } from '../controllers/appointmentController';
 import { protect, adminOnly } from '../middleware/auth';
 
 const router = Router();
 
-// Public – book appointment & check booked slots
+// Public – book appointment, upload files & check booked slots
+router.post('/upload', upload.array('files', 5), uploadAppointmentFiles);
 router.post('/', createAppointment);
 router.get('/booked-slots', getBookedSlots);
 

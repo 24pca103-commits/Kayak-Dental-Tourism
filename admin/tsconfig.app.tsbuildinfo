@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/adminlayout.tsx","./src/pages/adminappointments.tsx","./src/pages/admindashboard.tsx","./src/pages/adminloginpage.tsx","./src/services/api.ts","./src/services/emailservice.ts","./src/types/index.ts"],"version":"6.0.3"}

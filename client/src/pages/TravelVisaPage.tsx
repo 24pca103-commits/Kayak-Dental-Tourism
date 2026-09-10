@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FileText, CheckCircle, CreditCard, Clock, Plane, MapPin, Star, Languages, DollarSign, Shield, Sun, Coffee, Wifi, Mail, ArrowRight } from 'lucide-react';
-import './TravelVisaPage.css';
+import '../styles/TravelVisaPage.css';
 
 const TravelVisaPage: React.FC = () => {
   const navigate = useNavigate();

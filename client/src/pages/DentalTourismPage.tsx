@@ -17,7 +17,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
-import './DentalTourismPage.css';
+import '../styles/DentalTourismPage.css';
 
 interface VideoTestimonial {
   name: string;

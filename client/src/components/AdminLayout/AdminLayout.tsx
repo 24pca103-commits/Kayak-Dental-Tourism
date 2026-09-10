@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Calendar, Users, Stethoscope, Star, HelpCircle, LogOut, Menu, X, ChevronRight } from 'lucide-react';
-import './AdminLayout.css';
+import { LayoutDashboard, Calendar, LogOut, Menu, X, ChevronRight } from 'lucide-react';
+import '../../styles/AdminLayout.css';
 
 const NAV_ITEMS = [
-  { label: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
-  { label: 'Appointments', path: '/admin/appointments', icon: <Calendar size={18} /> },
-  { label: 'Doctors', path: '/admin/doctors', icon: <Users size={18} /> },
-  { label: 'Services', path: '/admin/services', icon: <Stethoscope size={18} /> },
-  { label: 'Testimonials', path: '/admin/testimonials', icon: <Star size={18} /> },
-  { label: 'FAQs', path: '/admin/faqs', icon: <HelpCircle size={18} /> },
+  { label: 'Dashboard Overview', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
+  { label: 'Bookings & Appointments', path: '/admin/appointments', icon: <Calendar size={18} /> },
 ];
 
 interface Props { children: React.ReactNode }
@@ -31,7 +27,9 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
       {/* Sidebar */}
       <aside className={`admin-sidebar ${sidebarOpen ? 'admin-sidebar--open' : ''}`}>
         <div className="admin-sidebar__logo">
-          <img src="/assets/kayal-brand-logo.png" alt="KAYAL Admin" style={{ height: '42px', width: 'auto', objectFit: 'contain' }} />
+          <Link to="/admin/dashboard" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src="/assets/kayal-brand-logo.png" alt="KAYAL Admin" style={{ height: '42px', width: 'auto', objectFit: 'contain' }} />
+          </Link>
         </div>
 
         <nav className="admin-sidebar__nav">

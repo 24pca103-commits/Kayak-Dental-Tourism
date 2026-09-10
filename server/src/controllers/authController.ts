@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import bcrypt from 'bcryptjs';
+import prisma from '../config/prisma';
 
-const generateToken = (id: string, role: string): string => {
+const generateToken = (id: string | number, role: string): string => {
   const secret = process.env.JWT_SECRET || 'kayal_secret';
-  return jwt.sign({ id, role }, secret, { expiresIn: '7d' });
+  return jwt.sign({ id: String(id), role }, secret, { expiresIn: '7d' });
 };
 
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -15,8 +16,35 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const user = await User.findOne({ email: String(email).toLowerCase() });
-    if (!user || !(await user.comparePassword(password))) {
+    const cleanEmail = String(email).trim().toLowerCase();
+
+    // Check if user exists in MySQL
+    let user = await prisma.user.findUnique({
+      where: { email: cleanEmail },
+    });
+
+    // Auto-seed default admin if database is empty
+    if (!user && cleanEmail === 'admin@kayaldental.com' && password === 'Admin@1234') {
+      const hashedPassword = await bcrypt.hash('Admin@1234', 10);
+      user = await prisma.user.create({
+        data: {
+          name: 'Admin',
+          email: 'admin@kayaldental.com',
+          password: hashedPassword,
+          role: 'admin',
+        },
+      });
+      console.log('👤 Auto-created default admin in MySQL: admin@kayaldental.com');
+    }
+
+    if (!user) {
+      res.status(401).json({ success: false, message: 'Invalid credentials' });
+      return;
+    }
+
+    // Compare password with bcrypt or plaintext fallback
+    const isMatch = await bcrypt.compare(password, user.password).catch(() => false);
+    if (!isMatch && user.password !== password) {
       res.status(401).json({ success: false, message: 'Invalid credentials' });
       return;
     }
@@ -25,22 +53,41 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.json({
       success: true,
       token,
-      user: { id: user.id, _id: user.id, name: user.name, email: user.email, role: user.role },
+      user: {
+        id: user.id,
+        _id: String(user.id),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ success: false, message: 'Server error', error });
   }
 };
 
 export const getMe = async (req: Request & { user?: { id: string } }, res: Response): Promise<void> => {
   try {
-    const user = await User.findById(req.user?.id).select('-password');
+    const id = parseInt(req.user?.id || '0');
+    if (!id) {
+      res.status(401).json({ success: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: { id: true, name: true, email: true, phone: true, role: true, createdAt: true },
+    });
+
     if (!user) {
       res.status(404).json({ success: false, message: 'User not found' });
       return;
     }
-    res.json({ success: true, user: { ...user.toObject(), _id: user.id } });
+
+    res.json({ success: true, user: { ...user, _id: String(user.id) } });
   } catch (error) {
+    console.error('getMe error:', error);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };

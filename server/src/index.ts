@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
-import connectDB from './config/db';
+import prisma from './config/prisma';
 import authRoutes from './routes/auth';
 import doctorRoutes from './routes/doctors';
 import serviceRoutes from './routes/services';
@@ -15,8 +15,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
+// Connect to MySQL via Prisma
+prisma.$connect()
+  .then(() => console.log('✅ MySQL connected successfully via Prisma'))
+  .catch((err) => console.error('❌ MySQL connection error:', err));
 
 // Middleware
 app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));

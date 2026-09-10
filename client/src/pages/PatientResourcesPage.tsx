@@ -6,8 +6,8 @@ import {
   FileText, CheckCircle, CreditCard, Clock, Plane, MapPin, Star, Languages, DollarSign, Shield, Sun, Coffee, Wifi, Mail, ArrowRight
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import './PatientResourcesPage.css';
-import './TravelVisaPage.css';
+import '../styles/PatientResourcesPage.css';
+import '../styles/TravelVisaPage.css';
 
 const PatientResourcesPage: React.FC = () => {
   const navigate = useNavigate();

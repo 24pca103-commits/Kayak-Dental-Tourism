@@ -9,7 +9,7 @@ import { servicesAPI, doctorsAPI } from '../services/api';
 import type { Service, Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
 
-import './HomePage.css';
+import '../styles/HomePage.css';
 
 /* ── Stat counter ── */
 const StatItem: React.FC<{ value: string; label: string }> = ({ value, label }) => (
@@ -55,7 +55,7 @@ const ALL_TREATMENTS = [
     title: 'Orthodontics',
     desc: 'Straighten teeth discreetly using clear aligners or traditional ceramic braces.',
     slug: 'orthodontics',
-    img: '/assets/treatment-6-orthodontics.jpg',
+    img: '/assets/treatment-6-orthodontics.png',
   },
   {
     title: 'Oral & Maxillofacial Surgery',

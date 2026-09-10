@@ -13,7 +13,7 @@ import {
   ArrowRight,
   Eye
 } from 'lucide-react';
-import './AboutPage.css';
+import '../styles/AboutPage.css';
 
 const AboutPage: React.FC = () => {
   const navigate = useNavigate();

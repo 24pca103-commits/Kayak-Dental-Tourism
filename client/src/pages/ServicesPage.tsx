@@ -5,16 +5,16 @@ import { servicesAPI } from '../services/api';
 import type { Service } from '../types';
 
 const SERVICE_IMAGES: Record<string, string> = {
-  'teeth-alignment': '/assets/card-orthodontics-hd.png',
+  'teeth-alignment': '/assets/card-orthodontics-hd.jpg',
   'teeth-replacement': '/assets/card-replacement.png',
   'smile-designing': '/assets/card-smile.png',
   'dental-implants': '/assets/treatment-implants-hd.png',
   'root-canal-treatment': '/assets/treatment-5-root-canal.jpg',
-  'teeth-whitening': '/assets/treatment-cosmetic-dentistry.png',
+  'teeth-whitening': '/assets/treatment-cosmetic-dentistry.jpg',
   'braces': '/assets/card-braces.png',
   'clear-aligners': '/assets/treatment-orthodontics.jpg',
   'pediatric-dentistry': '/assets/treatment-8-pediatric-child.jpg',
-  'preventive-dentistry': '/assets/hero-child-smile.jpg',
+  'preventive-dentistry': '/assets/hero-child-smile.png',
   'cosmetic-dentistry': '/assets/treatment-3-cosmetic.png',
   'emergency-dental-care': '/assets/about-clinic-real.jpg',
 };
@@ -56,11 +56,11 @@ const ServicesPage: React.FC = () => {
       <section className="treatment-hero" style={{
         position: 'relative',
         backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-2.jpg')",
-        backgroundSize: 'auto 115%',
-        backgroundPosition: 'right 30%',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-smile-collage-2.jpg')",
+        backgroundSize: 'auto 100%',
+        backgroundPosition: 'right center',
         backgroundRepeat: 'no-repeat',
-        minHeight: '330px',
+        minHeight: '360px',
         padding: '4.5rem 0 3.5rem',
         display: 'flex',
         alignItems: 'center',

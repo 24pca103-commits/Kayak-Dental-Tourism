@@ -5,7 +5,7 @@ import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { servicesAPI, doctorsAPI } from '../services/api';
 import type { Service, Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
-import './ServiceDetailPage.css';
+import '../styles/ServiceDetailPage.css';
 
 const SLUG_DATA: Record<string, Partial<Service>> = {
   'dental-implants': {
@@ -109,11 +109,11 @@ const ServiceDetailPage: React.FC = () => {
       <div className="service-detail-hero" style={{
         position: 'relative',
         backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, rgba(69, 18, 113, 0.95) 38%, rgba(69, 18, 113, 0.75) 60%, rgba(69, 18, 113, 0.25) 85%, rgba(69, 18, 113, 0) 100%), url('/assets/banner-smile-collage-1.jpg')",
-        backgroundSize: 'auto 115%',
-        backgroundPosition: 'right 30%',
+        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-smile-collage-1.jpg')",
+        backgroundSize: 'auto 100%',
+        backgroundPosition: 'right center',
         backgroundRepeat: 'no-repeat',
-        minHeight: '330px',
+        minHeight: '360px',
         padding: '4.5rem 0 3.5rem',
         display: 'flex',
         alignItems: 'center',

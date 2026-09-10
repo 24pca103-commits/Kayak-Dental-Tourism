@@ -40,6 +40,7 @@ export interface Appointment {
   message?: string;
   status: 'pending' | 'confirmed' | 'rescheduled' | 'completed' | 'cancelled';
   adminNote?: string;
+  attachments?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -20,24 +20,38 @@ prisma.$connect()
   .then(() => console.log('✅ MySQL connected successfully via Prisma'))
   .catch((err) => console.error('❌ MySQL connection error:', err));
 
-// Middleware
-app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
+// Middleware - Allow all origins (Vercel, localhost, custom domains) with credentials
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static uploads
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Routes
+// Routes mounted with /api and directly (handles any VITE_API_URL format)
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 app.use('/api/doctors', doctorRoutes);
+app.use('/doctors', doctorRoutes);
+
 app.use('/api/services', serviceRoutes);
+app.use('/services', serviceRoutes);
+
 app.use('/api/appointments', appointmentRoutes);
+app.use('/appointments', appointmentRoutes);
+
 app.use('/api/testimonials', testimonialRoutes);
+app.use('/testimonials', testimonialRoutes);
+
 app.use('/api/faqs', faqRoutes);
+app.use('/faqs', faqRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
+  res.json({ status: 'OK', message: 'KAYAL Dental MySQL API is running 🦷' });
+});
+app.get('/health', (_req, res) => {
   res.json({ status: 'OK', message: 'KAYAL Dental MySQL API is running 🦷' });
 });
 

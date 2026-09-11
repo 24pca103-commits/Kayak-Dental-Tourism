@@ -108,6 +108,15 @@ const AppointmentPage: React.FC = () => {
           console.warn('Backend file upload fallback:', uploadErr);
         }
 
+        // Ensure all uploaded attachment URLs are absolute or Data URLs
+        const API_BASE = (import.meta.env.VITE_API_URL || 'https://kayal-dental-tourism-treatment.onrender.com').replace(/\/api\/?$/, '').replace(/\/+$/, '');
+        uploadedAttachments = uploadedAttachments.map((att) => {
+          if (att.url && !att.url.startsWith('http') && !att.url.startsWith('data:')) {
+            return { ...att, url: `${API_BASE}${att.url.startsWith('/') ? '' : '/'}${att.url}` };
+          }
+          return att;
+        });
+
         // Fallback to Data URL previews if server upload returned empty
         if (uploadedAttachments.length === 0) {
           for (const f of files) {

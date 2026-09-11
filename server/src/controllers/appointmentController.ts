@@ -43,10 +43,14 @@ export const uploadAppointmentFiles = (req: Request, res: Response): void => {
       return;
     }
 
+    const host = req.get('host') || 'kayal-dental-tourism-treatment.onrender.com';
+    const protocol = req.protocol === 'https' || req.get('x-forwarded-proto') === 'https' ? 'https' : 'http';
+    const baseUrl = `${protocol}://${host}`;
+
     const uploaded = files.map((f) => ({
       name: f.originalname,
       filename: f.filename,
-      url: `/uploads/${f.filename}`,
+      url: `${baseUrl}/uploads/${f.filename}`,
       size: f.size,
       type: f.mimetype,
     }));

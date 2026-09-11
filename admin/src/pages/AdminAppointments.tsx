@@ -15,15 +15,35 @@ interface AttachmentItem {
   type?: string;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://kayal-dental-tourism-treatment.onrender.com';
+
+const resolveUrl = (url?: string): string => {
+  if (!url) return '';
+  if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  const cleanBase = API_BASE_URL.replace(/\/api\/?$/, '').replace(/\/+$/, '');
+  const cleanPath = url.startsWith('/') ? url : `/${url}`;
+  return `${cleanBase}${cleanPath}`;
+};
+
 const parseAttachments = (raw?: string): AttachmentItem[] => {
   if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-  try {
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
+  let items: AttachmentItem[] = [];
+  if (Array.isArray(raw)) {
+    items = raw;
+  } else {
+    try {
+      const parsed = JSON.parse(raw);
+      items = Array.isArray(parsed) ? parsed : [];
+    } catch {
+      items = [];
+    }
   }
+  return items.map((att) => ({
+    ...att,
+    url: resolveUrl(att.url),
+  }));
 };
 
 const isImageFile = (att: AttachmentItem) => {

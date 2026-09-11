@@ -7,18 +7,22 @@ dotenv.config();
 export const seedInitialData = async () => {
   try {
     // 1. Seed Admin if not exists
-    const adminCount = await prisma.user.count({ where: { email: 'admin@kayaldental.com' } });
+    const adminEmail = (process.env.ADMIN_EMAIL || 'admin@kayaldental.com').toLowerCase().trim();
+    const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@1234';
+    const adminName = process.env.ADMIN_NAME || 'Admin';
+
+    const adminCount = await prisma.user.count({ where: { email: adminEmail } });
     if (adminCount === 0) {
-      const hashedPassword = await bcrypt.hash('Admin@1234', 10);
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
       await prisma.user.create({
         data: {
-          name: 'Admin',
-          email: 'admin@kayaldental.com',
+          name: adminName,
+          email: adminEmail,
           password: hashedPassword,
           role: 'admin',
         },
       });
-      console.log('👤 Admin user seeded: admin@kayaldental.com / Admin@1234');
+      console.log(`👤 Admin user seeded: ${adminEmail}`);
     }
 
     // 2. Seed Doctors if table is empty

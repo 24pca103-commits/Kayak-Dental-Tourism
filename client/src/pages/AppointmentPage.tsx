@@ -76,10 +76,48 @@ const AppointmentPage: React.FC = () => {
     return e;
   };
 
-  const readFileAsDataURL = (file: File): Promise<string> => {
+  const readFileAsCompressedDataURL = (file: File): Promise<string> => {
     return new Promise((resolve) => {
+      if (!file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve((reader.result as string) || '');
+        reader.onerror = () => resolve('');
+        reader.readAsDataURL(file);
+        return;
+      }
+
       const reader = new FileReader();
-      reader.onloadend = () => resolve((reader.result as string) || '');
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1200;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', 0.82));
+          } else {
+            resolve((event.target?.result as string) || '');
+          }
+        };
+        img.onerror = () => resolve((event.target?.result as string) || '');
+        img.src = event.target?.result as string;
+      };
       reader.onerror = () => resolve('');
       reader.readAsDataURL(file);
     });
@@ -93,42 +131,23 @@ const AppointmentPage: React.FC = () => {
     const fullPhone = form.phone.startsWith('+') ? form.phone : `${countryCode} ${form.phone}`;
 
     try {
-      // Upload attached files if any
-      let uploadedAttachments: Array<{ name: string; url: string; size?: number; type?: string }> = [];
+      // Process attached photos & files into Data URLs for permanent, bulletproof storage
+      const uploadedAttachments: Array<{ name: string; url: string; size?: number; type?: string }> = [];
 
       if (files.length > 0) {
-        try {
-          const formData = new FormData();
-          files.forEach((f) => formData.append('files', f));
-          const uploadRes = await appointmentsAPI.uploadAttachments(formData);
-          if (uploadRes.data?.success && Array.isArray(uploadRes.data.files)) {
-            uploadedAttachments = uploadRes.data.files;
-          }
-        } catch (uploadErr) {
-          console.warn('Backend file upload fallback:', uploadErr);
-        }
-
-        // Ensure all uploaded attachment URLs are absolute or Data URLs
-        const API_BASE = (import.meta.env.VITE_API_URL || 'https://kayal-dental-tourism-treatment.onrender.com').replace(/\/api\/?$/, '').replace(/\/+$/, '');
-        uploadedAttachments = uploadedAttachments.map((att) => {
-          if (att.url && !att.url.startsWith('http') && !att.url.startsWith('data:')) {
-            return { ...att, url: `${API_BASE}${att.url.startsWith('/') ? '' : '/'}${att.url}` };
-          }
-          return att;
-        });
-
-        // Fallback to Data URL previews if server upload returned empty
-        if (uploadedAttachments.length === 0) {
-          for (const f of files) {
-            try {
-              const dataUrl = await readFileAsDataURL(f);
+        for (const f of files) {
+          try {
+            const dataUrl = await readFileAsCompressedDataURL(f);
+            if (dataUrl) {
               uploadedAttachments.push({
                 name: f.name,
                 url: dataUrl,
                 size: f.size,
-                type: f.type,
+                type: f.type || 'image/jpeg',
               });
-            } catch {}
+            }
+          } catch (readErr) {
+            console.warn('File read error:', readErr);
           }
         }
       }

@@ -24,17 +24,21 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     });
 
     // Auto-seed default admin if database is empty
-    if (!user && cleanEmail === 'admin@kayaldental.com' && password === 'Admin@1234') {
-      const hashedPassword = await bcrypt.hash('Admin@1234', 10);
+    const defaultAdminEmail = (process.env.ADMIN_EMAIL || 'admin@kayaldental.com').toLowerCase().trim();
+    const defaultAdminPassword = process.env.ADMIN_PASSWORD || 'Admin@1234';
+    const defaultAdminName = process.env.ADMIN_NAME || 'Admin';
+
+    if (!user && cleanEmail === defaultAdminEmail && password === defaultAdminPassword) {
+      const hashedPassword = await bcrypt.hash(defaultAdminPassword, 10);
       user = await prisma.user.create({
         data: {
-          name: 'Admin',
-          email: 'admin@kayaldental.com',
+          name: defaultAdminName,
+          email: defaultAdminEmail,
           password: hashedPassword,
           role: 'admin',
         },
       });
-      console.log('👤 Auto-created default admin in MySQL: admin@kayaldental.com');
+      console.log(`👤 Auto-created default admin in MySQL: ${defaultAdminEmail}`);
     }
 
     if (!user) {

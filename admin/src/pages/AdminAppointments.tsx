@@ -46,6 +46,32 @@ const parseAttachments = (raw?: string): AttachmentItem[] => {
   }));
 };
 
+const handleDownload = async (url: string, fileName: string, e?: React.MouseEvent) => {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  const toastId = toast.loading(`Downloading ${fileName}...`);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Download failed');
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = fileName || 'download';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(blobUrl);
+    toast.success('Downloaded successfully!', { id: toastId });
+  } catch (err) {
+    console.error('Download error:', err);
+    toast.error('Direct download blocked by browser. Opening file directly...', { id: toastId });
+    window.open(url, '_blank');
+  }
+};
+
 const isImageFile = (att: AttachmentItem) => {
   if (att.type?.startsWith('image/')) return true;
   if (att.url?.startsWith('data:image/')) return true;
@@ -1210,9 +1236,8 @@ const AdminAppointments: React.FC = () => {
                             >
                               <ExternalLink size={12} /> Open
                             </a>
-                            <a
-                              href={att.url}
-                              download={att.name}
+                            <button
+                              onClick={(e) => handleDownload(att.url, att.name, e)}
                               style={{
                                 padding: '0.4rem 0.6rem',
                                 borderRadius: '6px',
@@ -1221,15 +1246,15 @@ const AdminAppointments: React.FC = () => {
                                 color: '#334155',
                                 fontSize: '0.75rem',
                                 fontWeight: 600,
-                                textDecoration: 'none',
+                                cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                               }}
-                              title="Download"
+                              title="Download file"
                             >
                               <Download size={13} />
-                            </a>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -1538,9 +1563,8 @@ const AdminAppointments: React.FC = () => {
             >
               <ExternalLink size={15} /> Open New Tab
             </a>
-            <a
-              href={lightboxImg.url}
-              download={lightboxImg.name}
+            <button
+              onClick={(e) => handleDownload(lightboxImg.url, lightboxImg.name, e)}
               style={{
                 padding: '0.5rem 1rem',
                 borderRadius: '8px',
@@ -1548,14 +1572,15 @@ const AdminAppointments: React.FC = () => {
                 color: '#160427',
                 fontSize: '0.85rem',
                 fontWeight: 700,
-                textDecoration: 'none',
+                border: 'none',
+                cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
               }}
             >
               <Download size={15} /> Download
-            </a>
+            </button>
             <button
               onClick={() => setLightboxImg(null)}
               style={{

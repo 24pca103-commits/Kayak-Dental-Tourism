@@ -10,14 +10,19 @@ import appointmentRoutes from './routes/appointments';
 import testimonialRoutes from './routes/testimonials';
 import faqRoutes from './routes/faqs';
 
+import { seedInitialData } from './seed';
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MySQL via Prisma
+// Connect to MySQL via Prisma & auto-seed if database is fresh
 prisma.$connect()
-  .then(() => console.log('✅ MySQL connected successfully via Prisma'))
+  .then(async () => {
+    console.log('✅ MySQL connected successfully via Prisma');
+    await seedInitialData();
+  })
   .catch((err) => console.error('❌ MySQL connection error:', err));
 
 // Middleware - Allow all origins (Vercel, localhost, custom domains) with credentials

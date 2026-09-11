@@ -59,8 +59,8 @@ model Service {
   shortDescription String        @db.Text
   description      String        @db.Text
   benefits         String        @default("[]")
-  treatmentProcess String        @default("") @db.Text
-  whoNeeds         String        @default("") @db.Text
+  treatmentProcess String?       @db.Text
+  whoNeeds         String?       @db.Text
   duration         String        @default("")
   status           Status        @default(active)
   createdAt        DateTime      @default(now())

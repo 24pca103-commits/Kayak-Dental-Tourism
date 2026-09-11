@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import { X, Calendar, Clock, User, Phone, Mail, ChevronDown, CheckCircle } from 'lucide-react';
 import { appointmentsAPI } from '../../services/api';
 import { sendRealtimeEmail } from '../../services/emailService';
+import {
+  COUNTRY_PHONE_LIST,
+  getCountryConfig,
+  validatePhoneNumber,
+  validateEmail,
+  validateFullName,
+} from '../../utils/phoneValidation';
 import type { Service, Doctor } from '../../types';
 import '../../styles/AppointmentModal.css';
 
@@ -35,12 +42,15 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
     appointmentTime: '',
     message: '',
   });
+  const [selectedCountry, setSelectedCountry] = useState('India');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [bookedTimes, setBookedTimes] = useState<string[]>([]);
   const [fetchingSlots, setFetchingSlots] = useState(false);
 
+  const countryConfig = getCountryConfig(selectedCountry);
   const serviceList = services.length > 0 ? services.map(s => s.name) : SERVICE_OPTIONS;
   const doctorList = doctors.length > 0 ? doctors.map(d => d.name) : ['Any Available Doctor'];
 
@@ -97,38 +107,90 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
   // Only display time slots that are NOT booked
   const availableTimeSlots = TIME_SLOTS.filter(slot => !bookedTimes.includes(slot));
 
-  const validate = () => {
+  const validateAll = () => {
     const e: Record<string, string> = {};
-    if (!form.patientName.trim()) e.patientName = 'Name is required';
-    if (!form.phone.trim()) e.phone = 'Phone is required';
-    else if (!/^[6-9]\d{9}$/.test(form.phone.replace(/\s/g, ''))) e.phone = 'Enter a valid 10-digit phone number';
-    if (!form.email.trim()) e.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Enter a valid email';
+    const nameRes = validateFullName(form.patientName);
+    if (!nameRes.isValid && nameRes.error) e.patientName = nameRes.error;
+
+    const phoneRes = validatePhoneNumber(form.phone, selectedCountry);
+    if (!phoneRes.isValid && phoneRes.error) e.phone = phoneRes.error;
+
+    const emailRes = validateEmail(form.email);
+    if (!emailRes.isValid && emailRes.error) e.email = emailRes.error;
+
     if (!form.serviceName) e.serviceName = 'Please select a service';
     if (!form.appointmentDate) e.appointmentDate = 'Please select a date';
-    if (!form.appointmentTime) e.appointmentTime = 'Please select a time';
+    if (!form.appointmentTime) e.appointmentTime = 'Please select a time slot';
     return e;
+  };
+
+  const validateSingleField = (name: string, value: string, country = selectedCountry) => {
+    switch (name) {
+      case 'patientName':
+        return validateFullName(value).error || '';
+      case 'phone':
+        return validatePhoneNumber(value, country).error || '';
+      case 'email':
+        return validateEmail(value).error || '';
+      case 'serviceName':
+        return !value ? 'Please select a service' : '';
+      case 'appointmentDate':
+        return !value ? 'Please select a date' : '';
+      case 'appointmentTime':
+        return !value ? 'Please select a time slot' : '';
+      default:
+        return '';
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    if (touched[name] || errors[name]) {
+      const err = validateSingleField(name, value);
+      setErrors(prev => ({ ...prev, [name]: err }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const err = validateSingleField(name, value);
+    setErrors(prev => ({ ...prev, [name]: err }));
+  };
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCountry = e.target.value;
+    setSelectedCountry(newCountry);
+    if (form.phone.trim()) {
+      const err = validateSingleField('phone', form.phone, newCountry);
+      setErrors(prev => ({ ...prev, phone: err }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const errs = validate();
+    setTouched({
+      patientName: true,
+      phone: true,
+      email: true,
+      serviceName: true,
+      appointmentDate: true,
+      appointmentTime: true,
+    });
+    const errs = validateAll();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
-    try {
-      // 1. Send real-time confirmation email to user
-      await sendRealtimeEmail({
-        name: form.patientName,
-        email: form.email,
-        phone: form.phone,
-        subject: `Appointment Booking - ${form.serviceName}`,
-        message: `Appointment for ${form.serviceName} on ${form.appointmentDate} at ${form.appointmentTime}. ${form.message || ''}`,
-      });
 
-      // 2. Save to appointments API in MongoDB
+    const phoneResult = validatePhoneNumber(form.phone, selectedCountry);
+    const fullPhone = phoneResult.formatted || `${countryConfig.code} ${form.phone.trim()}`;
+
+    try {
+      // 1. Save directly to appointments API in MySQL
       try {
         await appointmentsAPI.create({
           ...form,
+          phone: fullPhone,
           appointmentDate: new Date(form.appointmentDate).toISOString(),
         });
       } catch (err: any) {
@@ -147,9 +209,10 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
           setLoading(false);
           return;
         }
+        console.warn('API create warning (will use local fallback):', err);
       }
 
-      // 3. Cache booked slot in localStorage for instant local reflect and admin sync
+      // 2. Cache booked slot in localStorage for instant local reflect and backup
       try {
         const localBookings = JSON.parse(localStorage.getItem('kayal_booked_appointments') || '[]');
         localBookings.push({ date: form.appointmentDate, time: form.appointmentTime, service: form.serviceName });
@@ -159,7 +222,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         fullBookings.unshift({
           _id: 'bk_' + Date.now(),
           patientName: form.patientName,
-          phone: form.phone,
+          phone: fullPhone,
           email: form.email,
           serviceName: form.serviceName,
           appointmentDate: form.appointmentDate,
@@ -173,18 +236,28 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         // ignore
       }
 
+      // 3. Broadcast instant sync to all open admin tabs/windows
+      try {
+        const bc = new BroadcastChannel('kayal_live_sync');
+        bc.postMessage({ type: 'NEW_APPOINTMENT', patientName: form.patientName, timestamp: Date.now() });
+        bc.close();
+      } catch {}
+
+      // 4. Send real-time confirmation email to user in background (non-blocking)
+      sendRealtimeEmail({
+        name: form.patientName,
+        email: form.email,
+        phone: fullPhone,
+        subject: `Appointment Booking - ${form.serviceName}`,
+        message: `Appointment for ${form.serviceName} on ${form.appointmentDate} at ${form.appointmentTime}. ${form.message || ''}`,
+      }).catch((emailErr) => console.warn('Email notification error:', emailErr));
+
       setSuccess(true);
     } catch {
       setSuccess(true);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   // Min date = tomorrow
@@ -217,7 +290,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
             <button className="btn btn-purple" onClick={onClose}>Close</button>
           </div>
         ) : (
-          <form className="appointment-modal__form" onSubmit={handleSubmit}>
+          <form className="appointment-modal__form" onSubmit={handleSubmit} noValidate>
             <div className="appt-form__grid">
               {/* Name */}
               <div className="form-group">
@@ -231,6 +304,8 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   placeholder="Your full name"
                   value={form.patientName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
+                  maxLength={60}
                   required
                 />
                 {errors.patientName && <span className="form-error">{errors.patientName}</span>}
@@ -241,16 +316,36 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                 <label className="form-label">
                   <Phone size={14} /> Phone Number *
                 </label>
-                <input
-                  className={`form-input ${errors.phone ? 'error' : ''}`}
-                  type="tel"
-                  name="phone"
-                  placeholder="10-digit mobile number"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.phone && <span className="form-error">{errors.phone}</span>}
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch' }}>
+                  <select
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                    className="form-input"
+                    style={{ width: '140px', flexShrink: 0, padding: '0 6px', fontSize: '0.85rem', cursor: 'pointer', background: 'white' }}
+                    aria-label="Country Code"
+                  >
+                    {COUNTRY_PHONE_LIST.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.flag} {c.code} ({c.country})
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    className={`form-input ${errors.phone ? 'error' : ''}`}
+                    type="tel"
+                    name="phone"
+                    placeholder={countryConfig.placeholder}
+                    value={form.phone}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                    style={{ flex: 1, minWidth: 0 }}
+                  />
+                </div>
+                <span className="form-hint" style={{ fontSize: '0.74rem', color: '#6b7280', marginTop: '0.25rem', display: 'block' }}>
+                  {countryConfig.flag} Format for {countryConfig.country}: {countryConfig.hint}
+                </span>
+                {errors.phone && <span className="form-error" style={{ marginTop: '0.2rem', display: 'block' }}>{errors.phone}</span>}
               </div>
 
               {/* Email */}
@@ -265,6 +360,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                   placeholder="your@email.com"
                   value={form.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
                 {errors.email && <span className="form-error">{errors.email}</span>}

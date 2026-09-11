@@ -2,44 +2,91 @@ import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
 import { appointmentsAPI } from '../services/api';
 import { sendRealtimeEmail } from '../services/emailService';
+import {
+  COUNTRY_PHONE_LIST,
+  getCountryConfig,
+  validatePhoneNumber,
+  validateEmail,
+  validateFullName,
+} from '../utils/phoneValidation';
 import '../styles/ContactPage.css';
 
 const ContactPage: React.FC = () => {
   const [form, setForm] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
+  const [selectedCountry, setSelectedCountry] = useState('India');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const validate = () => {
+  const countryConfig = getCountryConfig(selectedCountry);
+
+  const validateAll = () => {
     const e: Record<string, string> = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.phone.trim()) e.phone = 'Phone is required';
-    if (!form.email.trim()) e.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Invalid email';
-    if (!form.message.trim()) e.message = 'Message is required';
+    const nameRes = validateFullName(form.name);
+    if (!nameRes.isValid && nameRes.error) e.name = nameRes.error;
+
+    const phoneRes = validatePhoneNumber(form.phone, selectedCountry);
+    if (!phoneRes.isValid && phoneRes.error) e.phone = phoneRes.error;
+
+    const emailRes = validateEmail(form.email);
+    if (!emailRes.isValid && emailRes.error) e.email = emailRes.error;
+
+    if (!form.message.trim()) e.message = 'Message is required (at least 5 characters).';
+    else if (form.message.trim().length < 5) e.message = 'Please provide more details in your message.';
+
     return e;
+  };
+
+  const validateSingleField = (name: string, value: string, country = selectedCountry) => {
+    switch (name) {
+      case 'name':
+        return validateFullName(value).error || '';
+      case 'phone':
+        return validatePhoneNumber(value, country).error || '';
+      case 'email':
+        return validateEmail(value).error || '';
+      case 'message':
+        if (!value.trim()) return 'Message is required.';
+        if (value.trim().length < 5) return 'Please provide more details in your message.';
+        return '';
+      default:
+        return '';
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const errs = validate();
+    setTouched({ name: true, phone: true, email: true, message: true });
+    const errs = validateAll();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setLoading(true);
-    try {
-      // 1. Send real-time confirmation email to user
-      await sendRealtimeEmail({
-        name: form.name,
-        email: form.email,
-        phone: form.phone,
-        subject: form.subject || 'General Inquiry',
-        message: form.message,
-      });
 
-      // 2. Also save to appointments API and local storage
+    const phoneResult = validatePhoneNumber(form.phone, selectedCountry);
+    const fullPhone = phoneResult.formatted || `${countryConfig.code} ${form.phone.trim()}`;
+
+    try {
+      // 1. Save directly to backend API (MySQL database)
+      try {
+        await appointmentsAPI.create({
+          patientName: form.name.trim(),
+          phone: fullPhone,
+          email: form.email.trim().toLowerCase(),
+          serviceName: form.subject || 'General Inquiry',
+          appointmentDate: new Date().toISOString(),
+          appointmentTime: '10:00 AM',
+          message: form.message.trim(),
+          status: 'pending',
+        });
+      } catch (apiErr) {
+        console.warn('API create warning (will use local fallback):', apiErr);
+      }
+
+      // 2. Also cache to local storage
       const newInquiry = {
         _id: 'inq_' + Date.now(),
         patientName: form.name,
-        phone: form.phone,
+        phone: fullPhone,
         email: form.email,
         serviceName: form.subject || 'General Inquiry',
         appointmentDate: new Date().toISOString(),
@@ -53,19 +100,21 @@ const ContactPage: React.FC = () => {
         localStorage.setItem('kayal_local_appointments', JSON.stringify([newInquiry, ...stored]));
       } catch {}
 
+      // 3. Broadcast instant sync to all open admin tabs/windows
       try {
-        await appointmentsAPI.create({
-          patientName: form.name,
-          phone: form.phone,
-          email: form.email,
-          serviceName: form.subject || 'General Inquiry',
-          appointmentDate: new Date().toISOString(),
-          appointmentTime: '10:00 AM',
-          message: form.message,
-        });
-      } catch {
-        // silent
-      }
+        const bc = new BroadcastChannel('kayal_live_sync');
+        bc.postMessage({ type: 'NEW_APPOINTMENT', patientName: form.name, timestamp: Date.now() });
+        bc.close();
+      } catch {}
+
+      // 4. Send real-time confirmation email to user in background (non-blocking)
+      sendRealtimeEmail({
+        name: form.name,
+        email: form.email,
+        phone: fullPhone,
+        subject: form.subject || 'General Inquiry',
+        message: form.message,
+      }).catch((emailErr) => console.warn('Email notification error:', emailErr));
     } catch {
       // silent
     } finally {
@@ -77,7 +126,26 @@ const ContactPage: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm(p => ({ ...p, [name]: value }));
-    if (errors[name]) setErrors(p => ({ ...p, [name]: '' }));
+    if (touched[name] || errors[name]) {
+      const err = validateSingleField(name, value);
+      setErrors(p => ({ ...p, [name]: err }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched(p => ({ ...p, [name]: true }));
+    const err = validateSingleField(name, value);
+    setErrors(p => ({ ...p, [name]: err }));
+  };
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCountry = e.target.value;
+    setSelectedCountry(newCountry);
+    if (form.phone.trim()) {
+      const err = validateSingleField('phone', form.phone, newCountry);
+      setErrors(p => ({ ...p, phone: err }));
+    }
   };
 
   return (
@@ -176,33 +244,94 @@ const ContactPage: React.FC = () => {
               ) : (
                 <>
                   <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--gray-800)', marginBottom: '1.5rem' }}>Send Us a Message</h2>
-                  <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} noValidate>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
                       <div className="form-group">
                         <label className="form-label">Full Name *</label>
-                        <input className={`form-input ${errors.name ? 'error' : ''}`} name="name" placeholder="Your full name" value={form.name} onChange={handleChange} required />
+                        <input
+                          className={`form-input ${errors.name ? 'error' : ''}`}
+                          name="name"
+                          placeholder="Your full name"
+                          value={form.name}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          maxLength={60}
+                          required
+                        />
                         {errors.name && <span className="form-error">{errors.name}</span>}
                       </div>
+
                       <div className="form-group">
-                        <label className="form-label">Phone *</label>
-                        <input className={`form-input ${errors.phone ? 'error' : ''}`} name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} required />
-                        {errors.phone && <span className="form-error">{errors.phone}</span>}
+                        <label className="form-label"><Phone size={14} /> Phone / WhatsApp *</label>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch' }}>
+                          <select
+                            value={selectedCountry}
+                            onChange={handleCountryChange}
+                            className="form-input"
+                            style={{ width: '140px', flexShrink: 0, padding: '0 6px', fontSize: '0.85rem', cursor: 'pointer', background: 'white' }}
+                            aria-label="Country Code"
+                          >
+                            {COUNTRY_PHONE_LIST.map((c) => (
+                              <option key={c.id} value={c.id}>
+                                {c.flag} {c.code} ({c.country})
+                              </option>
+                            ))}
+                          </select>
+                          <input
+                            className={`form-input ${errors.phone ? 'error' : ''}`}
+                            name="phone"
+                            type="tel"
+                            placeholder={countryConfig.placeholder}
+                            value={form.phone}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            required
+                            style={{ flex: 1, minWidth: 0 }}
+                          />
+                        </div>
+                        <span className="form-hint" style={{ fontSize: '0.74rem', color: '#6b7280', marginTop: '0.25rem', display: 'block' }}>
+                          {countryConfig.flag} Format for {countryConfig.country}: {countryConfig.hint}
+                        </span>
+                        {errors.phone && <span className="form-error" style={{ marginTop: '0.2rem', display: 'block' }}>{errors.phone}</span>}
                       </div>
                     </div>
+
                     <div className="form-group">
-                      <label className="form-label">Email *</label>
-                      <input className={`form-input ${errors.email ? 'error' : ''}`} name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleChange} required />
+                      <label className="form-label"><Mail size={14} /> Email *</label>
+                      <input
+                        className={`form-input ${errors.email ? 'error' : ''}`}
+                        name="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={form.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        required
+                      />
                       {errors.email && <span className="form-error">{errors.email}</span>}
                     </div>
+
                     <div className="form-group">
                       <label className="form-label">Subject</label>
                       <input className="form-input" name="subject" placeholder="How can we help?" value={form.subject} onChange={handleChange} />
                     </div>
+
                     <div className="form-group">
                       <label className="form-label">Message *</label>
-                      <textarea className={`form-input ${errors.message ? 'error' : ''}`} name="message" rows={4} placeholder="Tell us more..." value={form.message} onChange={handleChange} required />
+                      <textarea
+                        className={`form-input ${errors.message ? 'error' : ''}`}
+                        name="message"
+                        rows={4}
+                        placeholder="Tell us more..."
+                        value={form.message}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        maxLength={3000}
+                        required
+                      />
                       {errors.message && <span className="form-error">{errors.message}</span>}
                     </div>
+
                     <button type="submit" className="btn btn-purple btn-lg" disabled={loading} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
                       <Send size={16} />{loading ? 'Sending...' : 'Send Message'}
                     </button>

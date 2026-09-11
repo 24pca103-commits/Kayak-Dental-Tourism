@@ -8,31 +8,16 @@ import {
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
 import { appointmentsAPI } from '../services/api';
 import { sendRealtimeEmail } from '../services/emailService';
+import {
+  COUNTRY_PHONE_LIST,
+  getCountryConfig,
+  validatePhoneNumber,
+  validateEmail,
+  validateFullName,
+  validateDentalConcern,
+  validateFiles,
+} from '../utils/phoneValidation';
 import '../styles/AppointmentPage.css';
-
-const COUNTRY_CODES = [
-  { code: '+91', country: 'India', flag: '🇮🇳' },
-  { code: '+1', country: 'USA', flag: '🇺🇸' },
-  { code: '+44', country: 'UK', flag: '🇬🇧' },
-  { code: '+61', country: 'Australia', flag: '🇦🇺' },
-  { code: '+1', country: 'Canada', flag: '🇨🇦' },
-  { code: '+971', country: 'UAE', flag: '🇦🇪' },
-  { code: '+65', country: 'Singapore', flag: '🇸🇬' },
-  { code: '+60', country: 'Malaysia', flag: '🇲🇾' },
-  { code: '+49', country: 'Germany', flag: '🇩🇪' },
-  { code: '+33', country: 'France', flag: '🇫🇷' },
-  { code: '+64', country: 'New Zealand', flag: '🇳🇿' },
-  { code: '+966', country: 'Saudi Arabia', flag: '🇸🇦' },
-  { code: '+974', country: 'Qatar', flag: '🇶🇦' },
-  { code: '+968', country: 'Oman', flag: '🇴🇲' },
-  { code: '+965', country: 'Kuwait', flag: '🇰🇼' },
-  { code: '+94', country: 'Sri Lanka', flag: '🇱🇰' },
-  { code: '+960', country: 'Maldives', flag: '🇲🇻' },
-  { code: '+27', country: 'South Africa', flag: '🇿🇦' },
-  { code: '+41', country: 'Switzerland', flag: '🇨🇭' },
-  { code: '+31', country: 'Netherlands', flag: '🇳🇱' },
-  { code: '+353', country: 'Ireland', flag: '🇮🇪' },
-];
 
 const AppointmentPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -41,39 +26,98 @@ const AppointmentPage: React.FC = () => {
     email: '',
     issue: '',
   });
-  const [countryCode, setCountryCode] = useState('+91');
+  const [selectedCountry, setSelectedCountry] = useState('India');
   const [files, setFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const countryConfig = getCountryConfig(selectedCountry);
+
+  const validateAll = () => {
+    const errs: Record<string, string> = {};
+
+    const nameRes = validateFullName(form.name);
+    if (!nameRes.isValid && nameRes.error) errs.name = nameRes.error;
+
+    const phoneRes = validatePhoneNumber(form.phone, selectedCountry);
+    if (!phoneRes.isValid && phoneRes.error) errs.phone = phoneRes.error;
+
+    const emailRes = validateEmail(form.email);
+    if (!emailRes.isValid && emailRes.error) errs.email = emailRes.error;
+
+    const issueRes = validateDentalConcern(form.issue);
+    if (!issueRes.isValid && issueRes.error) errs.issue = issueRes.error;
+
+    const fileRes = validateFiles(files);
+    if (!fileRes.isValid && fileRes.error) errs.files = fileRes.error;
+
+    return errs;
+  };
+
+  const validateSingleField = (name: string, value: string, country = selectedCountry) => {
+    switch (name) {
+      case 'name':
+        return validateFullName(value).error || '';
+      case 'phone':
+        return validatePhoneNumber(value, country).error || '';
+      case 'email':
+        return validateEmail(value).error || '';
+      case 'issue':
+        return validateDentalConcern(value).error || '';
+      default:
+        return '';
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
+
+    // Instant validation if already touched or has error
+    if (touched[name] || errors[name]) {
+      const err = validateSingleField(name, value);
+      setErrors(prev => ({ ...prev, [name]: err }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    const err = validateSingleField(name, value);
+    setErrors(prev => ({ ...prev, [name]: err }));
+  };
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCountry = e.target.value;
+    setSelectedCountry(newCountry);
+    if (form.phone.trim()) {
+      const err = validateSingleField('phone', form.phone, newCountry);
+      setErrors(prev => ({ ...prev, phone: err }));
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
-      setFiles(prev => [...prev, ...newFiles].slice(0, 5));
+      const combined = [...files, ...newFiles].slice(0, 5);
+      const validation = validateFiles(combined);
+      if (!validation.isValid && validation.error) {
+        setErrors(prev => ({ ...prev, files: validation.error || '' }));
+      } else {
+        setErrors(prev => ({ ...prev, files: '' }));
+      }
+      setFiles(combined);
     }
   };
 
   const removeFile = (index: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.phone.trim()) e.phone = 'Phone/WhatsApp number is required';
-    if (!form.email.trim()) e.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Enter a valid email';
-    if (!form.issue.trim()) e.issue = 'Please describe your dental concern';
-    else if (form.issue.trim().length < 10) e.issue = 'Please provide more detail (at least 10 characters)';
-    return e;
+    const updated = files.filter((_, i) => i !== index);
+    setFiles(updated);
+    const validation = validateFiles(updated);
+    setErrors(prev => ({ ...prev, files: validation.error || '' }));
   };
 
   const readFileAsCompressedDataURL = (file: File): Promise<string> => {
@@ -125,10 +169,16 @@ const AppointmentPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setTouched({ name: true, phone: true, email: true, issue: true });
+    const errs = validateAll();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+
     setLoading(true);
-    const fullPhone = form.phone.startsWith('+') ? form.phone : `${countryCode} ${form.phone}`;
+    const phoneResult = validatePhoneNumber(form.phone, selectedCountry);
+    const fullPhone = phoneResult.formatted || `${countryConfig.code} ${form.phone.trim()}`;
 
     try {
       // Process attached photos & files into Data URLs for permanent, bulletproof storage
@@ -154,16 +204,25 @@ const AppointmentPage: React.FC = () => {
 
       const attachmentsJson = uploadedAttachments.length > 0 ? JSON.stringify(uploadedAttachments) : undefined;
 
-      // 1. Send real-time confirmation email to user
-      await sendRealtimeEmail({
-        name: form.name,
-        email: form.email,
-        phone: fullPhone,
-        subject: 'Free Online Consultation Request',
-        message: form.issue,
-      });
+      // 1. Save directly to backend API (MySQL database)
+      try {
+        await appointmentsAPI.create({
+          patientName: form.name.trim(),
+          phone: fullPhone,
+          email: form.email.trim().toLowerCase(),
+          serviceName: 'Free Online Consultation',
+          doctorName: 'Any Available Doctor',
+          appointmentDate: new Date().toISOString(),
+          appointmentTime: 'Online Consultation',
+          message: form.issue.trim(),
+          attachments: attachmentsJson,
+          status: 'pending',
+        });
+      } catch (apiErr) {
+        console.warn('API create warning (will use local fallback):', apiErr);
+      }
 
-      // 2. Also save to appointments API and local storage
+      // 2. Also cache to local storage
       const newBooking = {
         _id: 'bk_' + Date.now(),
         patientName: form.name,
@@ -182,22 +241,25 @@ const AppointmentPage: React.FC = () => {
         localStorage.setItem('kayal_local_appointments', JSON.stringify([newBooking, ...stored]));
       } catch {}
 
+      // 3. Broadcast instant sync to all open admin tabs/windows
       try {
-        await appointmentsAPI.create({
-          patientName: form.name,
-          phone: fullPhone,
-          email: form.email,
-          serviceName: 'Free Online Consultation',
-          appointmentDate: new Date().toISOString(),
-          appointmentTime: 'Online Consultation',
-          message: form.issue,
-          attachments: attachmentsJson,
-        });
-      } catch {
-        // silent
-      }
+        const bc = new BroadcastChannel('kayal_live_sync');
+        bc.postMessage({ type: 'NEW_APPOINTMENT', patientName: form.name, timestamp: Date.now() });
+        bc.close();
+      } catch {}
+
+      // 4. Send real-time confirmation email to user in background (non-blocking)
+      sendRealtimeEmail({
+        name: form.name,
+        email: form.email,
+        phone: fullPhone,
+        subject: 'Free Online Consultation Request',
+        message: form.issue,
+      }).catch((emailErr) => console.warn('Email notification error:', emailErr));
+
       setSuccess(true);
-    } catch {
+    } catch (err) {
+      console.error('Submission error:', err);
       setSuccess(true);
     } finally {
       setLoading(false);
@@ -249,16 +311,18 @@ const AppointmentPage: React.FC = () => {
                     <h2>Tell Us About Your Dental Concern</h2>
                     <p>Fill in the form below and upload any relevant photos or documents.</p>
                   </div>
-                  <form onSubmit={handleSubmit} className="consultation-form">
+                  <form onSubmit={handleSubmit} className="consultation-form" noValidate>
                     <div className="form-group">
                       <label className="form-label">Full Name *</label>
                       <input
                         className={`form-input ${errors.name ? 'error' : ''}`}
                         type="text"
                         name="name"
-                        placeholder="Your full name"
+                        placeholder="e.g. John Doe"
                         value={form.name}
                         onChange={handleChange}
+                        onBlur={handleBlur}
+                        maxLength={60}
                         required
                       />
                       {errors.name && <span className="form-error">{errors.name}</span>}
@@ -268,14 +332,14 @@ const AppointmentPage: React.FC = () => {
                       <label className="form-label"><Phone size={14} /> Phone / WhatsApp *</label>
                       <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch' }}>
                         <select
-                          value={countryCode}
-                          onChange={(e) => setCountryCode(e.target.value)}
+                          value={selectedCountry}
+                          onChange={handleCountryChange}
                           className="form-input"
-                          style={{ width: '130px', flexShrink: 0, padding: '0 8px', fontSize: '0.85rem', cursor: 'pointer' }}
+                          style={{ width: '150px', flexShrink: 0, padding: '0 8px', fontSize: '0.85rem', cursor: 'pointer', background: 'white' }}
                           aria-label="Country Code"
                         >
-                          {COUNTRY_CODES.map((c, i) => (
-                            <option key={i} value={c.code}>
+                          {COUNTRY_PHONE_LIST.map((c) => (
+                            <option key={c.id} value={c.id}>
                               {c.flag} {c.code} ({c.country})
                             </option>
                           ))}
@@ -284,14 +348,18 @@ const AppointmentPage: React.FC = () => {
                           className={`form-input ${errors.phone ? 'error' : ''}`}
                           type="tel"
                           name="phone"
-                          placeholder="78679 26159"
+                          placeholder={countryConfig.placeholder}
                           value={form.phone}
                           onChange={handleChange}
+                          onBlur={handleBlur}
                           required
                           style={{ flex: 1, minWidth: 0 }}
                         />
                       </div>
-                      {errors.phone && <span className="form-error">{errors.phone}</span>}
+                      <span className="form-hint" style={{ fontSize: '0.76rem', color: '#6b7280', marginTop: '0.3rem', display: 'block' }}>
+                        {countryConfig.flag} Expected format for {countryConfig.country}: {countryConfig.hint}
+                      </span>
+                      {errors.phone && <span className="form-error" style={{ marginTop: '0.2rem', display: 'block' }}>{errors.phone}</span>}
                     </div>
 
                     <div className="form-group">
@@ -303,6 +371,7 @@ const AppointmentPage: React.FC = () => {
                         placeholder="your@email.com"
                         value={form.email}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         required
                       />
                       {errors.email && <span className="form-error">{errors.email}</span>}
@@ -322,6 +391,7 @@ const AppointmentPage: React.FC = () => {
                         placeholder="Tell us about your dental concern, what treatments you're interested in, any relevant medical history, and your preferred timeline..."
                         value={form.issue}
                         onChange={handleChange}
+                        onBlur={handleBlur}
                         maxLength={3000}
                         required
                         style={{ marginTop: '0.35rem' }}
@@ -361,10 +431,11 @@ const AppointmentPage: React.FC = () => {
                           ))}
                         </div>
                       )}
+                      {errors.files && <span className="form-error" style={{ display: 'block', marginTop: '0.4rem' }}>{errors.files}</span>}
                     </div>
 
                     <button type="submit" className="btn btn-primary btn-lg w-full" disabled={loading}>
-                      {loading ? 'Submitting...' : <><Send size={18} /> Submit  Request</>}
+                      {loading ? 'Submitting...' : <><Send size={18} /> Submit Consultation Request</>}
                     </button>
 
                     <p className="consultation-note">

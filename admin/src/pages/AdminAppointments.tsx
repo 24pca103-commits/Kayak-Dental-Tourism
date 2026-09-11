@@ -142,11 +142,42 @@ const AdminAppointments: React.FC = () => {
 
   useEffect(() => {
     fetchData(true);
-    // Real-time live polling every 3.5 seconds
+
+    // Real-time live polling every 2.5 seconds
     const interval = setInterval(() => {
       fetchData(false);
-    }, 3500);
-    return () => clearInterval(interval);
+    }, 2500);
+
+    // Instant cross-tab broadcast channel sync
+    let bc: BroadcastChannel | null = null;
+    try {
+      bc = new BroadcastChannel('kayal_live_sync');
+      bc.onmessage = (event) => {
+        if (event.data?.type === 'NEW_APPOINTMENT' || event.data?.type === 'STATUS_UPDATED') {
+          fetchData(false);
+        }
+      };
+    } catch {}
+
+    // Instant refresh when admin tab gains focus or becomes visible
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchData(false);
+      }
+    };
+    const handleFocus = () => {
+      fetchData(false);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      if (bc) bc.close();
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [filterStatus]);
 
   const handleStatusChange = async (
@@ -217,6 +248,12 @@ const AdminAppointments: React.FC = () => {
         } catch { }
         return updated;
       });
+
+      try {
+        const bc = new BroadcastChannel('kayal_live_sync');
+        bc.postMessage({ type: 'STATUS_UPDATED', id, status: newStatus, timestamp: Date.now() });
+        bc.close();
+      } catch {}
 
       if (selectedAppt && selectedAppt._id === id) {
         setSelectedAppt((prev) =>

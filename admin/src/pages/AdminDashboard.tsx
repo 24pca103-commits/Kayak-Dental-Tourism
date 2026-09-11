@@ -40,11 +40,42 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchLiveAppointments(true);
-    // Real-time live polling every 3.5 seconds
+
+    // Real-time live polling every 2.5 seconds
     const interval = setInterval(() => {
       fetchLiveAppointments(false);
-    }, 3500);
-    return () => clearInterval(interval);
+    }, 2500);
+
+    // Instant cross-tab broadcast channel sync
+    let bc: BroadcastChannel | null = null;
+    try {
+      bc = new BroadcastChannel('kayal_live_sync');
+      bc.onmessage = (event) => {
+        if (event.data?.type === 'NEW_APPOINTMENT' || event.data?.type === 'STATUS_UPDATED') {
+          fetchLiveAppointments(false);
+        }
+      };
+    } catch {}
+
+    // Instant refresh when admin tab gains focus or becomes visible
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchLiveAppointments(false);
+      }
+    };
+    const handleFocus = () => {
+      fetchLiveAppointments(false);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      if (bc) bc.close();
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   const total = appointments.length;

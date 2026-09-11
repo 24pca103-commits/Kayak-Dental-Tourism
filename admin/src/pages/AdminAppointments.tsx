@@ -1465,9 +1465,9 @@ const AdminAppointments: React.FC = () => {
                   onChange={(e) => setCancelReason(e.target.value)}
                   style={{ width: '100%', padding: '0.6rem 0.8rem', borderRadius: '8px', border: '1.5px solid #cbd5e1', fontSize: '0.85rem', outline: 'none', background: '#fff' }}
                 >
-                  <option value="Patient unable to arrange treatment fees / budget">💰 Patient unable to arrange fees / budget (பணம் ரெடி பண்ண முடியவில்லை)</option>
-                  <option value="Patient requested cancellation">👤 Patient requested cancellation (நோயாளி வேண்டுகோள்)</option>
-                  <option value="Travel or flight tickets delayed / cancelled">✈️ Travel, visa, or flight tickets delayed / cancelled</option>
+                  <option value="Patient unable to arrange treatment fees / budget">💰 Patient unable to arrange treatment fees / budget</option>
+                  <option value="Patient requested cancellation">👤 Patient requested cancellation</option>
+                  <option value="Travel, visa, or flight tickets delayed / cancelled">✈️ Travel, visa, or flight tickets delayed / cancelled</option>
                   <option value="No response from patient after follow-ups">📵 No response from patient after follow-ups</option>
                   <option value="Doctor or clinic scheduling conflict">⚠️ Doctor or clinic scheduling conflict</option>
                   <option value="Other">Other reason</option>

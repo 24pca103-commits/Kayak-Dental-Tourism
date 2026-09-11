@@ -61,7 +61,13 @@ export const sendStatusEmailNotification = async (params: StatusEmailParams): Pr
   }
 
   if (params.adminNote) {
-    statusMessage += `\n\nDoctor / Clinic Note: "${params.adminNote}"`;
+    if (params.status === 'cancelled') {
+      statusMessage += `\n\nReason for Cancellation: "${params.adminNote}"`;
+    } else if (params.status === 'rescheduled') {
+      statusMessage += `\n\nReschedule Reason: "${params.adminNote}"`;
+    } else {
+      statusMessage += `\n\nDoctor / Clinic Note: "${params.adminNote}"`;
+    }
   }
 
   statusMessage += `\n\nFor any questions or travel assistance, please contact us at ${clinicPhone} or chat on WhatsApp: ${whatsappUrl}`;

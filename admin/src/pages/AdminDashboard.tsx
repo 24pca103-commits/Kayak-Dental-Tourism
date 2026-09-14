@@ -55,7 +55,7 @@ const AdminDashboard: React.FC = () => {
           fetchLiveAppointments(false);
         }
       };
-    } catch {}
+    } catch { }
 
     // Instant refresh when admin tab gains focus or becomes visible
     const handleVisibility = () => {
@@ -175,201 +175,201 @@ const AdminDashboard: React.FC = () => {
             <>
               <div className="desktop-table-container">
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
-                <thead>
-                  <tr style={{ background: 'var(--gray-50)', textAlign: 'left', borderBottom: '1px solid var(--gray-200)' }}>
-                    <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Patient</th>
-                    <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Contact</th>
-                    <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Treatments</th>
-                    <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Dental Photos</th>
-                    <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Date &amp; Time</th>
-                    <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {appointments.slice(0, 8).map(apt => {
-                    let attCount = 0;
-                    try {
-                      if (apt.attachments) {
-                        const parsed = typeof apt.attachments === 'string' ? JSON.parse(apt.attachments) : apt.attachments;
-                        if (Array.isArray(parsed)) attCount = parsed.length;
-                      }
-                    } catch { }
+                  <thead>
+                    <tr style={{ background: 'var(--gray-50)', textAlign: 'left', borderBottom: '1px solid var(--gray-200)' }}>
+                      <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Patient</th>
+                      <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Contact</th>
+                      <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Treatments</th>
+                      <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Dental Photos</th>
+                      <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Date &amp; Time</th>
+                      <th style={{ padding: '0.85rem 1.25rem', color: 'var(--gray-600)', fontWeight: 600 }}>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointments.slice(0, 8).map(apt => {
+                      let attCount = 0;
+                      try {
+                        if (apt.attachments) {
+                          const parsed = typeof apt.attachments === 'string' ? JSON.parse(apt.attachments) : apt.attachments;
+                          if (Array.isArray(parsed)) attCount = parsed.length;
+                        }
+                      } catch { }
 
-                    return (
-                      <tr key={apt._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
-                        <td style={{ padding: '1rem 1.25rem', fontWeight: 600, color: 'var(--gray-800)' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <User size={15} color="#6b7280" />
-                            <span>{apt.patientName}</span>
-                          </div>
-                        </td>
-                        <td style={{ padding: '1rem 1.25rem', color: 'var(--gray-600)' }}>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', fontSize: '0.8rem' }}>
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                              <Phone size={12} color="#9ca3af" /> {apt.phone}
+                      return (
+                        <tr key={apt._id} style={{ borderBottom: '1px solid var(--gray-100)' }}>
+                          <td style={{ padding: '1rem 1.25rem', fontWeight: 600, color: 'var(--gray-800)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <User size={15} color="#6b7280" />
+                              <span>{apt.patientName}</span>
+                            </div>
+                          </td>
+                          <td style={{ padding: '1rem 1.25rem', color: 'var(--gray-600)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', fontSize: '0.8rem' }}>
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                                <Phone size={12} color="#9ca3af" /> {apt.phone}
+                              </span>
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                                <Mail size={12} color="#9ca3af" /> {apt.email}
+                              </span>
+                            </div>
+                          </td>
+                          <td style={{ padding: '1rem 1.25rem', color: 'var(--gray-700)', fontWeight: 500 }}>
+                            {apt.serviceName || 'General Consultation'}
+                          </td>
+                          <td style={{ padding: '1rem 1.25rem' }}>
+                            {attCount > 0 ? (
+                              <Link
+                                to="/appointments"
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '5px',
+                                  padding: '0.3rem 0.6rem',
+                                  borderRadius: '6px',
+                                  background: '#eff6ff',
+                                  border: '1px solid #bfdbfe',
+                                  color: '#1d4ed8',
+                                  fontSize: '0.78rem',
+                                  fontWeight: 700,
+                                  textDecoration: 'none',
+                                }}
+                                title="View uploaded photos in Appointments page"
+                              >
+                                📷 {attCount} {attCount === 1 ? 'Photo' : 'Photos'}
+                              </Link>
+                            ) : (
+                              <span style={{ color: '#9ca3af', fontSize: '0.8rem' }}>—</span>
+                            )}
+                          </td>
+                          <td style={{ padding: '1rem 1.25rem', color: 'var(--gray-600)', fontSize: '0.82rem' }}>
+                            <div>{new Date(apt.appointmentDate).toLocaleDateString()}</div>
+                            <div style={{ color: 'var(--gray-400)', fontSize: '0.75rem' }}>{apt.appointmentTime}</div>
+                          </td>
+                          <td style={{ padding: '1rem 1.25rem' }}>
+                            <span style={{
+                              padding: '0.25rem 0.65rem',
+                              borderRadius: '50px',
+                              fontSize: '0.75rem',
+                              fontWeight: 600,
+                              textTransform: 'capitalize',
+                              background: apt.status === 'confirmed' ? '#d1fae5' : apt.status === 'completed' ? '#dbeafe' : apt.status === 'rescheduled' ? '#fef3c7' : apt.status === 'cancelled' ? '#fee2e2' : '#f1f5f9',
+                              color: apt.status === 'confirmed' ? '#047857' : apt.status === 'completed' ? '#1d4ed8' : apt.status === 'rescheduled' ? '#b45309' : apt.status === 'cancelled' ? '#dc2626' : '#475569',
+                            }}>
+                              {apt.status}
                             </span>
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                              <Mail size={12} color="#9ca3af" /> {apt.email}
-                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View (Zero Horizontal Scroll!) */}
+              <div className="mobile-cards-container">
+                {appointments.slice(0, 8).map((apt) => {
+                  let attCount = 0;
+                  try {
+                    if (apt.attachments) {
+                      const parsed = typeof apt.attachments === 'string' ? JSON.parse(apt.attachments) : apt.attachments;
+                      if (Array.isArray(parsed)) attCount = parsed.length;
+                    }
+                  } catch { }
+
+                  return (
+                    <div key={apt._id} className="admin-mobile-card">
+                      {/* Header: Name + Status */}
+                      <div className="admin-mobile-card__header">
+                        <div>
+                          <div className="admin-mobile-card__patient-name">{apt.patientName}</div>
+                          <div className="admin-mobile-card__date-small">
+                            📅 {new Date(apt.appointmentDate).toLocaleDateString()} at {apt.appointmentTime}
                           </div>
-                        </td>
-                        <td style={{ padding: '1rem 1.25rem', color: 'var(--gray-700)', fontWeight: 500 }}>
-                          {apt.serviceName || 'General Consultation'}
-                        </td>
-                        <td style={{ padding: '1rem 1.25rem' }}>
-                          {attCount > 0 ? (
-                            <Link
-                              to="/appointments"
-                              style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '5px',
-                                padding: '0.3rem 0.6rem',
-                                borderRadius: '6px',
-                                background: '#eff6ff',
-                                border: '1px solid #bfdbfe',
-                                color: '#1d4ed8',
-                                fontSize: '0.78rem',
-                                fontWeight: 700,
-                                textDecoration: 'none',
-                              }}
-                              title="View uploaded photos in Appointments page"
-                            >
-                              📷 {attCount} {attCount === 1 ? 'Photo' : 'Photos'}
-                            </Link>
-                          ) : (
-                            <span style={{ color: '#9ca3af', fontSize: '0.8rem' }}>—</span>
-                          )}
-                        </td>
-                        <td style={{ padding: '1rem 1.25rem', color: 'var(--gray-600)', fontSize: '0.82rem' }}>
-                          <div>{new Date(apt.appointmentDate).toLocaleDateString()}</div>
-                          <div style={{ color: 'var(--gray-400)', fontSize: '0.75rem' }}>{apt.appointmentTime}</div>
-                        </td>
-                        <td style={{ padding: '1rem 1.25rem' }}>
-                          <span style={{
+                        </div>
+                        <span
+                          style={{
                             padding: '0.25rem 0.65rem',
                             borderRadius: '50px',
                             fontSize: '0.75rem',
-                            fontWeight: 600,
+                            fontWeight: 700,
                             textTransform: 'capitalize',
-                            background: apt.status === 'confirmed' ? '#d1fae5' : apt.status === 'completed' ? '#dbeafe' : apt.status === 'rescheduled' ? '#fef3c7' : apt.status === 'cancelled' ? '#fee2e2' : '#f1f5f9',
-                            color: apt.status === 'confirmed' ? '#047857' : apt.status === 'completed' ? '#1d4ed8' : apt.status === 'rescheduled' ? '#b45309' : apt.status === 'cancelled' ? '#dc2626' : '#475569',
-                          }}>
-                            {apt.status}
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Mobile Card View (Zero Horizontal Scroll!) */}
-            <div className="mobile-cards-container">
-              {appointments.slice(0, 8).map((apt) => {
-                let attCount = 0;
-                try {
-                  if (apt.attachments) {
-                    const parsed = typeof apt.attachments === 'string' ? JSON.parse(apt.attachments) : apt.attachments;
-                    if (Array.isArray(parsed)) attCount = parsed.length;
-                  }
-                } catch { }
-
-                return (
-                  <div key={apt._id} className="admin-mobile-card">
-                    {/* Header: Name + Status */}
-                    <div className="admin-mobile-card__header">
-                      <div>
-                        <div className="admin-mobile-card__patient-name">{apt.patientName}</div>
-                        <div className="admin-mobile-card__date-small">
-                          📅 {new Date(apt.appointmentDate).toLocaleDateString()} at {apt.appointmentTime}
-                        </div>
-                      </div>
-                      <span
-                        style={{
-                          padding: '0.25rem 0.65rem',
-                          borderRadius: '50px',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          textTransform: 'capitalize',
-                          background:
-                            apt.status === 'confirmed'
-                              ? '#d1fae5'
-                              : apt.status === 'completed'
-                              ? '#dbeafe'
-                              : apt.status === 'rescheduled'
-                              ? '#fef3c7'
-                              : apt.status === 'cancelled'
-                              ? '#fee2e2'
-                              : '#f1f5f9',
-                          color:
-                            apt.status === 'confirmed'
-                              ? '#047857'
-                              : apt.status === 'completed'
-                              ? '#1d4ed8'
-                              : apt.status === 'rescheduled'
-                              ? '#b45309'
-                              : apt.status === 'cancelled'
-                              ? '#dc2626'
-                              : '#475569',
-                        }}
-                      >
-                        {apt.status}
-                      </span>
-                    </div>
-
-                    {/* Treatment / Service */}
-                    <div className="admin-mobile-card__row">
-                      <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Treatment:</span>
-                      <strong style={{ color: '#1e293b' }}>{apt.serviceName || 'General Consultation'}</strong>
-                    </div>
-
-                    {/* Contact Buttons */}
-                    <div className="admin-mobile-card__contact-chips">
-                      <a href={`tel:${apt.phone}`} className="admin-mobile-card__contact-chip">
-                        <Phone size={13} color="#059669" />
-                        <span>{apt.phone}</span>
-                      </a>
-                      {apt.email && (
-                        <a href={`mailto:${apt.email}`} className="admin-mobile-card__contact-chip">
-                          <Mail size={13} color="#2563eb" />
-                          <span>{apt.email}</span>
-                        </a>
-                      )}
-                    </div>
-
-                    {/* Photos and Link */}
-                    <div className="admin-mobile-card__footer">
-                      {attCount > 0 ? (
-                        <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 600 }}>
-                          📷 {attCount} {attCount === 1 ? 'Photo' : 'Photos'} Attached
+                            background:
+                              apt.status === 'confirmed'
+                                ? '#d1fae5'
+                                : apt.status === 'completed'
+                                  ? '#dbeafe'
+                                  : apt.status === 'rescheduled'
+                                    ? '#fef3c7'
+                                    : apt.status === 'cancelled'
+                                      ? '#fee2e2'
+                                      : '#f1f5f9',
+                            color:
+                              apt.status === 'confirmed'
+                                ? '#047857'
+                                : apt.status === 'completed'
+                                  ? '#1d4ed8'
+                                  : apt.status === 'rescheduled'
+                                    ? '#b45309'
+                                    : apt.status === 'cancelled'
+                                      ? '#dc2626'
+                                      : '#475569',
+                          }}
+                        >
+                          {apt.status}
                         </span>
-                      ) : (
-                        <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>No attachments</span>
-                      )}
+                      </div>
 
-                      <Link
-                        to="/appointments"
-                        style={{
-                          fontSize: '0.8rem',
-                          fontWeight: 700,
-                          color: '#451271',
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                        }}
-                      >
-                        Manage &rarr;
-                      </Link>
+                      {/* Treatment / Service */}
+                      <div className="admin-mobile-card__row">
+                        <span style={{ fontSize: '0.8rem', color: '#64748b' }}>Treatment:</span>
+                        <strong style={{ color: '#1e293b' }}>{apt.serviceName || 'General Consultation'}</strong>
+                      </div>
+
+                      {/* Contact Buttons */}
+                      <div className="admin-mobile-card__contact-chips">
+                        <a href={`tel:${apt.phone}`} className="admin-mobile-card__contact-chip">
+                          <Phone size={13} color="#059669" />
+                          <span>{apt.phone}</span>
+                        </a>
+                        {apt.email && (
+                          <a href={`mailto:${apt.email}`} className="admin-mobile-card__contact-chip">
+                            <Mail size={13} color="#2563eb" />
+                            <span>{apt.email}</span>
+                          </a>
+                        )}
+                      </div>
+
+                      {/* Photos and Link */}
+                      <div className="admin-mobile-card__footer">
+                        {attCount > 0 ? (
+                          <span style={{ fontSize: '0.78rem', color: '#2563eb', fontWeight: 600 }}>
+                            📷 {attCount} {attCount === 1 ? 'Photo' : 'Photos'} Attached
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>No attachments</span>
+                        )}
+
+                        <Link
+                          to="/appointments"
+                          style={{
+                            fontSize: '0.8rem',
+                            fontWeight: 700,
+                            color: '#451271',
+                            textDecoration: 'none',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          Manage &rarr;
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        )}
+                  );
+                })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </AdminLayout>

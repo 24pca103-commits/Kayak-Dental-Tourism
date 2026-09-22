@@ -1,19 +1,23 @@
 import axios from 'axios';
 
 const getBaseURL = () => {
+  let url = '';
   if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim()) {
-    const raw = import.meta.env.VITE_API_URL.trim();
-    return raw.endsWith('/') ? raw.slice(0, -1) : raw;
-  }
-  // In local development, use '/api' to leverage Vite dev proxy
-  if (
+    url = import.meta.env.VITE_API_URL.trim();
+  } else if (
     typeof window !== 'undefined' &&
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ) {
     return '/api';
+  } else {
+    url = 'https://kayal-dental-tourism-treatment.onrender.com/api';
   }
-  // In production (Vercel / live domain), default to live Render backend API
-  return 'https://kayal-dental-tourism-treatment.onrender.com/api';
+
+  if (url.endsWith('/')) url = url.slice(0, -1);
+  if ((url.startsWith('http://') || url.startsWith('https://')) && !url.endsWith('/api')) {
+    url = `${url}/api`;
+  }
+  return url;
 };
 
 const api = axios.create({

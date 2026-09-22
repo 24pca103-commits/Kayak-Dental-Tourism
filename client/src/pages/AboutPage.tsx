@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -13,10 +13,37 @@ import {
   ArrowRight,
   Eye
 } from 'lucide-react';
+import { doctorsAPI } from '../services/api';
+import type { Doctor } from '../types';
+import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
 import '../styles/AboutPage.css';
+
+const DEMO_DOCTORS: Doctor[] = [
+  { _id: '0', name: 'Dr. V.Sahaana', qualification: 'BDS., FDS., FMC.', specialization: 'Dental Surgeon Certified & Root Canal Specialist', experience: 10, image: '/assets/dr-kayal-anandhi.jpg', description: 'Dental surgeon certified and root canal specialist dedicated to advanced painless endodontic treatments and comprehensive dental care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
+  { _id: '1', name: 'Dr. Priya Sharma', qualification: 'BDS, MDS', specialization: 'General & Cosmetic Dentist', experience: 12, image: '', description: 'Dr. Priya is a highly experienced general and cosmetic dentist passionate about creating beautiful smiles with personalized patient care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
+  { _id: '2', name: 'Dr. Ramesh Kumar', qualification: 'BDS, MDS (Orthodontics)', specialization: 'Orthodontist', experience: 10, image: '', description: 'Dr. Ramesh specializes in braces and clear aligners, helping patients achieve straighter smiles with modern orthodontic techniques.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
+  { _id: '3', name: 'Dr. Anitha Rao', qualification: 'BDS, MDS (Implantology)', specialization: 'Implantologist', experience: 8, image: '', description: 'Dr. Anitha is an expert in dental implants, offering patients a permanent solution for missing teeth with natural-looking results.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
+  { _id: '4', name: 'Dr. Karthik Nair', qualification: 'BDS, MDS (Pediatric)', specialization: 'Pediatric Dentist', experience: 7, image: '', description: "Dr. Karthik specializes in children's dentistry, creating a fun, comfortable environment to build healthy dental habits from an early age.", availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
+];
 
 const AboutPage: React.FC = () => {
   const navigate = useNavigate();
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [preselectedDoctor, setPreselectedDoctor] = useState('');
+
+  useEffect(() => {
+    document.title = 'About Us | KAYAL Dental Care';
+    doctorsAPI.getAll().then(r => setDoctors(r.data?.data || [])).catch(() => setDoctors(DEMO_DOCTORS));
+  }, []);
+
+  const doctorList = doctors.length > 0 ? doctors : DEMO_DOCTORS;
+
+  const handleBookDoctor = (docName: string) => {
+    setPreselectedDoctor(docName);
+    setShowModal(true);
+  };
+
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -35,15 +62,6 @@ const AboutPage: React.FC = () => {
     { icon: <Users size={32} />, value: "5000+", label: "Happy Patients" },
     { icon: <Award size={32} />, value: "15+", label: "Expert Doctors" },
     { icon: <Clock size={32} />, value: "10+", label: "Years Experience" }
-  ];
-
-  const doctors = [
-    { name: "Dr. V.Sahaana", role: "Dental Surgeon Certified", specialty: "Root Canal Specialist", exp: "10+ yrs", initials: "VS", degree: "BDS., FDS., FMC.", image: "/assets/dr-kayal-anandhi.jpg" },
-    { name: "Dr. Rajesh Kumar", role: "Senior Implantologist", specialty: "Oral Surgery", exp: "12+ yrs", initials: "RK", degree: "BDS MDS" },
-    { name: "Dr. Priya Sharma", role: "Cosmetic Dentist", specialty: "Veneers & Smile Design", exp: "10+ yrs", initials: "PS", degree: "BDS" },
-    { name: "Dr. Suresh Babu", role: "Orthodontist", specialty: "Braces & Aligners", exp: "8+ yrs", initials: "SB", degree: "BDS MDS" },
-    { name: "Dr. Meena Kannan", role: "Endodontist", specialty: "Root Canals", exp: "10+ yrs", initials: "MK", degree: "BDS MDS" },
-    { name: "Dr. Arjun Nair", role: "Pediatric Dentist", specialty: "Kids Dental Care", exp: "7+ yrs", initials: "AN", degree: "BDS MDS" }
   ];
 
   const facilities = [
@@ -118,10 +136,9 @@ const AboutPage: React.FC = () => {
                   color: '#ffffff'
                 }}>
                   <div style={{ fontWeight: 800, fontSize: '1.15rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
-                    Dr. V.Sahaana
+                    Dr. V.Sahaana, BDS., FDS., FMC.
                   </div>
                   <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600, marginTop: '3px', lineHeight: 1.45 }}>
-                    <div>BDS., FDS., FMC.</div>
                     <div>Dental surgeon certified.</div>
                     <div>Root Canal Specialist</div>
                   </div>
@@ -189,30 +206,37 @@ const AboutPage: React.FC = () => {
             <p className="text-gray-600 max-w-2xl mx-auto">Our multidisciplinary team of highly qualified specialists works together to provide comprehensive care tailored to your unique needs.</p>
           </motion.div>
 
-          <motion.div
-            className="doctors-grid"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="whileInView"
-          >
-            {doctors.map((doc, idx) => (
-              <motion.div key={idx} className="doctor-card card" variants={fadeInUp}>
-                <div className="doctor-avatar">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '1.75rem' }}>
+            {doctorList.map(doc => (
+              <div key={doc._id} style={{ background: 'white', border: '1.5px solid var(--gray-100)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-md)', transition: 'var(--transition)', display: 'flex', flexDirection: 'column', height: '100%' }} className="card">
+                <div style={{ height: 200, background: 'linear-gradient(135deg,var(--purple-50),var(--cyan-50))', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', flexShrink: 0 }}>
                   {doc.image ? (
-                    <img src={doc.image} alt={doc.name} />
+                    <img src={doc.image} alt={doc.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
-                    <span>{doc.initials}</span>
+                    <Users size={56} style={{ color: 'var(--purple-300)' }} />
                   )}
+                  <div style={{ position: 'absolute', bottom: 12, right: 12, background: 'var(--cyan-500)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '50px', fontSize: '0.75rem', fontWeight: 600 }}>
+                    {doc.specialization.split(' ')[0]}
+                  </div>
                 </div>
-                <div className="doctor-info">
-                  <h3>{doc.name}</h3>
-                  <div className="doctor-degree">{doc.degree}</div>
-                  <div className="doctor-role">{doc.role} - {doc.specialty}</div>
-                  <div className="doctor-exp badge badge-cyan">{doc.exp} Experience</div>
+                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <div style={{ flexGrow: 1 }}>
+                    <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)' }}>
+                      {doc.name}{doc.qualification && !doc.name.includes(doc.qualification) ? `, ${doc.qualification}` : ''}
+                    </h2>
+                    <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--purple-600)', margin: '0.2rem 0 0.5rem 0' }}>{doc.specialization}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.775rem', color: 'var(--cyan-600)', fontWeight: 600, marginBottom: '0.75rem' }}>
+                      <Award size={13} />{doc.experience} years experience
+                    </div>
+                    {doc.description && <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)', lineHeight: 1.6, marginBottom: '1rem' }}>{doc.description}</p>}
+                  </div>
+                  <button className="btn btn-primary btn-sm w-full" style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: '#ffffff' }} onClick={() => handleBookDoctor(doc.name)}>
+                    Book a Consultation <ArrowRight size={15} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
+                  </button>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -251,11 +275,13 @@ const AboutPage: React.FC = () => {
             <h2 className="text-white mb-4">Ready to Experience World-Class Dental Care?</h2>
             <p className="text-white mb-8 max-w-2xl mx-auto opacity-90">Schedule your consultation today and take the first step towards a healthier, more beautiful smile.</p>
             <button className="btn btn-cyan btn-lg" onClick={() => navigate('/online-consultation')}>
-              Book Online Consultation <ArrowRight size={18} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
+              <span>Book Online Consultation</span>
+              <ArrowRight size={18} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0, minWidth: 18, minHeight: 18 }} />
             </button>
           </motion.div>
         </div>
       </section>
+      {showModal && <AppointmentModal onClose={() => { setShowModal(false); setPreselectedDoctor(''); }} services={[]} doctors={doctorList} preselectedDoctor={preselectedDoctor} />}
     </div>
   );
 };

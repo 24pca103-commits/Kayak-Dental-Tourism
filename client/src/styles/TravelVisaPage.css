@@ -9,15 +9,15 @@
   background-image: 
     linear-gradient(90deg, 
       #240840 0%, 
-      #240840 28%, 
-      rgba(36, 8, 64, 0.92) 42%, 
-      rgba(69, 18, 113, 0.5) 65%, 
-      rgba(69, 18, 113, 0.1) 85%, 
-      transparent 100%
+      #240840 25%, 
+      rgba(36, 8, 64, 0.92) 38%, 
+      rgba(69, 18, 113, 0.50) 58%, 
+      rgba(69, 18, 113, 0.15) 80%, 
+      transparent 95%
     ),
     url('/assets/banner-tourism-collage.jpg');
-  background-size: auto 100%;
-  background-position: right center;
+  background-size: auto 130%;
+  background-position: right bottom;
   background-repeat: no-repeat;
   color: white;
   min-height: 360px;
@@ -28,18 +28,47 @@
   border-bottom: 2px solid #24E0E1;
 }
 
+.travel-hero::before {
+  display: none !important;
+}
+
+.travel-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
 @media (max-width: 768px) {
   .travel-hero {
+    min-height: auto !important;
+    padding: 2.75rem 0 2.25rem !important;
     background-image: 
-      linear-gradient(180deg, 
-        rgba(36, 8, 64, 0.94) 0%, 
-        rgba(69, 18, 113, 0.86) 60%, 
-        rgba(69, 18, 113, 0.65) 100%
+      linear-gradient(90deg, 
+        rgba(36, 8, 64, 0.95) 0%, 
+        rgba(36, 8, 64, 0.82) 48%, 
+        rgba(69, 18, 113, 0.35) 80%, 
+        rgba(69, 18, 113, 0.10) 100%
       ),
-      url('/assets/banner-tourism-collage.jpg');
-    background-position: center;
-    background-size: cover;
-    padding: 3.5rem 0 2.5rem;
+      url('/assets/banner-tourism-collage.jpg') !important;
+    background-position: left bottom !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+  }
+  .travel-hero .badge {
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.95rem !important;
+  }
+  .travel-hero h1 {
+    font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.65rem !important;
+    white-space: normal !important;
+  }
+  .travel-hero p {
+    font-size: 0.85rem !important;
+    line-height: 1.55 !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+    margin-top: 0.4rem !important;
   }
 }
 

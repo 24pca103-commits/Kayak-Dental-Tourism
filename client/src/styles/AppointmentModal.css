@@ -50,20 +50,31 @@
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: var(--gray-100);
+  background: #350d58;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--gray-600);
+  color: #ffffff;
   transition: var(--transition);
   flex-shrink: 0;
 }
 
+.appointment-modal__close svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
 .appointment-modal__close:hover {
-  background: #fee2e2;
-  color: #ef4444;
+  background: #451271;
+  color: #24E0E1;
+  transform: scale(1.05);
+}
+
+.appointment-modal__close:hover svg {
+  color: #24E0E1 !important;
+  stroke: #24E0E1 !important;
 }
 
 .appointment-modal__form {
@@ -156,4 +167,9 @@
   .appointment-modal__form { padding: 1rem 1.25rem 1.5rem; }
   .appt-form__grid { grid-template-columns: 1fr; }
   .appt-form__time-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.appointment-modal__form button[type="submit"] svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }

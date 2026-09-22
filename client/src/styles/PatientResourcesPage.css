@@ -9,15 +9,15 @@
   background-image: 
     linear-gradient(90deg, 
       #240840 0%, 
-      #240840 28%, 
-      rgba(36, 8, 64, 0.92) 42%, 
-      rgba(69, 18, 113, 0.5) 65%, 
-      rgba(69, 18, 113, 0.1) 85%, 
-      transparent 100%
+      #240840 25%, 
+      rgba(36, 8, 64, 0.92) 38%, 
+      rgba(69, 18, 113, 0.50) 58%, 
+      rgba(69, 18, 113, 0.15) 80%, 
+      transparent 95%
     ),
     url('/assets/banner-resources-collage.jpg');
-  background-size: auto 100%;
-  background-position: right center;
+  background-size: auto 130%;
+  background-position: right bottom;
   background-repeat: no-repeat;
   color: white;
   min-height: 360px;
@@ -28,18 +28,47 @@
   border-bottom: 2px solid #24E0E1;
 }
 
+.resources-hero::before {
+  display: none !important;
+}
+
+.resources-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
 @media (max-width: 768px) {
   .resources-hero {
+    min-height: auto !important;
+    padding: 2.75rem 0 2.25rem !important;
     background-image: 
-      linear-gradient(180deg, 
-        rgba(36, 8, 64, 0.94) 0%, 
-        rgba(69, 18, 113, 0.86) 60%, 
-        rgba(69, 18, 113, 0.65) 100%
+      linear-gradient(90deg, 
+        rgba(36, 8, 64, 0.95) 0%, 
+        rgba(36, 8, 64, 0.82) 48%, 
+        rgba(69, 18, 113, 0.35) 80%, 
+        rgba(69, 18, 113, 0.10) 100%
       ),
-      url('/assets/banner-resources-collage.jpg');
-    background-position: center;
-    background-size: cover;
-    padding: 3.5rem 0 2.5rem;
+      url('/assets/banner-resources-collage.jpg') !important;
+    background-position: left bottom !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+  }
+  .resources-hero .badge {
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.95rem !important;
+  }
+  .resources-hero h1 {
+    font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.65rem !important;
+    white-space: normal !important;
+  }
+  .resources-hero p {
+    font-size: 0.85rem !important;
+    line-height: 1.55 !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+    margin-top: 0.4rem !important;
   }
 }
 
@@ -65,31 +94,32 @@
 .faq-tabs {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 40px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
   flex-wrap: wrap;
 }
 
 .faq-tab-btn {
-  width: 220px;
-  min-width: 220px;
-  max-width: 220px;
-  height: 48px;
-  padding: 0 16px;
+  width: auto;
+  min-width: 180px;
+  max-width: 260px;
+  height: 46px;
+  padding: 0 20px;
   border: none;
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: #e0e0e0;
-  color: #555;
+  background-color: #f1f5f9;
+  color: #475569;
   font-family: var(--font-main, 'Comfortaa', sans-serif);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   white-space: nowrap;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   box-sizing: border-box;
 }
 
@@ -102,14 +132,15 @@
 @media (max-width: 768px) {
   .faq-tabs {
     flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    align-items: stretch;
+    gap: 10px;
   }
   .faq-tab-btn {
-    width: 260px;
-    min-width: 260px;
-    max-width: 260px;
-    height: 46px;
+    width: 100%;
+    min-width: unset;
+    max-width: 100%;
+    height: 44px;
+    font-size: 0.9rem;
   }
 }
 
@@ -127,12 +158,13 @@
 
 .accordion-header {
   background-color: #e6fffe;
-  padding: 20px;
+  padding: 18px 20px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: #451271;
   transition: background-color 0.3s ease;
 }
@@ -151,11 +183,24 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease, padding 0.3s ease;
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  text-align-last: left !important;
 }
 
 .accordion-content.open {
   padding: 20px;
   max-height: 500px;
+}
+
+.accordion-content p {
+  font-size: 0.875rem !important;
+  line-height: 1.75 !important;
+  color: var(--gray-600) !important;
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  text-align-last: left !important;
+  margin: 0;
 }
 
 .checklist-container {
@@ -354,3 +399,38 @@
   flex-shrink: 0;
   margin-top: 3px;
 }
+
+/* ── Single-line Headings for Patient Resources Page ── */
+.patient-resources-page .section-title,
+.patient-resources-page h2 {
+  font-size: clamp(1.25rem, 5vw, 2.35rem) !important;
+  white-space: nowrap !important;
+  line-height: 1.25 !important;
+  margin-bottom: 0.5rem;
+}
+
+.patient-resources-page .resources-hero h1 {
+  font-size: clamp(1.8rem, 5.5vw, 3.2rem) !important;
+  white-space: nowrap !important;
+  line-height: 1.25 !important;
+}
+
+.patient-resources-page .care-card-v2__title,
+.patient-resources-page .checklist-box h3,
+.patient-resources-page .visa-step-card h3,
+.patient-resources-page .invitation-content h3,
+.patient-resources-page .acc-header h3,
+.patient-resources-page .tip-content h3 {
+  white-space: nowrap !important;
+  font-size: clamp(0.98rem, 4vw, 1.25rem) !important;
+  line-height: 1.3 !important;
+}
+
+@media (max-width: 480px) {
+  .patient-resources-page .section-title,
+  .patient-resources-page h2 {
+    font-size: clamp(1.1rem, 4.6vw, 1.38rem) !important;
+    white-space: nowrap !important;
+  }
+}
+

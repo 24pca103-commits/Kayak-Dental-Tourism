@@ -68,6 +68,8 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -77,6 +79,13 @@ body {
   line-height: 1.6;
   font-size: 18px; /* Body text: Comfortaa 18-22px */
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
+#root, main, .homepage {
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -434,14 +443,40 @@ h1, .hero__heading {
 
 @media (max-width: 768px) {
   .section { padding: 2.5rem 0; }
-  .section-title { font-size: 1.8rem; }
+  .section-title,
+  h2.section-title {
+    font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+  }
   .btn-lg { padding: 0.875rem 1.75rem; }
+
+  /* Point 1: Heading vs Sub-content Typography Hierarchy across the website on Mobile */
+  .section-subtitle,
+  .section-title + p,
+  .welcome__content p,
+  .welcome__desc,
+  .welcome .section-title + p,
+  .what-we-do__subtitle,
+  .mission-subtitle,
+  .why-us-v4__desc,
+  .travel-concierge-banner__desc,
+  .transport-desc,
+  .about-story .story-content > p {
+    font-size: 0.88rem !important;
+    line-height: 1.65 !important;
+  }
 }
 
 @media (max-width: 480px) {
   .container { padding: 0 1rem; }
   .section { padding: 2rem 0; }
-  .section-title { font-size: 1.5rem; }
+  .section-title,
+  h2.section-title {
+    font-size: clamp(1.4rem, 5.2vw, 1.75rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+  }
   .btn {
     padding: 0.75rem 1.25rem;
     font-size: 0.95rem;
@@ -647,7 +682,7 @@ svg.lucide {
     margin-right: auto !important;
   }
 
-  /* ── Mobile View: All Button Text Strictly Single Line ── */
+  /* ── Mobile View: All Button Text Strictly Single Line, Non-breaking, and Padded ── */
   button,
   .btn,
   a.btn,
@@ -662,6 +697,15 @@ svg.lucide {
   .btn-outline-light,
   .btn-whatsapp-cta {
     white-space: nowrap !important;
+    word-break: keep-all !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding-left: clamp(14px, 3.5vw, 24px) !important;
+    padding-right: clamp(14px, 3.5vw, 24px) !important;
   }
 
   button *,
@@ -669,6 +713,9 @@ svg.lucide {
   a.btn *,
   [class*="btn"] * {
     white-space: nowrap !important;
+    word-break: keep-all !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
   }
 
   /* ── Point 2: Hero Section Headings Single Line across all pages (excluding main home hero) ── */
@@ -803,21 +850,55 @@ select {
   position: relative;
   background-color: #240840;
   min-height: 330px;
-  padding: 4.5rem 0 3.5rem !important;
-  display: flex !important;
-  align-items: center !important;
-  text-align: left !important;
-  border-bottom: 2px solid #24E0E1 !important;
-  box-sizing: border-box !important;
-  background-size: auto 115% !important;
-  background-position: right 30% !important;
-  background-repeat: no-repeat !important;
+  padding: 4.5rem 0 3.5rem;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  border-bottom: 2px solid #24E0E1;
+  box-sizing: border-box;
+  background-size: auto 130%;
+  background-position: right bottom;
+  background-repeat: no-repeat;
 }
 
-/* Consultation hero uses single smiling photo */
-.consultation-hero {
-  background-size: auto 100% !important;
-  background-position: right top !important;
+.testimonials-hero,
+.faqs-hero {
+  background-image: 
+    linear-gradient(90deg, 
+      #240840 0%, 
+      #240840 25%, 
+      rgba(36, 8, 64, 0.92) 38%, 
+      rgba(69, 18, 113, 0.50) 58%, 
+      rgba(69, 18, 113, 0.15) 80%, 
+      transparent 95%
+    ),
+    url('/assets/banner-about-collage.jpg');
+}
+
+.treatment-hero {
+  background-image: 
+    linear-gradient(90deg, 
+      #240840 0%, 
+      #240840 25%, 
+      rgba(36, 8, 64, 0.92) 38%, 
+      rgba(69, 18, 113, 0.50) 58%, 
+      rgba(69, 18, 113, 0.15) 80%, 
+      transparent 95%
+    ),
+    url('/assets/banner-tourism-collage.jpg');
+}
+
+.team-hero {
+  background-image: 
+    linear-gradient(90deg, 
+      #240840 0%, 
+      #240840 25%, 
+      rgba(36, 8, 64, 0.92) 38%, 
+      rgba(69, 18, 113, 0.50) 58%, 
+      rgba(69, 18, 113, 0.15) 80%, 
+      transparent 95%
+    ),
+    url('/assets/banner-team-collage.jpg');
 }
 
 .about-hero .container,
@@ -982,6 +1063,10 @@ select {
   display: none;
 }
 
+.page-hero-banner-bg {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
   .reviews-desktop-grid {
     display: none !important;
@@ -994,7 +1079,21 @@ select {
     margin: 0 auto;
   }
 
-  /* Universal Page Hero Banner Mobile Background */
+  /* Universal Page Hero Banner Mobile: Compact padding (no excessive top/bottom space) and crisp non-broken image */
+  .about-hero::before,
+  .consultation-hero::before,
+  .hero-section::before,
+  .travel-hero::before,
+  .resources-hero::before,
+  .treatment-hero::before,
+  .testimonials-hero::before,
+  .team-hero::before,
+  .contact-hero::before,
+  .faqs-hero::before,
+  .service-detail-hero::before {
+    display: none !important;
+  }
+
   .about-hero,
   .consultation-hero,
   .hero-section,
@@ -1006,9 +1105,286 @@ select {
   .contact-hero,
   .faqs-hero,
   .service-detail-hero {
-    background-position: center !important;
+    min-height: auto !important;
+    padding: 2.75rem 0 2.25rem !important;
+    background-image: 
+      linear-gradient(90deg, 
+        rgba(36, 8, 64, 0.95) 0%, 
+        rgba(36, 8, 64, 0.82) 48%, 
+        rgba(69, 18, 113, 0.35) 80%, 
+        rgba(69, 18, 113, 0.10) 100%
+      ), 
+      url('/assets/banner-about-collage.jpg') !important;
+    background-position: left bottom !important;
     background-size: cover !important;
+    background-repeat: no-repeat !important;
   }
+
+  .about-hero .badge,
+  .hero-section .badge,
+  .consultation-hero .badge,
+  .travel-hero .badge,
+  .resources-hero .badge,
+  .treatment-hero .badge,
+  .testimonials-hero .badge,
+  .team-hero .badge,
+  .contact-hero .badge,
+  .faqs-hero .badge,
+  .service-detail-hero .badge {
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.95rem !important;
+  }
+
+  .about-hero h1,
+  .hero-section h1,
+  .hero-title,
+  .consultation-hero h1,
+  .travel-hero h1,
+  .resources-hero h1,
+  .treatment-hero h1,
+  .testimonials-hero h1,
+  .team-hero h1,
+  .contact-hero h1,
+  .faqs-hero h1,
+  .service-detail-hero h1,
+  .service-detail-hero .section-title {
+    font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.65rem !important;
+    white-space: normal !important;
+  }
+
+  .about-hero p,
+  .hero-section p,
+  .hero-subtitle,
+  .consultation-hero p,
+  .travel-hero p,
+  .resources-hero p,
+  .treatment-hero p,
+  .testimonials-hero p,
+  .team-hero p,
+  .contact-hero p,
+  .faqs-hero p,
+  .service-detail-hero p {
+    font-size: 0.85rem !important;
+    line-height: 1.55 !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+    margin-top: 0.4rem !important;
+  }
+}
+
+/* ── Point 2 & 3: Universal Small Circular Slider Dots Across All Sliders ── */
+.what-we-do-slider__dots,
+.testimonials-v3__dots,
+.testimonials-page__dots,
+.slider-dots {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  margin-top: 1.25rem !important;
+}
+
+.what-we-do-slider__dot,
+.testimonials-v3__dot,
+.testimonials-page__dot,
+.slider-dot {
+  width: 7px !important;
+  height: 7px !important;
+  min-width: 7px !important;
+  max-width: 7px !important;
+  min-height: 7px !important;
+  max-height: 7px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  box-shadow: none !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+  transition: all 0.25s ease !important;
+}
+
+.what-we-do-slider__dot--active,
+.testimonials-v3__dot--active,
+.testimonials-page__dot--active,
+.slider-dot--active {
+  width: 9px !important;
+  height: 9px !important;
+  min-width: 9px !important;
+  max-width: 9px !important;
+  min-height: 9px !important;
+  max-height: 9px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  flex-shrink: 0 !important;
+}
+
+.what-we-do-slider__dot {
+  background: rgba(36, 224, 225, 0.35) !important;
+  border: 1.5px solid rgba(36, 224, 225, 0.9) !important;
+}
+
+.what-we-do-slider__dot--active {
+  background: #24E0E1 !important;
+  border: 1.5px solid #24E0E1 !important;
+  box-shadow: 0 0 6px rgba(36, 224, 225, 0.8) !important;
+}
+
+.testimonials-v3__dot {
+  background: rgba(69, 18, 113, 0.25) !important;
+}
+.testimonials-v3__dot--active {
+  background: #451271 !important;
+  box-shadow: 0 0 6px rgba(69, 18, 113, 0.5) !important;
+}
+
+.testimonials-page__dot {
+  background: rgba(69, 18, 113, 0.25) !important;
+}
+.testimonials-page__dot--active {
+  background: #451271 !important;
+  box-shadow: 0 0 6px rgba(69, 18, 113, 0.5) !important;
+}
+
+.slider-dot {
+  background: #bbf2f6 !important;
+  border: 1.5px solid #0891b2 !important;
+}
+.slider-dot--active {
+  background: #24E0E1 !important;
+  border: 1.5px solid #24E0E1 !important;
+  box-shadow: 0 0 6px rgba(36, 224, 225, 0.8) !important;
+}
+
+/* ── Floating Action Buttons (WhatsApp, Instagram, Scroll To Top) ── */
+.floating-actions-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  pointer-events: none;
+}
+
+.floating-action-btn {
+  pointer-events: auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+  flex-shrink: 0;
+}
+
+.floating-action-btn:hover {
+  transform: scale(1.12);
+}
+
+.floating-action-btn:active {
+  transform: scale(0.95);
+}
+
+.floating-scroll-top {
+  background: #451271;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(69, 18, 113, 0.35);
+  border: 2px solid rgba(36, 224, 225, 0.4);
+}
+
+.floating-instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(220, 39, 67, 0.4);
+}
+
+.floating-whatsapp {
+  background: #25D366;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+/* ── Desktop View (min-width: 769px): Floating Icons ALWAYS visible, untouched ── */
+@media (min-width: 769px) {
+  .floating-actions-container {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* ── Mobile View Responsive ONLY (max-width: 768px): Hide Floating Icons when Navbar drops down ── */
+@media (max-width: 768px) {
+  body.mobile-menu-open .floating-actions-container,
+  body:has(.navbar__mobile--open) .floating-actions-container {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
+
+  .floating-actions-container {
+    bottom: 1.25rem;
+    right: 1rem;
+    gap: 0.65rem;
+  }
+
+  .floating-action-btn {
+    width: 46px;
+    height: 46px;
+  }
+}
+
+/* ── Universal: Button arrow & icon color strictly matches button text color ── */
+button svg,
+.btn svg,
+a.btn svg,
+[class*="btn"] svg {
+  stroke: currentColor !important;
+  flex-shrink: 0 !important;
+}
+
+button .lucide-arrow-right,
+button .lucide-chevron-right,
+button .lucide-arrow-up-right,
+button .lucide-arrow-left,
+.btn .lucide-arrow-right,
+.btn .lucide-chevron-right,
+.btn .lucide-arrow-up-right,
+.btn .lucide-arrow-left,
+a.btn .lucide-arrow-right,
+a.btn .lucide-chevron-right,
+a.btn .lucide-arrow-up-right,
+a.btn .lucide-arrow-left,
+[class*="btn"] .lucide-arrow-right,
+[class*="btn"] .lucide-chevron-right,
+[class*="btn"] .lucide-arrow-up-right,
+[class*="btn"] .lucide-arrow-left,
+.navbar__cta-arrow,
+.treatment-card-v__arrow {
+  color: currentColor !important;
+  stroke: currentColor !important;
+  flex-shrink: 0 !important;
+  min-width: 15px !important;
+  min-height: 15px !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 

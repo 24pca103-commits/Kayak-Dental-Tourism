@@ -79,12 +79,14 @@ const AdminDoctors: React.FC = () => {
               <div style={{ padding: '1.25rem' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                   <div>
-                    <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--gray-800)' }}>{doc.name}</h3>
+                    <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--gray-800)' }}>
+                      {doc.name}{doc.qualification && !doc.name.includes(doc.qualification) ? `, ${doc.qualification}` : ''}
+                    </h3>
                     <p style={{ fontSize: '0.8rem', color: 'var(--purple-600)', fontWeight: 600 }}>{doc.specialization}</p>
                   </div>
                   <span className={`badge ${doc.status === 'active' ? 'status-confirmed' : 'status-cancelled'}`} style={{ fontSize: '0.7rem' }}>{doc.status}</span>
                 </div>
-                <p style={{ fontSize: '0.775rem', color: 'var(--gray-500)', marginBottom: '1rem' }}>{doc.qualification} · {doc.experience}yrs</p>
+                <p style={{ fontSize: '0.775rem', color: 'var(--gray-500)', marginBottom: '1rem' }}>{doc.experience} yrs experience</p>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                   <button onClick={() => openEdit(doc)} className="btn btn-outline-purple btn-sm" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.3rem' }}><Edit2 size={13} />Edit</button>
                   <button onClick={() => handleDelete(doc._id)} style={{ width: 34, height: 34, borderRadius: 8, background: '#fee2e2', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}><Trash2 size={14} /></button>

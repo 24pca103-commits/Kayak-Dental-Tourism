@@ -4,9 +4,12 @@ import {
   Menu,
   X,
   ChevronDown,
+  ChevronUp,
   Phone,
   ArrowRight,
   Search,
+  Sparkles,
+  Smile,
   Info,
   Users,
   Building2,
@@ -58,21 +61,19 @@ interface SearchItem {
 const SEARCH_DATABASE: SearchItem[] = [
   // Treatments
   { title: 'Dental Implants', category: 'Treatments', description: 'Permanent, natural-looking replacement for missing teeth', path: '/services/dental-implants', keywords: ['implants', 'teeth', 'tooth replacement', 'fixed teeth'] },
-  { title: 'Teeth Alignment', category: 'Treatments', description: 'Advanced orthodontic alignment solutions', path: '/services/teeth-alignment', keywords: ['align', 'crooked', 'straightening', 'braces'] },
-  { title: 'Smile Designing', category: 'Treatments', description: 'Custom aesthetic digital smile makeovers', path: '/services/smile-designing', keywords: ['veneers', 'makeover', 'aesthetic', 'hollywood smile'] },
-  { title: 'Teeth Replacement', category: 'Treatments', description: 'Crowns, bridges and full mouth reconstruction', path: '/services/teeth-replacement', keywords: ['bridge', 'crown', 'dentures'] },
+  { title: 'Full Mouth Rehabilitation', category: 'Treatments', description: 'Complete smile restoration combining implants, crowns, and digital 3D smile design', path: '/services/full-mouth-rehabilitation', keywords: ['rehab', 'full mouth', 'reconstruction', 'makeover'] },
+  { title: 'Cosmetic Dentistry', category: 'Treatments', description: 'Veneers, bonding, and aesthetic transformations', path: '/services/cosmetic-dentistry', keywords: ['veneers', 'bonding', 'glamour', 'cosmetic', 'smile design'] },
+  { title: 'Crowns & Bridges', category: 'Treatments', description: 'Premium Zirconia and PFM restorations engineered for maximum strength', path: '/services/crowns-and-bridges', keywords: ['crowns', 'bridges', 'caps', 'zirconia'] },
   { title: 'Root Canal Treatment', category: 'Treatments', description: 'Pain-free single sitting endodontic therapy', path: '/services/root-canal-treatment', keywords: ['rct', 'infection', 'toothache', 'painless'] },
-  { title: 'Teeth Whitening', category: 'Treatments', description: 'Professional laser teeth bleaching for a brighter smile', path: '/services/teeth-whitening', keywords: ['bleach', 'stains', 'yellow teeth', 'bright'] },
-  { title: 'Braces', category: 'Treatments', description: 'Metal, ceramic and self-ligating braces', path: '/services/braces', keywords: ['metal', 'ceramic', 'orthodontics', 'clips'] },
-  { title: 'Clear Aligners', category: 'Treatments', description: 'Invisible, comfortable custom aligners', path: '/services/clear-aligners', keywords: ['invisalign', 'invisible braces', 'transparent'] },
-  { title: 'Pediatric Dentistry', category: 'Treatments', description: 'Gentle and fun dental care for kids and teens', path: '/services/pediatric-dentistry', keywords: ['kids', 'children', 'baby teeth', 'pediatric'] },
-  { title: 'Preventive Dentistry', category: 'Treatments', description: 'Scaling, polishing, sealants, and checkups', path: '/services/preventive-dentistry', keywords: ['cleaning', 'scaling', 'polishing', 'cavity prevention'] },
-  { title: 'Cosmetic Dentistry', category: 'Treatments', description: 'Veneers, bonding, and aesthetic transformations', path: '/services/cosmetic-dentistry', keywords: ['veneers', 'bonding', 'glamour', 'cosmetic'] },
-  { title: 'Emergency Dental Care', category: 'Treatments', description: 'Urgent care for acute pain, broken teeth, or trauma', path: '/services/emergency-dental-care', keywords: ['urgent', 'pain', 'broken tooth', 'trauma', '24/7'] },
+  { title: 'Teeth Alignment', category: 'Treatments', description: 'Advanced orthodontic alignment solutions for a healthy smile', path: '/services/teeth-alignment', keywords: ['align', 'crooked', 'straightening', 'alignment'] },
+  { title: 'Braces', category: 'Treatments', description: 'Metal, ceramic and self-ligating braces for teeth straightening', path: '/services/braces', keywords: ['braces', 'ceramic braces', 'metal clips', 'orthodontics'] },
+  { title: 'Clear Aligners', category: 'Treatments', description: 'Invisible, comfortable custom aligners', path: '/services/clear-aligners', keywords: ['invisalign', 'invisible braces', 'transparent', 'aligners'] },
+  { title: 'Oral & Maxillofacial Surgery', category: 'Treatments', description: 'Expert surgical solutions for wisdom teeth, jaw, and facial conditions', path: '/services/oral-surgery', keywords: ['surgery', 'wisdom teeth', 'extraction', 'jaw', 'maxillofacial'] },
+  { title: 'Pediatric Dentistry', category: 'Treatments', description: 'Gentle and fun dental care tailored specifically for children', path: '/services/pediatric-dentistry', keywords: ['kids', 'children', 'baby teeth', 'pediatric'] },
 
   // Doctors
+  { title: 'Dr. V.Sahaana, BDS., FDS., FMC.', category: 'Doctors', description: 'Founder & Chief Dental Surgeon, Root Canal Specialist', path: '/about', keywords: ['sahaana', 'founder', 'director', 'root canal', 'chief doctor', 'qualification'] },
   { title: 'Our Expert Dental Team', category: 'Doctors', description: 'Meet our team of MDS specialists and surgeons', path: '/team', keywords: ['doctors', 'surgeons', 'specialists', 'dentists'] },
-  { title: 'Dr. A. Mathan Mohan (MDS, PhD)', category: 'Doctors', description: 'Chief Implantologist & Maxillofacial Surgeon', path: '/team', keywords: ['implantologist', 'founder', 'expert', 'director', 'mathan mohan'] },
 
   // Dental Tourism
   { title: 'Dental Tourism in India', category: 'Dental Tourism', description: 'World-class dental treatment at up to 70% lower costs', path: '/dental-tourism', keywords: ['tourism', 'international', 'travel', 'savings', 'foreigner'] },
@@ -116,6 +117,17 @@ export default function Navbar() {
     setMenuOpen(false);
     setActiveMobileDropdown(null);
   }, [location]);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add('mobile-menu-open');
+    } else {
+      document.body.classList.remove('mobile-menu-open');
+    }
+    return () => {
+      document.body.classList.remove('mobile-menu-open');
+    };
+  }, [menuOpen]);
 
   // Focus search input when search modal opens
   useEffect(() => {
@@ -166,18 +178,16 @@ export default function Navbar() {
       path: '/services',
       isTwoColumn: true,
       subItems: [
-        { label: 'Dental Implants', path: '/services/dental-implants', image: '/assets/treatment-implants-hd.png' },
-        { label: 'Teeth Alignment', path: '/services/teeth-alignment', image: '/assets/card-orthodontics-hd.jpg' },
-        { label: 'Smile Designing', path: '/services/smile-designing', image: '/assets/card-smile.png' },
-        { label: 'Teeth Replacement', path: '/services/teeth-replacement', image: '/assets/card-replacement.png' },
-        { label: 'Root Canal Treatment', path: '/services/root-canal-treatment', image: '/assets/treatment-5-root-canal.jpg' },
-        { label: 'Teeth Whitening', path: '/services/teeth-whitening', image: '/assets/treatment-cosmetic-dentistry.jpg' },
-        { label: 'Braces', path: '/services/braces', image: '/assets/card-braces.png' },
-        { label: 'Clear Aligners', path: '/services/clear-aligners', image: '/assets/treatment-orthodontics.jpg' },
-        { label: 'Pediatric Dentistry', path: '/services/pediatric-dentistry', image: '/assets/treatment-8-pediatric-child.jpg' },
-        { label: 'Preventive Dentistry', path: '/services/preventive-dentistry', image: '/assets/hero-child-smile.png' },
+        { label: 'Dental Implants', path: '/services/dental-implants', image: '/assets/about-clinic-real.jpg' },
+        { label: 'Full Mouth Rehabilitation', path: '/services/full-mouth-rehabilitation', image: '/assets/treatment-2-rehab.jpg' },
         { label: 'Cosmetic Dentistry', path: '/services/cosmetic-dentistry', image: '/assets/treatment-3-cosmetic.png' },
-        { label: 'Emergency Dental Care', path: '/services/emergency-dental-care', image: '/assets/about-clinic-real.jpg' },
+        { label: 'Crowns & Bridges', path: '/services/crowns-and-bridges', image: '/assets/treatment-4-crowns.jpg' },
+        { label: 'Root Canal Treatment', path: '/services/root-canal-treatment', image: '/assets/treatment-5-root-canal.jpg' },
+        { label: 'Teeth Alignment', path: '/services/teeth-alignment', image: '/assets/card-orthodontics-hd.jpg' },
+        { label: 'Braces', path: '/services/braces', image: '/assets/treatment-orthodontics.jpg' },
+        { label: 'Clear Aligners', path: '/services/clear-aligners', image: '/assets/card-braces.png' },
+        { label: 'Oral & Maxillofacial Surgery', path: '/services/oral-surgery', image: '/assets/treatment-7-oral-surgery.jpg' },
+        { label: 'Pediatric Dentistry', path: '/services/pediatric-dentistry', image: '/assets/treatment-8-pediatric-child.jpg' },
       ],
     },
     {
@@ -226,6 +236,22 @@ export default function Navbar() {
     }
   };
 
+  const handleAnchorClick = (path: string, e?: React.MouseEvent) => {
+    setMenuOpen(false);
+    if (path.includes('#')) {
+      const [basePath, hash] = path.split('#');
+      if (location.pathname === basePath) {
+        if (e) e.preventDefault();
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        window.history.pushState(null, '', path);
+        return;
+      }
+    }
+  };
+
   const handleSearchResultClick = (path: string) => {
     setSearchOpen(false);
     if (path.includes('#')) {
@@ -241,7 +267,14 @@ export default function Navbar() {
     navigate(path);
   };
 
-  const categories = ['All', 'Treatments', 'Dental Tourism', 'Patient Resources', 'Doctors', 'Testimonials'];
+  const categories = [
+    { id: 'All', label: 'All', icon: <Sparkles size={14} /> },
+    { id: 'Treatments', label: 'Treatments', icon: <Smile size={14} /> },
+    { id: 'Dental Tourism', label: 'Dental Tourism', icon: <Globe size={14} /> },
+    { id: 'Patient Resources', label: 'Resources', icon: <ClipboardList size={14} /> },
+    { id: 'Doctors', label: 'Doctors', icon: <Users size={14} /> },
+    { id: 'Testimonials', label: 'Reviews', icon: <Star size={14} /> },
+  ];
 
   const filteredSearchResults = SEARCH_DATABASE.filter(item => {
     const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
@@ -287,7 +320,12 @@ export default function Navbar() {
                   <div className={`navbar__dropdown ${item.isTwoColumn ? 'navbar__dropdown--two-col' : ''}`}>
                     <div className={`navbar__dropdown-inner ${item.isTwoColumn ? 'navbar__dropdown-inner--two-col' : ''}`}>
                       {item.subItems.map((sub, i) => (
-                        <Link key={i} to={sub.path} className="navbar__dropdown-item">
+                        <Link
+                          key={i}
+                          to={sub.path}
+                          className="navbar__dropdown-item"
+                          onClick={(e) => handleAnchorClick(sub.path, e)}
+                        >
                           {sub.image ? (
                             <span className="navbar__dropdown-thumb">
                               <img src={sub.image} alt={sub.label} />
@@ -354,7 +392,12 @@ export default function Navbar() {
                         <span>{sub.label} ↗</span>
                       </a>
                     ) : (
-                      <Link key={i} to={sub.path} className="navbar__dropdown-item">
+                      <Link
+                        key={i}
+                        to={sub.path}
+                        className="navbar__dropdown-item"
+                        onClick={(e) => handleAnchorClick(sub.path, e)}
+                      >
                         {sub.icon && <span className="navbar__dropdown-icon-box">{sub.icon}</span>}
                         <span>{sub.label}</span>
                       </Link>
@@ -370,7 +413,7 @@ export default function Navbar() {
               onClick={() => navigate('/online-consultation')}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
             >
-              Book Online Consultation <ArrowRight size={16} className="navbar__cta-arrow" color="#350d58" style={{ color: '#350d58', stroke: '#350d58', flexShrink: 0 }} />
+              Book Online Consultation <ArrowRight size={16} className="navbar__cta-arrow" color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0 }} />
             </button>
           </div>
 
@@ -445,13 +488,11 @@ export default function Navbar() {
                     }}
                     aria-label={`Toggle ${item.label} submenu`}
                   >
-                    <ChevronDown
-                      size={16}
-                      style={{
-                        transform: activeMobileDropdown === item.label ? 'rotate(180deg)' : 'rotate(0)',
-                        transition: 'transform 0.2s ease',
-                      }}
-                    />
+                    {activeMobileDropdown === item.label ? (
+                      <ChevronUp size={25} strokeWidth={2.8} />
+                    ) : (
+                      <ChevronDown size={25} strokeWidth={2.8} />
+                    )}
                   </button>
                 )}
               </div>
@@ -463,7 +504,10 @@ export default function Navbar() {
                       key={i}
                       to={sub.path}
                       className="navbar__mobile-subitem"
-                      onClick={() => setMenuOpen(false)}
+                      onClick={(e) => {
+                        setMenuOpen(false);
+                        handleAnchorClick(sub.path, e);
+                      }}
                       style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                     >
                       {sub.image ? (
@@ -483,20 +527,96 @@ export default function Navbar() {
             </div>
           ))}
 
+          {/* Mobile Contact Group with Submenu */}
+          <div className="navbar__mobile-group">
+            <div className="navbar__mobile-header">
+              <Link
+                to="/contact"
+                className={`navbar__mobile-link ${location.pathname === '/contact' ? 'navbar__mobile-link--active' : ''}`}
+                onClick={() => setMenuOpen(false)}
+              >
+                Contact
+              </Link>
+              <button
+                type="button"
+                className={`navbar__mobile-toggle ${activeMobileDropdown === 'Contact' ? 'navbar__mobile-toggle--active' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleMobileDropdown('Contact');
+                }}
+                aria-label="Toggle Contact submenu"
+              >
+                {activeMobileDropdown === 'Contact' ? (
+                  <ChevronUp size={25} strokeWidth={2.8} />
+                ) : (
+                  <ChevronDown size={25} strokeWidth={2.8} />
+                )}
+              </button>
+            </div>
+
+            {activeMobileDropdown === 'Contact' && (
+              <div className="navbar__mobile-sublist">
+                {contactSubItems.map((sub, i) => (
+                  sub.label === 'WhatsApp' ? (
+                    <a
+                      key={i}
+                      href={sub.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="navbar__mobile-subitem"
+                      onClick={() => setMenuOpen(false)}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: '#25D366' }}
+                    >
+                      <WhatsAppIcon size={16} color="#25D366" />
+                      <span>{sub.label} ↗</span>
+                    </a>
+                  ) : sub.isExternal ? (
+                    <a
+                      key={i}
+                      href={sub.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="navbar__mobile-subitem"
+                      onClick={() => setMenuOpen(false)}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                    >
+                      {sub.icon && <span className="navbar__mobile-subitem-icon">{sub.icon}</span>}
+                      <span>{sub.label} ↗</span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={i}
+                      to={sub.path}
+                      className="navbar__mobile-subitem"
+                      onClick={(e) => {
+                        setMenuOpen(false);
+                        handleAnchorClick(sub.path, e);
+                      }}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                    >
+                      {sub.icon && <span className="navbar__mobile-subitem-icon">{sub.icon}</span>}
+                      <span>{sub.label}</span>
+                    </Link>
+                  )
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="navbar__mobile-actions">
             <button
               className="btn btn-primary w-full"
               onClick={() => navigate('/online-consultation')}
               style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', whiteSpace: 'nowrap' }}
             >
-              Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
+              Book Online Consultation <ArrowRight size={16} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0 }} />
             </button>
             <div className="navbar__mobile-contact-links">
-              <Link to="/contact" className="navbar__mobile-subitem" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                <PhoneCall size={14} /> Contact Us
+              <Link to="/contact" className="navbar__mobile-contact-btn" onClick={() => setMenuOpen(false)}>
+                <PhoneCall size={15} /> <span>Contact Us</span>
               </Link>
               <a href="https://wa.me/917867926159" target="_blank" rel="noopener noreferrer" className="navbar__mobile-whatsapp-btn">
-                <WhatsAppIcon size={16} color="#ffffff" /> WhatsApp Us ↗
+                <WhatsAppIcon size={16} color="#ffffff" /> <span>WhatsApp</span>
               </a>
             </div>
           </div>
@@ -533,7 +653,7 @@ export default function Navbar() {
                 onClick={() => setSearchOpen(false)}
                 aria-label="Close search modal"
               >
-                ✕
+                <X size={20} strokeWidth={2.5} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
               </button>
             </div>
 
@@ -541,12 +661,13 @@ export default function Navbar() {
             <div className="navbar-search-categories">
               {categories.map((cat) => (
                 <button
-                  key={cat}
+                  key={cat.id}
                   type="button"
-                  className={`navbar-search-cat-btn ${selectedCategory === cat ? 'navbar-search-cat-btn--active' : ''}`}
-                  onClick={() => setSelectedCategory(cat)}
+                  className={`navbar-search-cat-btn ${selectedCategory === cat.id ? 'navbar-search-cat-btn--active' : ''}`}
+                  onClick={() => setSelectedCategory(cat.id)}
                 >
-                  {cat}
+                  {cat.icon}
+                  <span>{cat.label}</span>
                 </button>
               ))}
             </div>

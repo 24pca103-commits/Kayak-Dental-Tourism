@@ -76,7 +76,7 @@ const TravelVisaPage: React.FC = () => {
               </div>
               <h3>Processing & Validity</h3>
               <ul>
-                <li>Processing time: 3-5 business days</li>
+                <li>Processing time: 3 - 5 business days</li>
                 <li>Visa validity: up to 60 days</li>
                 <li>Multiple entries often allowed</li>
               </ul>
@@ -176,7 +176,7 @@ const TravelVisaPage: React.FC = () => {
                 <div className="acc-price">~$80 / night</div>
               </div>
               <div className="acc-body">
-                <p>Luxurious 4-5 star hotels with full amenities for a completely relaxing stay.</p>
+                <p>Luxurious 4 - 5 star hotels with full amenities for a completely relaxing stay.</p>
                 <ul className="acc-features">
                   <li><CheckCircle size={16} /> Premium dining options</li>
                   <li><CheckCircle size={16} /> Swimming pool & gym</li>

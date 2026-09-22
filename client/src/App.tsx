@@ -22,10 +22,10 @@ import AdminDoctors from './pages/admin/AdminDoctors';
 import AdminServices from './pages/admin/AdminServices';
 import AdminTestimonials from './pages/admin/AdminTestimonials';
 import AdminFAQs from './pages/admin/AdminFAQs';
+import AdminFeedback from './pages/admin/AdminFeedback';
 import { ArrowUp } from 'lucide-react';
 import WhatsAppIcon from './components/icons/WhatsAppIcon';
 import InstagramIcon from './components/icons/InstagramIcon';
-
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -35,13 +35,26 @@ const ScrollToTop: React.FC = () => {
 
   useEffect(() => {
     if (hash) {
-      setTimeout(() => {
-        const id = hash.replace('#', '');
+      const id = hash.replace('#', '');
+      const scrollToTarget = () => {
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return true;
         }
-      }, 100);
+        return false;
+      };
+
+      if (!scrollToTarget()) {
+        const t1 = setTimeout(scrollToTarget, 80);
+        const t2 = setTimeout(scrollToTarget, 250);
+        const t3 = setTimeout(scrollToTarget, 550);
+        return () => {
+          clearTimeout(t1);
+          clearTimeout(t2);
+          clearTimeout(t3);
+        };
+      }
     } else {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
@@ -56,7 +69,6 @@ const PublicLayout: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Visible when user has scrolled down (e.g. > 350px or towards footer)
       setShowScrollTop(window.scrollY > 350);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -69,96 +81,43 @@ const PublicLayout: React.FC = () => {
       <Navbar />
       <Outlet />
       <Footer />
-      {/* ── Floating Scroll To Top Button (Appears only when scrolled down) ── */}
-      {showScrollTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          aria-label="Scroll to top"
-          style={{
-            position: 'fixed',
-            bottom: '9.5rem',
-            right: '1.5rem',
-            zIndex: 9999,
-            width: '54px',
-            height: '54px',
-            borderRadius: '50%',
-            background: '#451271',
-            color: '#ffffff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 6px 20px rgba(69, 18, 113, 0.35)',
-            border: '2px solid rgba(36, 224, 225, 0.4)',
-            cursor: 'pointer',
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-          }}
-          onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.12)')}
-          onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+
+      {/* ── Floating Action Buttons (Scroll-to-top, Instagram, WhatsApp) ── */}
+      <div className="floating-actions-container">
+        {/* Scroll To Top Button */}
+        {showScrollTop && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Scroll to top"
+            className="floating-action-btn floating-scroll-top"
+          >
+            <ArrowUp size={24} color="#ffffff" strokeWidth={2.5} />
+          </button>
+        )}
+
+        {/* Instagram Button */}
+        <a
+          href="https://www.instagram.com/kayal_dentalcare/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow us on Instagram"
+          className="floating-action-btn floating-instagram"
         >
-          <ArrowUp size={24} color="#ffffff" strokeWidth={2.5} />
-        </button>
-      )}
+          <InstagramIcon size={26} color="#ffffff" />
+        </a>
 
-      {/* ── Floating Instagram Button (Above WhatsApp) ── */}
-      <a
-        href="https://www.instagram.com/kayal_dentalcare/"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Follow us on Instagram"
-        style={{
-          position: 'fixed',
-          bottom: '5.5rem',
-          right: '1.5rem',
-          zIndex: 9999,
-          width: '54px',
-          height: '54px',
-          borderRadius: '50%',
-          background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)',
-          color: '#ffffff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 6px 20px rgba(220,39,67,0.4)',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.12)')}
-        onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-      >
-        <InstagramIcon size={26} color="#ffffff" />
-      </a>
-
-      {/* ── Floating WhatsApp Button (Bottom Right) ── */}
-      <a
-        href="https://wa.me/917867926159?text=Hello%20Kayal%20Dental%20Care"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp"
-      style={{
-        position: 'fixed',
-        bottom: '1.5rem',
-        right: '1.5rem',
-        zIndex: 9999,
-        width: '54px',
-        height: '54px',
-        borderRadius: '50%',
-        background: '#25D366',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxShadow: '0 6px 20px rgba(37,211,102,0.45)',
-        cursor: 'pointer',
-        textDecoration: 'none',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-      }}
-      onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.12)')}
-      onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-    >
-      {/* WhatsApp official icon */}
-      <WhatsAppIcon size={28} color="#ffffff" />
-    </a>
-  </>
+        {/* WhatsApp Button */}
+        <a
+          href="https://wa.me/917867926159?text=Hello%20Kayal%20Dental%20Care"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat on WhatsApp"
+          className="floating-action-btn floating-whatsapp"
+        >
+          <WhatsAppIcon size={28} color="#ffffff" />
+        </a>
+      </div>
+    </>
   );
 };
 
@@ -212,6 +171,7 @@ const App: React.FC = () => {
         <Route path="/admin/services" element={<RequireAuth><AdminServices /></RequireAuth>} />
         <Route path="/admin/testimonials" element={<RequireAuth><AdminTestimonials /></RequireAuth>} />
         <Route path="/admin/faqs" element={<RequireAuth><AdminFAQs /></RequireAuth>} />
+        <Route path="/admin/feedback" element={<RequireAuth><AdminFeedback /></RequireAuth>} />
 
         {/* 404 */}
         <Route path="*" element={<Navigate to="/" replace />} />

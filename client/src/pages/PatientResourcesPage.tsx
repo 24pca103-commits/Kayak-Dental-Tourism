@@ -74,7 +74,7 @@ const PatientResourcesPage: React.FC = () => {
   const faqs = {
     medical: [
       { question: "Is dental care quality comparable to Western countries?", answer: "Yes, our dentists are internationally trained, and we use the exact same globally recognized materials and technology as top clinics in the US, UK, and Australia." },
-      { question: "How long will I need to stay?", answer: "Treatment durations vary, but most procedures like implants or full mouth restorations require a stay of 5-14 days. We provide precise timelines during your virtual consultation." },
+      { question: "How long will I need to stay?", answer: "Treatment durations vary, but most procedures like implants or full mouth restorations require a stay of 5 - 14 days. We provide precise timelines during your virtual consultation." },
       { question: "Are materials same quality?", answer: "Absolutely. We exclusively use premium, FDA-approved materials from world-leading brands including Nobel Biocare, Straumann, and Ivoclar." },
       { question: "Will I have a dedicated coordinator?", answer: "Yes, from your first inquiry to your journey home, a dedicated patient coordinator will assist you with planning, logistics, and any questions." },
       { question: "What about follow-up care?", answer: "We offer virtual follow-up consultations and will coordinate with your local dentist if any minor adjustments are needed back home." }
@@ -388,7 +388,7 @@ const PatientResourcesPage: React.FC = () => {
               </div>
               <h3>Processing &amp; Validity</h3>
               <ul>
-                <li>Processing time: 3-5 business days</li>
+                <li>Processing time: 3 - 5 business days</li>
                 <li>Visa validity: up to 60 days</li>
                 <li>Multiple entries often allowed</li>
               </ul>
@@ -491,7 +491,7 @@ const PatientResourcesPage: React.FC = () => {
                 <div className="acc-price">~$80 / night</div>
               </div>
               <div className="acc-body">
-                <p>Luxurious 4-5 star hotels with full amenities for a completely relaxing stay.</p>
+                <p>Luxurious 4 - 5 star hotels with full amenities for a completely relaxing stay.</p>
                 <ul className="acc-features">
                   <li><CheckCircle size={16} /> Premium dining options</li>
                   <li><CheckCircle size={16} /> Swimming pool &amp; gym</li>

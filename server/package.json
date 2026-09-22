@@ -4,7 +4,7 @@
   "description": "Kayal Dental Tourism – Backend API",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --watch src --exec ts-node src/index.ts",
     "build": "prisma generate && prisma db push --accept-data-loss && tsc",
     "start": "node dist/index.js",
     "seed": "ts-node src/seed.ts",
@@ -20,6 +20,7 @@
     "@types/node": "^20.14.2",
     "@types/nodemailer": "^8.0.0",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.11.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

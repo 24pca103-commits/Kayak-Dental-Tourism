@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Trash2, ChevronDown, RefreshCw, Eye, Image as ImageIcon, FileText, Download, ExternalLink, X, Phone, Mail, CheckCircle2, Clock, Check, Send, AlertCircle, Calendar } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, Trash2, ChevronDown, RefreshCw, Eye, Image as ImageIcon, FileText, Download, ExternalLink, X, Phone, Mail, CheckCircle2, Clock, Check, AlertCircle, Calendar } from 'lucide-react';
 import toast from 'react-hot-toast';
 import AdminLayout from '../components/AdminLayout';
 import { appointmentsAPI } from '../services/api';
@@ -96,6 +96,7 @@ const AdminAppointments: React.FC = () => {
   const [selectedAppt, setSelectedAppt] = useState<Appointment | null>(null);
   const [lightboxImg, setLightboxImg] = useState<{ url: string; name: string } | null>(null);
   const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null);
+  const knownIdsRef = useRef<Set<string> | null>(null);
 
   // Reschedule Modal State
   const [rescheduleModalAppt, setRescheduleModalAppt] = useState<Appointment | null>(null);
@@ -127,12 +128,27 @@ const AdminAppointments: React.FC = () => {
         const apiData: Appointment[] = r.data?.data || [];
         const localData = getLocal();
         const existingIds = new Set(apiData.map((a) => a._id));
-        const merged = [...apiData, ...localData.filter((l) => !existingIds.has(l._id))];
+        const merged = [...apiData, ...localData.filter((l) => !existingIds.has(l._id))]
+          .filter((a) => a.serviceName !== 'General Inquiry');
+
+        if (knownIdsRef.current) {
+          const newItems = merged.filter((a) => !knownIdsRef.current!.has(a._id));
+          if (newItems.length > 0) {
+            newItems.forEach((n) => {
+              toast.success(`🔔 New Appointment: ${n.patientName} (${n.serviceName || 'Consultation'})`, {
+                duration: 5000,
+                icon: '📅',
+              });
+            });
+          }
+        }
+        knownIdsRef.current = new Set(merged.map((a) => a._id));
+
         setAppointments(filterStatus ? merged.filter((a) => a.status === filterStatus) : merged);
         setLastUpdated(new Date().toLocaleTimeString());
       })
       .catch(() => {
-        const localData = getLocal();
+        const localData = getLocal().filter((a) => a.serviceName !== 'General Inquiry');
         setAppointments(filterStatus ? localData.filter((a) => a.status === filterStatus) : localData);
       })
       .finally(() => {

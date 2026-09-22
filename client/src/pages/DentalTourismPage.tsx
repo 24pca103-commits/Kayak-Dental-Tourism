@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -12,14 +12,17 @@ import {
   Hospital,
   HeartPulse,
   MessageCircle,
+  ArrowRight,
   ChevronLeft,
-  ChevronRight,
-  ArrowRight
+  ChevronRight
 } from 'lucide-react';
 import WhatsAppIcon from '../components/icons/WhatsAppIcon';
+import { feedbackAPI } from '../services/api';
+import { getPublishedVideos, getVideoBlobUrl } from '../utils/videoStorage';
 import '../styles/DentalTourismPage.css';
 
 interface VideoTestimonial {
+  id?: string;
   name: string;
   country: string;
   tag: string;
@@ -27,12 +30,11 @@ interface VideoTestimonial {
   videoId?: string;
 }
 
-const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
-  { name: 'Priya S.', country: 'UK 🇬🇧', tag: 'Dental Implants', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
-  { name: 'Karthik R.', country: 'UAE 🇦🇪', tag: 'Smile Makeover', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
-  { name: 'Sarah M.', country: 'USA 🇺🇸', tag: 'Full Mouth Rehab', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
-  { name: 'Ahmed K.', country: 'Qatar 🇶🇦', tag: 'Zirconia Crowns', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
-  { name: 'Lisa W.', country: 'Australia 🇦🇺', tag: 'Veneers', videoUrl: '/assets/dental_implant_treatment_loop.mp4' },
+const STATIC_VIDEO_TESTIMONIALS: VideoTestimonial[] = [
+  { id: 'dt_1', name: 'Prashansa Meyn', country: 'International Patient', tag: 'Root Canals & Crowns', videoUrl: '/assets/4.mp4' },
+  { id: 'dt_2', name: 'Michael Hansen', country: 'International Patient', tag: 'Root Canals & Dental Checkup', videoUrl: '/assets/3.mp4' },
+  { id: 'dt_3', name: 'Anitha', country: 'International Patient', tag: 'Dental Implants & Smile Makeover', videoUrl: '/assets/Kayal Dental - Client Review 1.mp4' },
+  { id: 'dt_4', name: 'Marcus Tan', country: 'International Patient', tag: 'Full Mouth Rehabilitation', videoUrl: '/assets/Kayal Dental- Client Review 2.mp4' },
 ];
 
 const costData = [
@@ -62,9 +64,123 @@ const qualityStandards = [
 ];
 
 const DentalTourismPage: React.FC = () => {
+  const [videoTestimonials, setVideoTestimonials] = useState<VideoTestimonial[]>(STATIC_VIDEO_TESTIMONIALS);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [visibleCount, setVisibleCount] = useState(3);
+
+  const resolveVideoUrl = (url?: string): string => {
+    if (!url) return '';
+    if (url.startsWith('blob:') || url.startsWith('data:')) return url;
+    if (url.includes('/uploads/')) {
+      const idx = url.indexOf('/uploads/');
+      return url.substring(idx);
+    }
+    return url;
+  };
+
+  const loadPublishedVideos = async () => {
+    try {
+      const userVideos: VideoTestimonial[] = [];
+      const seenIds = new Set<string>();
+
+      // 1. Fetch published reviews directly from backend API
+      try {
+        const res = await feedbackAPI.getAll();
+        const serverFeedbacks = res.data?.data;
+        if (Array.isArray(serverFeedbacks)) {
+          for (const f of serverFeedbacks) {
+            if (f.isPublishedToTestimonials && (f.videoUrl || f.videoKey)) {
+              let videoSrc = '';
+              if (f.videoUrl) {
+                videoSrc = resolveVideoUrl(f.videoUrl);
+              } else if (f.videoKey) {
+                videoSrc = (await getVideoBlobUrl(f.videoKey)) || '';
+              }
+
+              if (videoSrc) {
+                seenIds.add(f._id);
+                userVideos.push({
+                  id: f._id,
+                  name: f.name,
+                  country: 'International Patient',
+                  tag: f.subject || 'Dental Tourism Review',
+                  videoUrl: videoSrc,
+                });
+              }
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Backend feedback fetch notice for dental tourism:', err);
+      }
+
+      // 2. Also check local published videos fallback (for offline or local IndexedDB)
+      try {
+        const published = getPublishedVideos();
+        for (const pub of published) {
+          if (!seenIds.has(pub._id) && !seenIds.has(pub.feedbackId)) {
+            let blobUrl = '';
+            if (pub.videoUrl) {
+              blobUrl = resolveVideoUrl(pub.videoUrl);
+            } else if (pub.videoKey) {
+              blobUrl = (await getVideoBlobUrl(pub.videoKey)) || '';
+            }
+
+            if (blobUrl) {
+              seenIds.add(pub._id);
+              userVideos.push({
+                id: pub._id,
+                name: pub.patientName,
+                country: 'International Patient',
+                tag: pub.tag || 'Dental Tourism Review',
+                videoUrl: blobUrl,
+              });
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Local published videos check:', err);
+      }
+
+      const combined = [...userVideos, ...STATIC_VIDEO_TESTIMONIALS];
+      setVideoTestimonials(prev => {
+        if (
+          prev.length === combined.length &&
+          prev[0]?.id === combined[0]?.id &&
+          prev[0]?.videoUrl === combined[0]?.videoUrl
+        ) {
+          return prev;
+        }
+        return combined;
+      });
+    } catch (err) {
+      console.error('Failed to load published videos:', err);
+      setVideoTestimonials(STATIC_VIDEO_TESTIMONIALS);
+    }
+  };
+
+  useEffect(() => {
+    loadPublishedVideos();
+
+    // Auto-poll published videos every 2.5s for live cross-origin admin updates
+    const pollInterval = setInterval(() => {
+      loadPublishedVideos();
+    }, 2500);
+
+    window.addEventListener('storage', loadPublishedVideos);
+    let bc: BroadcastChannel | null = null;
+    try {
+      bc = new BroadcastChannel('kayal_live_sync');
+      bc.onmessage = () => loadPublishedVideos();
+    } catch { }
+
+    return () => {
+      clearInterval(pollInterval);
+      window.removeEventListener('storage', loadPublishedVideos);
+      if (bc) bc.close();
+    };
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -81,7 +197,82 @@ const DentalTourismPage: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const maxSlide = Math.max(0, VIDEO_TESTIMONIALS.length - visibleCount);
+  const maxSlide = Math.max(0, videoTestimonials.length - visibleCount);
+
+  // Directional manual scroll indicator states
+  const [showLeftIcon, setShowLeftIcon] = useState(false);
+  const [showRightIcon, setShowRightIcon] = useState(false);
+  const leftTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rightTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+
+  const triggerLeftIcon = () => {
+    setShowLeftIcon(true);
+    setShowRightIcon(false);
+    if (leftTimerRef.current) clearTimeout(leftTimerRef.current);
+    leftTimerRef.current = setTimeout(() => setShowLeftIcon(false), 1800);
+  };
+
+  const triggerRightIcon = () => {
+    setShowRightIcon(true);
+    setShowLeftIcon(false);
+    if (rightTimerRef.current) clearTimeout(rightTimerRef.current);
+    rightTimerRef.current = setTimeout(() => setShowRightIcon(false), 1800);
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
+    triggerLeftIcon();
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
+    triggerRightIcon();
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (delta > 12) {
+      // User manual scrolling Right
+      triggerRightIcon();
+    } else if (delta < -12) {
+      // User manual scrolling Left
+      triggerLeftIcon();
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null);
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const currentX = e.targetTouches[0].clientX;
+    setTouchEndX(currentX);
+    if (touchStartX !== null) {
+      const diff = touchStartX - currentX;
+      if (diff > 15) {
+        // Swiping Left (moving to next slide on right)
+        triggerRightIcon();
+      } else if (diff < -15) {
+        // Swiping Right (moving to prev slide on left)
+        triggerLeftIcon();
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX !== null && touchEndX !== null) {
+      const distance = touchStartX - touchEndX;
+      if (distance > 40) {
+        setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
+      } else if (distance < -40) {
+        setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
+      }
+    }
+  };
 
   // Auto sliding option every 3.5 seconds
   useEffect(() => {
@@ -91,14 +282,6 @@ const DentalTourismPage: React.FC = () => {
     }, 3500);
     return () => clearInterval(timer);
   }, [isHovered, maxSlide]);
-
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
-  };
 
   return (
     <div className="dental-tourism-page">
@@ -269,7 +452,9 @@ const DentalTourismPage: React.FC = () => {
               <motion.div
                 key={item.id}
                 className="standard-card card"
-                whileHover={{ y: -5 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
                 <div className="standard-icon">
                   {item.icon}
@@ -296,21 +481,29 @@ const DentalTourismPage: React.FC = () => {
             className="video-auto-slider-container"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onWheel={handleWheel}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            {/* Arrow Buttons */}
+            {/* Left Sliding Icon – shows strictly on manual left scroll/swipe */}
             <button
-              className="slider-nav-btn slider-nav-btn--prev"
-              onClick={(e) => { handlePrev(); e.currentTarget.blur(); }}
-              aria-label="Previous Video Review"
+              type="button"
+              onClick={handlePrevSlide}
+              className={`slider-nav-btn slider-nav-btn--prev ${showLeftIcon ? 'is-visible' : ''}`}
+              aria-label="Previous Review Video"
             >
-              <ChevronLeft size={22} />
+              <ChevronLeft size={25} strokeWidth={2.8} />
             </button>
+
+            {/* Right Sliding Icon – shows strictly on manual right scroll/swipe */}
             <button
-              className="slider-nav-btn slider-nav-btn--next"
-              onClick={(e) => { handleNext(); e.currentTarget.blur(); }}
-              aria-label="Next Video Review"
+              type="button"
+              onClick={handleNextSlide}
+              className={`slider-nav-btn slider-nav-btn--next ${showRightIcon ? 'is-visible' : ''}`}
+              aria-label="Next Review Video"
             >
-              <ChevronRight size={22} />
+              <ChevronRight size={25} strokeWidth={2.8} />
             </button>
 
             {/* Overflow Hidden Track Wrap – No Scroller Bar */}
@@ -321,9 +514,9 @@ const DentalTourismPage: React.FC = () => {
                   transform: `translateX(-${currentSlide * (100 / visibleCount)}%)`,
                 }}
               >
-                {VIDEO_TESTIMONIALS.map((v, i) => (
+                {videoTestimonials.map((v, i) => (
                   <div
-                    key={i}
+                    key={v.id || i}
                     className="video-auto-slider-item"
                     style={{ flex: `0 0 ${100 / visibleCount}%` }}
                   >
@@ -378,20 +571,18 @@ const DentalTourismPage: React.FC = () => {
       <section className="cta-banner">
         <div className="container">
           <div className="cta-content">
-            <h2 className="font-display">
-              <span className="dt-cta-line">Ready to Transform</span>{' '}
-              <span className="dt-cta-line">Your Smile?</span>
-            </h2>
+            <h2 className="font-display dt-cta-title">Ready to Transform Your Smile?</h2>
             <p>Get a free personalized treatment plan and cost estimate today.</p>
             <div className="cta-buttons">
-              <Link to="/online-consultation" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271', flexShrink: 0 }} />
+              <Link to="/online-consultation" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                Book Online Consultation <ArrowRight size={18} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0 }} />
               </Link>
               <a
                 href="https://wa.me/917867926159"
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-whatsapp-cta"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
                 <WhatsAppIcon size={18} color="#ffffff" />
                 WhatsApp Us

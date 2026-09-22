@@ -1,20 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit2, X, Star } from 'lucide-react';
+import { Plus, Trash2, Edit2, X, Star, Video } from 'lucide-react';
 import AdminLayout from '../../components/AdminLayout/AdminLayout';
 import { testimonialsAPI } from '../../services/api';
 import type { Testimonial } from '../../types';
+import {
+  getPublishedVideos,
+  unpublishVideo,
+  getVideoBlobUrl,
+  type PublishedVideoTestimonial,
+} from '../../utils/videoStorage';
 
 const EMPTY = { patientName: '', review: '', rating: '5', status: 'active' };
 
+interface VideoCardItem extends PublishedVideoTestimonial {
+  videoUrl?: string;
+}
+
 const AdminTestimonials: React.FC = () => {
   const [items, setItems] = useState<Testimonial[]>([]);
+  const [videoTestimonials, setVideoTestimonials] = useState<VideoCardItem[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Testimonial | null>(null);
   const [form, setForm] = useState({ ...EMPTY });
   const [loading, setLoading] = useState(false);
 
-  const fetchData = () => testimonialsAPI.getAllAdmin().then(r => setItems(r.data?.data || [])).catch(() => {});
-  useEffect(() => { document.title = 'Testimonials | KAYAL Admin'; fetchData(); }, []);
+
+  const fetchVideoTestimonials = async () => {
+    const list = getPublishedVideos();
+    const mapped: VideoCardItem[] = [];
+    for (const item of list) {
+      const url = await getVideoBlobUrl(item.videoKey);
+      mapped.push({ ...item, videoUrl: url || undefined });
+    }
+    setVideoTestimonials(mapped);
+  };
+
+  const fetchData = () => {
+    testimonialsAPI.getAllAdmin().then(r => setItems(r.data?.data || [])).catch(() => {});
+    fetchVideoTestimonials();
+  };
+
+  useEffect(() => {
+    document.title = 'Testimonials | KAYAL Admin';
+    fetchData();
+
+    window.addEventListener('storage', fetchVideoTestimonials);
+    let bc: BroadcastChannel | null = null;
+    try {
+      bc = new BroadcastChannel('kayal_live_sync');
+      bc.onmessage = () => fetchVideoTestimonials();
+    } catch {}
+
+    return () => {
+      window.removeEventListener('storage', fetchVideoTestimonials);
+      if (bc) bc.close();
+    };
+  }, []);
+
+  const handleUnpublishVideo = (item: VideoCardItem) => {
+    if (window.confirm(`Remove video testimonial by ${item.patientName} from public Testimonials page?`)) {
+      unpublishVideo(item._id);
+      fetchVideoTestimonials();
+    }
+  };
 
   const openCreate = () => { setEditing(null); setForm({ ...EMPTY }); setShowForm(true); };
   const openEdit = (t: Testimonial) => { setEditing(t); setForm({ patientName: t.patientName, review: t.review, rating: String(t.rating), status: t.status }); setShowForm(true); };
@@ -45,6 +93,7 @@ const AdminTestimonials: React.FC = () => {
     fetchData();
   };
 
+
   return (
     <AdminLayout>
       <div>
@@ -52,6 +101,82 @@ const AdminTestimonials: React.FC = () => {
           <div><h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--gray-800)' }}>Testimonials</h1><p style={{ color: 'var(--gray-500)', fontSize: '0.875rem' }}>{items.length} testimonials</p></div>
           <button className="btn btn-purple" onClick={openCreate}><Plus size={16} />Add Testimonial</button>
         </div>
+
+        {/* Published Video Testimonials Section */}
+        {videoTestimonials.length > 0 && (
+          <div style={{ marginBottom: '2.5rem', background: '#f8fafc', padding: '1.5rem', borderRadius: '16px', border: '1.5px solid #24E0E1' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#451271', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Video size={20} color="#24E0E1" /> Published Patient Video Reviews ({videoTestimonials.length})
+                </h2>
+                <p style={{ fontSize: '0.82rem', color: 'var(--gray-500)', margin: '0.2rem 0 0 0' }}>
+                  User-submitted videos approved from Contact Messages &amp; live on the public Testimonials page.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '1.25rem' }}>
+              {videoTestimonials.map(v => (
+                <div key={v._id} style={{ background: 'white', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--gray-200)', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ position: 'relative', aspectRatio: '16/9', background: '#000' }}>
+                    {v.videoUrl ? (
+                      <video
+                        src={v.videoUrl}
+                        controls
+                        playsInline
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'white', fontSize: '0.8rem' }}>
+                        Loading video...
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                      <span style={{ fontWeight: 700, color: '#451271', fontSize: '0.95rem' }}>{v.patientName}</span>
+                      <div style={{ display: 'flex', gap: '1px' }}>
+                        {Array.from({ length: v.rating || 5 }).map((_, i) => (
+                          <Star key={i} size={12} fill="#fbbf24" color="#fbbf24" />
+                        ))}
+                      </div>
+                    </div>
+                    <span style={{ fontSize: '0.72rem', background: '#24E0E1', color: '#1c0533', padding: '0.15rem 0.5rem', borderRadius: '4px', fontWeight: 700, alignSelf: 'flex-start', marginBottom: '0.5rem' }}>
+                      {v.tag || 'Patient Review'}
+                    </span>
+                    {v.message && (
+                      <p style={{ fontSize: '0.82rem', color: 'var(--gray-600)', margin: '0 0 1rem 0', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        "{v.message}"
+                      </p>
+                    )}
+                    <div style={{ marginTop: 'auto', paddingTop: '0.75rem', borderTop: '1px solid var(--gray-100)', display: 'flex', justifyContent: 'flex-end' }}>
+                      <button
+                        onClick={() => handleUnpublishVideo(v)}
+                        style={{
+                          background: '#fee2e2',
+                          color: '#ef4444',
+                          border: 'none',
+                          padding: '0.35rem 0.75rem',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                        }}
+                        title="Remove from public Testimonials"
+                      >
+                        <Trash2 size={13} /> Remove Video
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '1.25rem' }}>
           {items.map(t => (

@@ -30,7 +30,10 @@ const AdminLoginPage: React.FC = () => {
         }
       } catch (apiErr: unknown) {
         // Fallback for offline or default credentials
-        if (cleanEmail === 'admin@kayaldental.com' && cleanPassword === 'Admin@1234') {
+        if (
+          cleanEmail === 'admin@kayaldental.com' &&
+          (cleanPassword === 'Admin@1234' || cleanPassword === 'admin123' || cleanPassword === 'admin@1234')
+        ) {
           const adminUser = {
             id: '1',
             email: 'admin@kayaldental.com',

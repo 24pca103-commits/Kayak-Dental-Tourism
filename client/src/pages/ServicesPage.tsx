@@ -5,44 +5,49 @@ import { servicesAPI } from '../services/api';
 import type { Service } from '../types';
 
 const SERVICE_IMAGES: Record<string, string> = {
-  'teeth-alignment': '/assets/card-orthodontics-hd.jpg',
-  'teeth-replacement': '/assets/card-replacement.png',
-  'smile-designing': '/assets/card-smile.png',
-  'dental-implants': '/assets/treatment-implants-hd.png',
-  'root-canal-treatment': '/assets/treatment-5-root-canal.jpg',
-  'teeth-whitening': '/assets/treatment-cosmetic-dentistry.jpg',
-  'braces': '/assets/card-braces.png',
-  'clear-aligners': '/assets/treatment-orthodontics.jpg',
-  'pediatric-dentistry': '/assets/treatment-8-pediatric-child.jpg',
-  'preventive-dentistry': '/assets/hero-child-smile.png',
+  'dental-implants': '/assets/about-clinic-real.jpg',
+  'full-mouth-rehabilitation': '/assets/treatment-2-rehab.jpg',
   'cosmetic-dentistry': '/assets/treatment-3-cosmetic.png',
-  'emergency-dental-care': '/assets/about-clinic-real.jpg',
+  'crowns-and-bridges': '/assets/treatment-4-crowns.jpg',
+  'root-canal-treatment': '/assets/treatment-5-root-canal.jpg',
+  'teeth-alignment': '/assets/card-orthodontics-hd.jpg',
+  'braces': '/assets/treatment-orthodontics.jpg',
+  'clear-aligners': '/assets/card-braces.png',
+  'oral-surgery': '/assets/treatment-7-oral-surgery.jpg',
+  'pediatric-dentistry': '/assets/treatment-8-pediatric-child.jpg',
 };
 
 const DEMO_SERVICES: Service[] = [
-  { _id: '1', name: 'Teeth Alignment', slug: 'teeth-alignment', shortDescription: 'Correct misaligned teeth with braces or modern orthodontic solutions for a healthier, confident smile.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '2', name: 'Teeth Replacement', slug: 'teeth-replacement', shortDescription: 'Restore missing teeth with comfortable and natural-looking dental replacement solutions.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '3', name: 'Smile Designing', slug: 'smile-designing', shortDescription: 'Enhance your smile with personalized cosmetic dental treatments designed around your facial features.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '4', name: 'Dental Implants', slug: 'dental-implants', shortDescription: 'Restore missing teeth with permanent titanium implants for a long-lasting natural smile.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '5', name: 'Root Canal Treatment', slug: 'root-canal-treatment', shortDescription: 'Save infected teeth with painless modern root canal therapy using advanced techniques.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '6', name: 'Teeth Whitening', slug: 'teeth-whitening', shortDescription: 'Brighten your smile several shades with professional in-office whitening treatments.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '1', name: 'Dental Implants', slug: 'dental-implants', shortDescription: 'Permanent titanium tooth replacements that look, feel, and function 100% naturally.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '2', name: 'Full Mouth Rehabilitation', slug: 'full-mouth-rehabilitation', shortDescription: 'Complete smile restoration combining implants, crowns, and digital 3D smile design.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '3', name: 'Cosmetic Dentistry', slug: 'cosmetic-dentistry', shortDescription: 'Transform your smile with porcelain veneers, smile makeovers, and whitening.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '4', name: 'Crowns & Bridges', slug: 'crowns-and-bridges', shortDescription: 'Premium Zirconia and PFM restorations engineered for maximum strength.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '5', name: 'Root Canal Treatment', slug: 'root-canal-treatment', shortDescription: 'Painless single-visit endodontic therapy designed to save your natural teeth.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '6', name: 'Teeth Alignment', slug: 'teeth-alignment', shortDescription: 'Correct misaligned teeth with braces or modern orthodontic solutions for a healthier, confident smile.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
   { _id: '7', name: 'Braces', slug: 'braces', shortDescription: 'Traditional and ceramic braces for effective, reliable teeth straightening at any age.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
   { _id: '8', name: 'Clear Aligners', slug: 'clear-aligners', shortDescription: 'Nearly invisible aligners for discreet, comfortable orthodontic treatment.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '9', name: 'Pediatric Dentistry', slug: 'pediatric-dentistry', shortDescription: 'Gentle, fun dental care specially designed for children from toddlers to teens.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '10', name: 'Preventive Dentistry', slug: 'preventive-dentistry', shortDescription: 'Regular check-ups, cleaning, and preventive care to maintain optimal oral health.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '11', name: 'Cosmetic Dentistry', slug: 'cosmetic-dentistry', shortDescription: 'Complete cosmetic solutions including veneers, bonding, and aesthetic enhancements.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
-  { _id: '12', name: 'Emergency Dental Care', slug: 'emergency-dental-care', shortDescription: 'Prompt care for dental emergencies including toothache, trauma, and broken teeth.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '9', name: 'Oral & Maxillofacial Surgery', slug: 'oral-surgery', shortDescription: 'Expert surgical solutions for complex wisdom teeth, jaw, and facial conditions.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
+  { _id: '10', name: 'Pediatric Dentistry', slug: 'pediatric-dentistry', shortDescription: 'Gentle, painless, and fun dental care tailored specifically for children.', description: '', benefits: [], treatmentProcess: '', whoNeeds: '', duration: '', image: '', status: 'active', createdAt: '' },
 ];
 
 const ServicesPage: React.FC = () => {
   const navigate = useNavigate();
-  const [services, setServices] = useState<Service[]>([]);
+  const [services, setServices] = useState<Service[]>(DEMO_SERVICES);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    document.title = 'Our Services | KAYAL Dental Care';
+    document.title = 'Our Treatments | KAYAL Dental Care';
     servicesAPI.getAll()
-      .then(r => setServices(r.data?.data || []))
+      .then(r => {
+        const fetched: Service[] = r.data?.data || [];
+        const validSlugs = new Set(DEMO_SERVICES.map(s => s.slug));
+        const filtered = fetched.filter(s => validSlugs.has(s.slug));
+        if (filtered.length >= 10) {
+          setServices(filtered);
+        } else {
+          setServices(DEMO_SERVICES);
+        }
+      })
       .catch(() => setServices(DEMO_SERVICES));
   }, []);
 
@@ -53,24 +58,11 @@ const ServicesPage: React.FC = () => {
   return (
     <div style={{ paddingTop: '70px' }}>
       {/* Header */}
-      <section className="treatment-hero" style={{
-        position: 'relative',
-        backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-smile-collage-2.jpg')",
-        backgroundSize: 'auto 100%',
-        backgroundPosition: 'right center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '360px',
-        padding: '4.5rem 0 3.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        textAlign: 'left',
-        borderBottom: '2px solid #24E0E1'
-      }}>
-        <div className="container" style={{ textAlign: 'left' }}>
-          <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Our Treatments</div>
-          <h1 className="treatment-hero__title font-display text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 700 }}>Comprehensive Dental Services</h1>
-          <p className="treatment-hero__desc" style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6 }}>
+      <section className="treatment-hero">
+        <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'left' }}>
+          <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>Our Treatments</div>
+          <h1 className="treatment-hero__title font-display text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', fontWeight: 700, textShadow: '0 2px 14px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)' }}>Comprehensive Dental Services</h1>
+          <p className="treatment-hero__desc" style={{ color: 'rgba(255,255,255,0.95)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6, textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>
             From routine check-ups to advanced cosmetic transformations — we provide world-class dental care with gentle hands.
           </p>
         </div>
@@ -122,7 +114,7 @@ const ServicesPage: React.FC = () => {
                     <h2 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--gray-800)', marginBottom: '0.5rem' }}>{service.name}</h2>
                     <p style={{ fontSize: '0.875rem', color: 'var(--gray-500)', lineHeight: 1.6, marginBottom: '1.25rem', flexGrow: 1 }}>{service.shortDescription}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.85rem', fontWeight: 600, color: 'var(--cyan-600)', marginTop: 'auto' }}>
-                      Learn More <ArrowRight size={14} color="#18b8b9" style={{ color: '#18b8b9', stroke: '#18b8b9', flexShrink: 0 }} />
+                      Learn More <ArrowRight size={14} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0 }} />
                     </div>
                   </div>
                 </div>

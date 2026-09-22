@@ -7,7 +7,7 @@ const DEMO: FAQ[] = [
   { _id: '1', question: 'How often should I visit the dentist?', answer: 'We recommend a dental check-up every 6 months to maintain healthy teeth and gums. Regular visits help detect problems early and prevent costly treatments.', displayOrder: 1, status: 'active', createdAt: '' },
   { _id: '2', question: 'Do dental treatments cause pain?', answer: 'Most treatments are performed using modern techniques and appropriate anesthesia to ensure patient comfort. At KAYAL, we prioritize pain-free dentistry in a calm, reassuring environment.', displayOrder: 2, status: 'active', createdAt: '' },
   { _id: '3', question: 'Do you offer braces and clear aligners?', answer: 'Yes. We provide comprehensive orthodontic solutions including traditional metal braces, ceramic braces, and clear aligners based on individual patient requirements.', displayOrder: 3, status: 'active', createdAt: '' },
-  { _id: '4', question: 'How long does a dental implant procedure take?', answer: 'The full dental implant process typically takes 3–6 months including the implant placement, healing period, and crown fitting. The dentist will provide a personalized timeline after examination.', displayOrder: 4, status: 'active', createdAt: '' },
+  { _id: '4', question: 'How long does a dental implant procedure take?', answer: 'The full dental implant process typically takes 3 - 6 months including the implant placement, healing period, and crown fitting. The dentist will provide a personalized timeline after examination.', displayOrder: 4, status: 'active', createdAt: '' },
   { _id: '5', question: 'Is teeth whitening safe?', answer: 'Professional teeth whitening performed under dental supervision is safe and effective for most patients. Our dental team assesses your suitability before treatment and uses only medical-grade whitening products.', displayOrder: 5, status: 'active', createdAt: '' },
   { _id: '6', question: 'Do you provide emergency dental care?', answer: 'Yes. We provide emergency dental care for urgent dental problems such as severe toothache, broken teeth, or dental trauma. Contact our clinic immediately and we will prioritize your appointment.', displayOrder: 6, status: 'active', createdAt: '' },
   { _id: '7', question: 'What age should my child first visit the dentist?', answer: "We recommend bringing your child for their first dental visit when their first tooth appears, or by their first birthday. Early visits help establish healthy habits and prevent future problems.", displayOrder: 7, status: 'active', createdAt: '' },
@@ -22,31 +22,21 @@ const FAQsPage: React.FC = () => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    document.title = 'FAQs | KAYAL Dental Care';
-    faqsAPI.getAll().then(r => setFaqs(r.data?.data || [])).catch(() => setFaqs(DEMO));
+    faqsAPI.getAll()
+      .then(res => setFaqs(res.data))
+      .catch(() => setFaqs(DEMO));
   }, []);
 
-  const list = (faqs.length > 0 ? faqs : DEMO).filter(f =>
-    f.question.toLowerCase().includes(search.toLowerCase())
+  const list = (faqs.length ? faqs : DEMO).filter(f =>
+    f.question.toLowerCase().includes(search.toLowerCase()) ||
+    f.answer.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div style={{ paddingTop: '70px' }}>
-      <section className="faqs-hero" style={{
-        position: 'relative',
-        backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-smile-collage-1.jpg')",
-        backgroundSize: 'auto 100%',
-        backgroundPosition: 'right center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '360px',
-        padding: '4.5rem 0 3.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        textAlign: 'left',
-        borderBottom: '2px solid #24E0E1'
-      }}>
-        <div className="container" style={{ textAlign: 'left' }}>
+    <div>
+      {/* Hero */}
+      <section className="faqs-hero">
+        <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'left' }}>
           <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>FAQs</div>
           <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Frequently Asked Questions</h1>
           <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6 }}>Everything you need to know about dental care and treatments at KAYAL Dental Care</p>
@@ -70,7 +60,7 @@ const FAQsPage: React.FC = () => {
               <div key={faq._id} style={{ border: `1.5px solid ${openId === faq._id ? 'var(--purple-300)' : 'var(--gray-200)'}`, borderRadius: 'var(--radius-md)', overflow: 'hidden', transition: 'border-color 0.2s' }}>
                 <button
                   onClick={() => setOpenId(openId === faq._id ? null : faq._id)}
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.1rem 1.25rem', background: openId === faq._id ? 'var(--purple-50)' : 'white', border: 'none', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 600, color: openId === faq._id ? 'var(--purple-700)' : 'var(--gray-800)', textAlign: 'left', gap: '1rem' }}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.1rem 1.25rem', background: openId === faq._id ? 'var(--purple-50)' : 'white', border: 'none', cursor: 'pointer', fontSize: '1.05rem', fontWeight: 700, color: openId === faq._id ? 'var(--purple-700)' : 'var(--gray-800)', textAlign: 'left', gap: '1rem' }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <span style={{ width: 24, height: 24, borderRadius: '50%', background: openId === faq._id ? 'var(--purple-600)' : 'var(--gray-200)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: openId === faq._id ? 'white' : 'var(--gray-500)', flexShrink: 0 }}>{idx + 1}</span>
@@ -79,7 +69,17 @@ const FAQsPage: React.FC = () => {
                   {openId === faq._id ? <ChevronUp size={16} style={{ flexShrink: 0 }} /> : <ChevronDown size={16} style={{ flexShrink: 0 }} />}
                 </button>
                 {openId === faq._id && (
-                  <div style={{ padding: '0 1.25rem 1.1rem', fontSize: '0.875rem', color: 'var(--gray-600)', lineHeight: 1.75 }}>
+                  <div style={{
+                    padding: '0 1.25rem 1.1rem',
+                    fontSize: '0.875rem',
+                    color: 'var(--gray-600)',
+                    lineHeight: 1.75,
+                    textAlign: 'justify',
+                    textJustify: 'inter-word',
+                    textAlignLast: 'left',
+                    wordBreak: 'break-word',
+                    hyphens: 'auto'
+                  }}>
                     {faq.answer}
                   </div>
                 )}

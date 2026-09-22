@@ -79,8 +79,16 @@ export const appointmentsAPI = {
   getAll: (params?: Record<string, string | number>) => api.get('/appointments', { params }),
   getStats: () => api.get('/appointments/stats'),
   getBookedSlots: (date: string) => api.get('/appointments/booked-slots', { params: { date } }),
-  uploadAttachments: (formData: FormData) =>
-    api.post('/appointments/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  uploadAttachments: (formData: FormData, onProgress?: (percent: number) => void) =>
+    api.post('/appointments/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total) {
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          if (onProgress) onProgress(percent);
+        }
+      },
+    }),
   create: (data: Record<string, unknown>) => api.post('/appointments', data),
   update: (id: string, data: Record<string, unknown>) => api.put(`/appointments/${id}`, data),
   delete: (id: string) => api.delete(`/appointments/${id}`),
@@ -104,6 +112,14 @@ export const faqsAPI = {
   create: (data: Record<string, unknown>) => api.post('/faqs', data),
   update: (id: string, data: Record<string, unknown>) => api.put(`/faqs/${id}`, data),
   delete: (id: string) => api.delete(`/faqs/${id}`),
+};
+
+// ── Feedback ──────────────────────────────────────────
+export const feedbackAPI = {
+  getAll: () => api.get('/feedback'),
+  create: (data: Record<string, unknown>) => api.post('/feedback', data),
+  update: (id: string, data: Record<string, unknown>) => api.put(`/feedback/${id}`, data),
+  delete: (id: string) => api.delete(`/feedback/${id}`),
 };
 
 export default api;

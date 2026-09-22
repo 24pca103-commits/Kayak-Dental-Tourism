@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, User, Phone, Mail, ChevronDown, CheckCircle } from 'lucide-react';
+import { X, Calendar, Clock, User, Phone, Mail, ChevronDown, CheckCircle, ArrowRight } from 'lucide-react';
 import { appointmentsAPI } from '../../services/api';
 import { sendRealtimeEmail } from '../../services/emailService';
 import {
@@ -17,6 +17,7 @@ interface Props {
   services: Service[];
   doctors: Doctor[];
   preselectedService?: string;
+  preselectedDoctor?: string;
 }
 
 const TIME_SLOTS = [
@@ -31,13 +32,13 @@ const SERVICE_OPTIONS = [
   'General Dental Check-up', 'Pediatric Dentistry', 'Emergency Dental Care',
 ];
 
-const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, preselectedService }) => {
+const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, preselectedService, preselectedDoctor }) => {
   const [form, setForm] = useState({
     patientName: '',
     phone: '',
     email: '',
     serviceName: preselectedService || '',
-    doctorName: '',
+    doctorName: preselectedDoctor || '',
     appointmentDate: '',
     appointmentTime: '',
     message: '',
@@ -48,11 +49,47 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [bookedTimes, setBookedTimes] = useState<string[]>([]);
-  const [fetchingSlots, setFetchingSlots] = useState(false);
 
   const countryConfig = getCountryConfig(selectedCountry);
+  const maxPhoneDigits = Math.max(...(countryConfig.digitLengths || [10]));
   const serviceList = services.length > 0 ? services.map(s => s.name) : SERVICE_OPTIONS;
-  const doctorList = doctors.length > 0 ? doctors.map(d => d.name) : ['Any Available Doctor'];
+  const selectedDoctorObj = doctors.find(d => d.name === form.doctorName);
+
+  // Helper to extract doctor available days in lowercase short form ['mon', 'tue', ...]
+  const getDoctorAvailableDays = (doc?: Doctor): string[] => {
+    if (!doc) return ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    let avail = doc.availability;
+    if (typeof avail === 'string') {
+      try {
+        avail = JSON.parse(avail);
+      } catch {
+        avail = [];
+      }
+    }
+    if (!Array.isArray(avail) || avail.length === 0) {
+      return ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    }
+    return avail.map(d => d.slice(0, 3).toLowerCase());
+  };
+
+  // Helper to check if a doctor is available on a specific YYYY-MM-DD date
+  const checkDoctorAvailability = (dateStr: string, doc?: Doctor) => {
+    if (!dateStr) return { available: true, dayName: '', availableDisplay: '' };
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return { available: true, dayName: '', availableDisplay: '' };
+    const dateObj = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayShorts = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    const dayIdx = dateObj.getDay();
+    const dayName = dayNames[dayIdx];
+    const dayShort = dayShorts[dayIdx];
+
+    if (!doc) return { available: true, dayName, availableDisplay: 'All Days' };
+    const availableDays = getDoctorAvailableDays(doc);
+    const isAvail = availableDays.includes(dayShort);
+    const dayCapitalized = doc.availability && Array.isArray(doc.availability) ? doc.availability.join(', ') : 'Mon - Sun';
+    return { available: isAvail, dayName, availableDisplay: dayCapitalized };
+  };
 
   // Query booked time slots whenever the appointment date changes
   React.useEffect(() => {
@@ -62,7 +99,6 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
     }
 
     let isMounted = true;
-    setFetchingSlots(true);
 
     const loadBookedSlots = async () => {
       const bookedSet = new Set<string>();
@@ -96,7 +132,6 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         if (form.appointmentTime && bookedSet.has(form.appointmentTime)) {
           setForm(prev => ({ ...prev, appointmentTime: '' }));
         }
-        setFetchingSlots(false);
       }
     };
 
@@ -119,7 +154,14 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
     if (!emailRes.isValid && emailRes.error) e.email = emailRes.error;
 
     if (!form.serviceName) e.serviceName = 'Please select a service';
-    if (!form.appointmentDate) e.appointmentDate = 'Please select a date';
+    if (!form.appointmentDate) {
+      e.appointmentDate = 'Please select a date';
+    } else if (selectedDoctorObj) {
+      const check = checkDoctorAvailability(form.appointmentDate, selectedDoctorObj);
+      if (!check.available) {
+        e.appointmentDate = `${selectedDoctorObj.name} is not available on ${check.dayName}. Available days: ${check.availableDisplay}`;
+      }
+    }
     if (!form.appointmentTime) e.appointmentTime = 'Please select a time slot';
     return e;
   };
@@ -134,8 +176,16 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
         return validateEmail(value).error || '';
       case 'serviceName':
         return !value ? 'Please select a service' : '';
-      case 'appointmentDate':
-        return !value ? 'Please select a date' : '';
+      case 'appointmentDate': {
+        if (!value) return 'Please select a date';
+        if (selectedDoctorObj) {
+          const check = checkDoctorAvailability(value, selectedDoctorObj);
+          if (!check.available) {
+            return `${selectedDoctorObj.name} is not available on ${check.dayName}. Available days: ${check.availableDisplay}`;
+          }
+        }
+        return '';
+      }
       case 'appointmentTime':
         return !value ? 'Please select a time slot' : '';
       default:
@@ -145,6 +195,40 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    // Strict digit restriction for phone field
+    if (name === 'phone') {
+      const digitsOnly = value.replace(/\D/g, '').slice(0, maxPhoneDigits);
+      setForm(prev => ({ ...prev, phone: digitsOnly }));
+      if (touched.phone || errors.phone) {
+        const err = validateSingleField('phone', digitsOnly, selectedCountry);
+        setErrors(prev => ({ ...prev, phone: err }));
+      }
+      return;
+    }
+
+    // When doctor changes, re-validate date for the newly selected doctor
+    if (name === 'doctorName') {
+      const newDoc = doctors.find(d => d.name === value);
+      setForm(prev => ({ ...prev, doctorName: value }));
+      if (form.appointmentDate) {
+        const check = checkDoctorAvailability(form.appointmentDate, newDoc);
+        if (!check.available) {
+          setErrors(prev => ({
+            ...prev,
+            appointmentDate: `${newDoc?.name || 'Doctor'} is not available on ${check.dayName}. Available days: ${check.availableDisplay}`,
+          }));
+        } else {
+          setErrors(prev => {
+            const next = { ...prev };
+            delete next.appointmentDate;
+            return next;
+          });
+        }
+      }
+      return;
+    }
+
     setForm(prev => ({ ...prev, [name]: value }));
     if (touched[name] || errors[name]) {
       const err = validateSingleField(name, value);
@@ -162,8 +246,12 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCountry = e.target.value;
     setSelectedCountry(newCountry);
-    if (form.phone.trim()) {
-      const err = validateSingleField('phone', form.phone, newCountry);
+    const newConfig = getCountryConfig(newCountry);
+    const newMaxDigits = Math.max(...(newConfig.digitLengths || [10]));
+    const truncatedPhone = form.phone.slice(0, newMaxDigits);
+    setForm(prev => ({ ...prev, phone: truncatedPhone }));
+    if (truncatedPhone.trim()) {
+      const err = validateSingleField('phone', truncatedPhone, newCountry);
       setErrors(prev => ({ ...prev, phone: err }));
     }
   };
@@ -232,6 +320,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
           createdAt: new Date().toISOString()
         });
         localStorage.setItem('kayal_local_appointments', JSON.stringify(fullBookings));
+        window.dispatchEvent(new Event('storage'));
       } catch {
         // ignore
       }
@@ -330,7 +419,7 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                       </option>
                     ))}
                   </select>
-                  <input
+                   <input
                     className={`form-input ${errors.phone ? 'error' : ''}`}
                     type="tel"
                     name="phone"
@@ -338,13 +427,11 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                     value={form.phone}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    maxLength={maxPhoneDigits}
                     required
                     style={{ flex: 1, minWidth: 0 }}
                   />
                 </div>
-                <span className="form-hint" style={{ fontSize: '0.74rem', color: '#6b7280', marginTop: '0.25rem', display: 'block' }}>
-                  {countryConfig.flag} Format for {countryConfig.country}: {countryConfig.hint}
-                </span>
                 {errors.phone && <span className="form-error" style={{ marginTop: '0.2rem', display: 'block' }}>{errors.phone}</span>}
               </div>
 
@@ -386,22 +473,6 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
                 {errors.serviceName && <span className="form-error">{errors.serviceName}</span>}
               </div>
 
-              {/* Doctor */}
-              <div className="form-group">
-                <label className="form-label">Preferred Doctor</label>
-                <select
-                  className="form-input"
-                  name="doctorName"
-                  value={form.doctorName}
-                  onChange={handleChange}
-                >
-                  <option value="">Any Available Doctor</option>
-                  {doctorList.map((d) => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
-              </div>
-
               {/* Date */}
               <div className="form-group">
                 <label className="form-label">
@@ -420,14 +491,9 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
               </div>
 
               {/* Time List Box */}
-              <div className="form-group appt-form__time-group">
+              <div className="form-group">
                 <label className="form-label" htmlFor="appointmentTimeSelect">
-                  <Clock size={14} /> Preferred Time (Available Slots) *
-                  {form.appointmentDate && (
-                    <span style={{ fontSize: '0.78rem', color: '#0284c7', marginLeft: 'auto', fontWeight: 600 }}>
-                      {fetchingSlots ? 'Checking slots...' : `${availableTimeSlots.length} available`}
-                    </span>
-                  )}
+                  <Clock size={14} /> Preferred Time *
                 </label>
 
                 {!form.appointmentDate ? (
@@ -500,9 +566,15 @@ const AppointmentModal: React.FC<Props> = ({ onClose, services, doctors, presele
               type="submit"
               className="btn btn-purple btn-lg w-full"
               disabled={loading}
-              style={{ marginTop: '1.5rem' }}
+              style={{ marginTop: '1.5rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#ffffff' }}
             >
-              {loading ? 'Submitting...' : 'Book Appointment'}
+              {loading ? (
+                'Submitting...'
+              ) : (
+                <>
+                  Book Appointment <ArrowRight size={18} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
+                </>
+              )}
             </button>
           </form>
         )}

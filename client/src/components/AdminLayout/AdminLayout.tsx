@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Calendar, LogOut, Menu, X, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Calendar, MessageSquare, LogOut, Menu, X, ChevronRight } from 'lucide-react';
 import '../../styles/AdminLayout.css';
 
 const NAV_ITEMS = [
   { label: 'Dashboard Overview', path: '/admin/dashboard', icon: <LayoutDashboard size={18} /> },
   { label: 'Bookings & Appointments', path: '/admin/appointments', icon: <Calendar size={18} /> },
+  { label: 'Patient Feedback', path: '/admin/feedback', icon: <MessageSquare size={18} /> },
 ];
 
 interface Props { children: React.ReactNode }
@@ -74,9 +75,6 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
             <Link to="/" style={{ fontSize: '0.8rem', color: 'var(--gray-500)', textDecoration: 'none' }} target="_blank">
               View Website ↗
             </Link>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--purple-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '0.875rem', fontWeight: 700 }}>
-              {(user.name || 'A').charAt(0)}
-            </div>
           </div>
         </header>
         <main className="admin-content">

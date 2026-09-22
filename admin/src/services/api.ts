@@ -57,4 +57,22 @@ export const appointmentsAPI = {
   getStats: () => api.get('/appointments/stats'),
 };
 
+export const testimonialsAPI = {
+  getAll: () => api.get('/testimonials'),
+  getAllAdmin: () => api.get('/testimonials/admin/all'),
+  create: (data: FormData) =>
+    api.post('/testimonials', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  update: (id: string, data: FormData) =>
+    api.put(`/testimonials/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  delete: (id: string) => api.delete(`/testimonials/${id}`),
+};
+
+export const feedbackAPI = {
+  getAll: () => api.get('/feedback'),
+  create: (data: Record<string, unknown>) => api.post('/feedback', data),
+  update: (id: string, data: Record<string, unknown>) => api.put(`/feedback/${id}`, data),
+  delete: (id: string) => api.delete(`/feedback/${id}`),
+};
+
 export default api;
+

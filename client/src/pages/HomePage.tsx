@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -71,32 +71,35 @@ const ALL_TREATMENTS = [
   },
 ];
 
-const HOME_TESTIMONIALS = [
+const HOME_VIDEOS = [
   {
-    quote: "I visited KAYAL Dental Tourism for teeth replacement, and I am extremely happy with the treatment. The clinic is very clean, modern, and equipped with the latest technology. The doctors are patient, friendly, and truly care about your comfort. I finally have the confidence to smile again!",
-    author: "Priya S.",
-    location: "London, UK"
+    videoSrc: '/assets/4.mp4',
+    name: 'Prashansa Meyn',
+    location: 'International Patient',
+    tag: 'Root Canals & Crowns',
+    stars: 5,
   },
   {
-    quote: "KAYAL Dental Care made me feel comfortable from the moment I walked in. The doctors explained every step clearly, and my smile makeover result was better than I expected. Thank you for the wonderful experience!",
-    author: "Karthik R.",
-    location: "Dubai, UAE"
+    videoSrc: '/assets/3.mp4',
+    name: 'Tony',
+    location: 'International Patient',
+    tag: 'Root Canals & Dental Checkup',
+    stars: 5,
   },
   {
-    quote: "Saved over 70% compared to US prices and received world-class full mouth implants. The care and precision was extraordinary. Highly recommended to anyone traveling for dental care!",
-    author: "Sarah M.",
-    location: "California, USA"
+    videoSrc: '/assets/Kayal Dental - Client Review 1.mp4',
+    name: 'Anitha',
+    location: 'International Patient',
+    tag: 'Dental Implants & Smile Makeover',
+    stars: 5,
   },
   {
-    quote: "From airport pickup to final zirconia crowns fitting, everything was flawlessly arranged. Dr. Kayal and the team are true masters of dental artistry.",
-    author: "Ahmed K.",
-    location: "Doha, Qatar"
+    videoSrc: '/assets/Kayal Dental- Client Review 2.mp4',
+    name: 'Marcus Tan',
+    location: 'International Patient',
+    tag: 'Full Mouth Rehabilitation',
+    stars: 5,
   },
-  {
-    quote: "Exceptional service, pain-free root canal treatment, and beautiful veneers. I enjoyed exploring Chennai and returned home with a brand new smile!",
-    author: "James W.",
-    location: "Sydney, Australia"
-  }
 ];
 
 /* ═══════════════ HOME PAGE ═══════════════ */
@@ -105,12 +108,29 @@ const HomePage: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
   const [whatWeDoIdx, setWhatWeDoIdx] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [testTouchStart, setTestTouchStart] = useState<number | null>(null);
-  const [testTouchEnd, setTestTouchEnd] = useState<number | null>(null);
+
+  // Directional manual scroll indicator states for What We Do
+  const [showTreatLeft, setShowTreatLeft] = useState(false);
+  const [showTreatRight, setShowTreatRight] = useState(false);
+  const treatLeftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const treatRightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const triggerTreatLeft = () => {
+    setShowTreatLeft(true);
+    setShowTreatRight(false);
+    if (treatLeftTimer.current) clearTimeout(treatLeftTimer.current);
+    treatLeftTimer.current = setTimeout(() => setShowTreatLeft(false), 1800);
+  };
+
+  const triggerTreatRight = () => {
+    setShowTreatRight(true);
+    setShowTreatLeft(false);
+    if (treatRightTimer.current) clearTimeout(treatRightTimer.current);
+    treatRightTimer.current = setTimeout(() => setShowTreatRight(false), 1800);
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
@@ -118,18 +138,88 @@ const HomePage: React.FC = () => {
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    const currentX = e.targetTouches[0].clientX;
+    setTouchEnd(currentX);
+    if (touchStart !== null) {
+      const diff = touchStart - currentX;
+      if (diff > 15) {
+        triggerTreatRight();
+      } else if (diff < -15) {
+        triggerTreatLeft();
+      }
+    }
   };
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
+    const isLeftSwipe = distance > 40;
+    const isRightSwipe = distance < -40;
     if (isLeftSwipe) {
       setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
     } else if (isRightSwipe) {
       setWhatWeDoIdx(prev => (prev - 1 + ALL_TREATMENTS.length) % ALL_TREATMENTS.length);
+    }
+  };
+
+  const handleTreatWheel = (e: React.WheelEvent) => {
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (delta > 12) {
+      triggerTreatRight();
+    } else if (delta < -12) {
+      triggerTreatLeft();
+    }
+  };
+
+  // Auto-scroll for What We Do on mobile
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const [activeTestimonialIdx, setActiveTestimonialIdx] = useState(0);
+  const [isTestimonialHovered, setIsTestimonialHovered] = useState(false);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+  const [testTouchStart, setTestTouchStart] = useState<number | null>(null);
+  const [testTouchEnd, setTestTouchEnd] = useState<number | null>(null);
+  const [isMobileScreen, setIsMobileScreen] = useState(() => typeof window !== 'undefined' && window.innerWidth < 1024);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobileScreen(window.innerWidth < 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Directional manual scroll indicator states for Home Testimonials
+  const [showHomeTestLeft, setShowHomeTestLeft] = useState(false);
+  const [showHomeTestRight, setShowHomeTestRight] = useState(false);
+  const homeTestLeftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const homeTestRightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const triggerHomeTestLeft = () => {
+    setShowHomeTestLeft(true);
+    setShowHomeTestRight(false);
+    if (homeTestLeftTimer.current) clearTimeout(homeTestLeftTimer.current);
+    homeTestLeftTimer.current = setTimeout(() => setShowHomeTestLeft(false), 1800);
+  };
+
+  const triggerHomeTestRight = () => {
+    setShowHomeTestRight(true);
+    setShowHomeTestLeft(false);
+    if (homeTestRightTimer.current) clearTimeout(homeTestRightTimer.current);
+    homeTestRightTimer.current = setTimeout(() => setShowHomeTestRight(false), 1800);
+  };
+
+  const handleTestWheel = (e: React.WheelEvent) => {
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if (delta > 12) {
+      triggerHomeTestRight();
+    } else if (delta < -12) {
+      triggerHomeTestLeft();
     }
   };
 
@@ -139,34 +229,37 @@ const HomePage: React.FC = () => {
   };
 
   const handleTestTouchMove = (e: React.TouchEvent) => {
-    setTestTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTestTouchEnd = () => {
-    if (!testTouchStart || !testTouchEnd) return;
-    const distance = testTouchStart - testTouchEnd;
-    if (distance > 50) {
-      setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
-    } else if (distance < -50) {
-      setActiveTestimonialIdx(prev => (prev - 1 + HOME_TESTIMONIALS.length) % HOME_TESTIMONIALS.length);
+    const currentX = e.targetTouches[0].clientX;
+    setTestTouchEnd(currentX);
+    if (testTouchStart !== null) {
+      const diff = testTouchStart - currentX;
+      if (diff > 15) {
+        triggerHomeTestRight();
+      } else if (diff < -15) {
+        triggerHomeTestLeft();
+      }
     }
   };
 
-  // Auto-scroll for Testimonials (Point 3)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveTestimonialIdx(prev => (prev + 1) % HOME_TESTIMONIALS.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, []);
+  const handleTestTouchEnd = () => {
+    if (testTouchStart && testTouchEnd) {
+      const distance = testTouchStart - testTouchEnd;
+      if (distance > 40) {
+        setActiveTestimonialIdx((prev) => (prev + 1) % HOME_VIDEOS.length);
+      } else if (distance < -40) {
+        setActiveTestimonialIdx((prev) => (prev - 1 + HOME_VIDEOS.length) % HOME_VIDEOS.length);
+      }
+    }
+  };
 
-  // Auto-scroll for What We Do on mobile (Point 4)
+  // Auto-scroll for Testimonial Videos (pauses on hover or video play)
   useEffect(() => {
+    if (isTestimonialHovered || isPlayingVideo) return;
     const timer = setInterval(() => {
-      setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
+      setActiveTestimonialIdx(prev => (prev + 1) % HOME_VIDEOS.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [isTestimonialHovered, isPlayingVideo]);
 
   useEffect(() => {
     Promise.all([
@@ -206,10 +299,10 @@ const HomePage: React.FC = () => {
               </p>
               <div className="hero__actions">
                 <button className="btn btn-primary hero__btn-compact" onClick={() => navigate('/online-consultation')}>
-                  Book Online Consultation <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
+                  Book Online Consultation <ArrowRight size={16} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
                 </button>
                 <button className="btn btn-secondary hero__btn-compact" onClick={() => navigate('/dental-tourism')}>
-                  Info Deck <BookOpen size={16} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff' }} />
+                  Info Deck <BookOpen size={16} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
                 </button>
               </div>
               <div className="hero__stats">
@@ -304,39 +397,39 @@ const HomePage: React.FC = () => {
       {/* ── ABOUT SECTION ── */}
       <section className="section welcome">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
+          <div className="welcome__grid">
             {/* Left Side: Content */}
-            <div>
-              <div className="badge badge-cyan" style={{ marginBottom: '0.75rem' }}>
+            <div className="welcome__content" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left' }}>
+              <div className="badge badge-cyan" style={{ marginBottom: '0.75rem', alignSelf: 'flex-start' }}>
                 About Us
               </div>
 
-              <h2 className="section-title" style={{ marginTop: '1rem' }}>
+              <h2 className="section-title" style={{ marginTop: '1rem', textAlign: 'left' }}>
                 <span style={{ color: '#451271' }}>Kayal Dental Tourism</span>
               </h2>
-              <p style={{ color: 'var(--gray-600)', marginTop: '1rem', lineHeight: 1.8, fontSize: '18px' }}>
+              <p className="welcome__desc" style={{ color: 'var(--gray-600)', marginTop: '1rem', lineHeight: 1.7, textAlign: 'left' }}>
                 Experience gentle, patient-focused dentistry designed for your comfort. Our team combines advanced technology with compassionate care to deliver healthy, confident smiles across the globe.
               </p>
 
               {/* Mission Pill */}
-              <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap', marginTop: '1.25rem' }}>
-                <Target size={16} />
+              <div className="welcome__mission-pill" style={{ marginTop: '1.25rem', alignSelf: 'flex-start', marginLeft: 0, marginRight: 'auto' }}>
+                <Target size={14} style={{ flexShrink: 0 }} />
                 <span>Mission - Creating Smiles Across the Globe.</span>
               </div>
 
               {/* Vision Pill */}
-              <div className="welcome__mission-pill" style={{ whiteSpace: 'nowrap', marginTop: '0.6rem' }}>
-                <Eye size={16} />
+              <div className="welcome__mission-pill" style={{ marginTop: '0.6rem', alignSelf: 'flex-start', marginLeft: 0, marginRight: 'auto' }}>
+                <Eye size={14} style={{ flexShrink: 0 }} />
                 <span>Vision - Connecting the World Through Confident Smiles.</span>
               </div>
 
               {/* Buttons */}
-              <div className="welcome__buttons" style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="welcome__buttons" style={{ marginTop: '1.75rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-start', alignSelf: 'flex-start' }}>
                 <button className="btn btn-cyan-pill" onClick={() => navigate('/about#facilities')}>
                   Facility &amp; Technology
                 </button>
                 <button className="btn btn-cyan-pill" onClick={() => navigate('/team')}>
-                  Our Dentists <ArrowRight size={16} color="#451271" style={{ color: '#451271', stroke: '#451271' }} />
+                  Our Dentists <ArrowRight size={16} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
                 </button>
               </div>
             </div>
@@ -373,11 +466,10 @@ const HomePage: React.FC = () => {
                   color: '#ffffff'
                 }}>
                   <div style={{ fontWeight: 800, fontSize: '1.15rem', fontFamily: 'var(--font-display)', color: '#ffffff' }}>
-                    Dr. V.Sahaana
+                    Dr. V.Sahaana, BDS., FDS., FMC.
                   </div>
                   <div style={{ fontSize: '0.82rem', color: '#24E0E1', fontWeight: 600, marginTop: '3px', lineHeight: 1.45 }}>
-                    <div>BDS., FDS., FMC.</div>
-                    <div>Dental surgeon certified.</div>
+                    <div>Dental surgeon certified</div>
                     <div>Root Canal Specialist</div>
                   </div>
                 </div>
@@ -408,33 +500,35 @@ const HomePage: React.FC = () => {
                 whileHover={{ y: -10 }}
               >
                 <div className="treatment-card-v__img-box">
-                  <img src={item.img} alt={item.title} className="treatment-card-v__img" />
+                  <img src={item.img} alt={item.title} className="treatment-card-v__img" loading="lazy" decoding="async" />
                 </div>
                 <div className="treatment-card-v__body">
                   <h3 className="treatment-card-v__title">{item.title}</h3>
                   <p className="treatment-card-v__desc">{item.desc}</p>
                   <div className="treatment-card-v__footer">
                     <span>Learn More</span>
-                    <ArrowRight size={15} color="#451271" style={{ color: '#451271', stroke: '#451271' }} className="treatment-card-v__arrow" />
+                    <ArrowRight size={15} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} className="treatment-card-v__arrow" />
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Mobile View: Single Row Sliding Carousel with Left & Right Arrow Buttons */}
+          {/* Mobile View: Single Row Sliding Carousel with Directional Manual Arrow Buttons */}
           <div className="what-we-do-mobile-slider">
-            <div className="what-we-do-slider-container">
-              {/* Left Arrow Button */}
+            <div className="what-we-do-slider-container" onWheel={handleTreatWheel}>
+              {/* Left Arrow Button – shows strictly on manual left swipe/wheel */}
               <button
-                className="what-we-do-slider__arrow what-we-do-slider__arrow--prev"
+                type="button"
+                className={`what-we-do-slider__arrow what-we-do-slider__arrow--prev ${showTreatLeft ? 'is-visible' : ''}`}
                 onClick={(e) => {
                   setWhatWeDoIdx(prev => (prev - 1 + ALL_TREATMENTS.length) % ALL_TREATMENTS.length);
+                  triggerTreatLeft();
                   e.currentTarget.blur();
                 }}
                 aria-label="Previous Treatment Card"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={24} strokeWidth={2.8} />
               </button>
 
               {/* Sliding Card Wrap with Touch Swipe Support */}
@@ -453,6 +547,8 @@ const HomePage: React.FC = () => {
                       src={ALL_TREATMENTS[whatWeDoIdx].img}
                       alt={ALL_TREATMENTS[whatWeDoIdx].title}
                       className="treatment-card-v__img"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div className="treatment-card-v__body">
@@ -460,22 +556,24 @@ const HomePage: React.FC = () => {
                     <p className="treatment-card-v__desc">{ALL_TREATMENTS[whatWeDoIdx].desc}</p>
                     <div className="treatment-card-v__footer">
                       <span>Learn More</span>
-                      <ArrowRight size={15} color="#451271" style={{ color: '#451271', stroke: '#451271' }} className="treatment-card-v__arrow" />
+                      <ArrowRight size={15} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} className="treatment-card-v__arrow" />
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Right Arrow Button */}
+              {/* Right Arrow Button – shows strictly on manual right swipe/wheel */}
               <button
-                className="what-we-do-slider__arrow what-we-do-slider__arrow--next"
+                type="button"
+                className={`what-we-do-slider__arrow what-we-do-slider__arrow--next ${showTreatRight ? 'is-visible' : ''}`}
                 onClick={(e) => {
                   setWhatWeDoIdx(prev => (prev + 1) % ALL_TREATMENTS.length);
+                  triggerTreatRight();
                   e.currentTarget.blur();
                 }}
                 aria-label="Next Treatment Card"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={24} strokeWidth={2.8} />
               </button>
             </div>
 
@@ -505,6 +603,8 @@ const HomePage: React.FC = () => {
                   src="/assets/why-india-doctor-checkup.jpg"
                   alt="Why India for Dental Care - Incredible India"
                   className="why-us-v4__doc-img"
+                  loading="lazy"
+                  decoding="async"
                   style={{ borderRadius: '24px', width: '100%', height: 'auto', display: 'block' }}
                 />
               </div>
@@ -542,11 +642,11 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* ── TESTIMONIALS (CARD TYPE WITH VIDEOS & SLIDER) ── */}
       <section className="testimonials-v3-section" style={{ padding: '3rem 1.5rem', background: '#ffffff' }}>
         <div className="container">
-          <div className="testimonials-v3__inner" style={{ background: '#24E0E1', borderRadius: '28px', padding: '3rem 2.5rem', display: 'grid', gridTemplateColumns: '1fr 2.2fr', gap: '2.5rem', alignItems: 'center' }}>
-            {/* Left Column: Heading & Paragraph (Dark Blue Heading & Black Text on Cyan) */}
+          <div className="testimonials-v3__inner">
+            {/* Left Column: Heading & Paragraph */}
             <div className="testimonials-v3__left">
               <h2 style={{ fontFamily: 'Comfortaa', fontSize: 'clamp(32px, 3.5vw, 44px)', fontWeight: 800, color: '#350d58', letterSpacing: '0.02em', margin: 0, lineHeight: 1.2 }}>
                 Testimonials
@@ -557,21 +657,59 @@ const HomePage: React.FC = () => {
               <p style={{ fontFamily: 'Comfortaa', fontSize: '17px', color: '#350d58', lineHeight: 1.65, margin: 0 }}>
                 Discover real stories from patients who trusted us with their smiles and left happier than ever.
               </p>
+              <div style={{ marginTop: '1.75rem' }}>
+                <button className="btn btn-purple" onClick={() => navigate('/testimonials')} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                  View All Reviews <ArrowRight size={16} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
+                </button>
+              </div>
             </div>
 
-            {/* Right Column: Auto-sliding Testimonial Cards with Side Arrows */}
-            <div className="testimonials-v3__slider-wrap">
+            {/* Right Column: Auto-sliding Video Cards with Side Arrows */}
+            <div
+              className="testimonials-v3__slider-wrap"
+              onMouseEnter={() => setIsTestimonialHovered(true)}
+              onMouseLeave={() => setIsTestimonialHovered(false)}
+            >
               <div
                 className="testimonials-v3__cards-container"
+                onWheel={handleTestWheel}
                 onTouchStart={handleTestTouchStart}
                 onTouchMove={handleTestTouchMove}
                 onTouchEnd={handleTestTouchEnd}
               >
+                {/* Left Sliding Icon – strictly on left manual scroll/swipe */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveTestimonialIdx((prev) => (prev - 1 + HOME_VIDEOS.length) % HOME_VIDEOS.length);
+                    triggerHomeTestLeft();
+                  }}
+                  className={`testimonials-v3__arrow-btn testimonials-v3__arrow-btn--prev ${showHomeTestLeft ? 'is-visible' : ''}`}
+                  aria-label="Previous Testimonial Video"
+                >
+                  <ChevronLeft size={25} strokeWidth={2.8} />
+                </button>
+
+                {/* Right Sliding Icon – strictly on right manual scroll/swipe */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveTestimonialIdx((prev) => (prev + 1) % HOME_VIDEOS.length);
+                    triggerHomeTestRight();
+                  }}
+                  className={`testimonials-v3__arrow-btn testimonials-v3__arrow-btn--next ${showHomeTestRight ? 'is-visible' : ''}`}
+                  aria-label="Next Testimonial Video"
+                >
+                  <ChevronRight size={25} strokeWidth={2.8} />
+                </button>
+
                 {/* Cards Grid */}
                 <div className="testimonials-v3__cards-grid">
-                  {[0, 1].map((offset) => {
-                    const itemIndex = (activeTestimonialIdx + offset) % HOME_TESTIMONIALS.length;
-                    const item = HOME_TESTIMONIALS[itemIndex];
+                  {(isMobileScreen ? [0] : [0, 1]).map((offset) => {
+                    const itemIndex = (activeTestimonialIdx + offset) % HOME_VIDEOS.length;
+                    const item = HOME_VIDEOS[itemIndex];
                     return (
                       <motion.div
                         key={`${itemIndex}-${offset}`}
@@ -580,16 +718,37 @@ const HomePage: React.FC = () => {
                         transition={{ duration: 0.4, ease: 'easeOut' }}
                         className={`testimonials-v3__card ${offset === 1 ? 'testimonials-v3__card--desktop-only' : ''}`}
                       >
-                        <p className="testimonials-v3__card-quote">
-                          "{item.quote}"
-                        </p>
-                        <div className="testimonials-v3__card-author-wrap">
-                          <span className="testimonials-v3__card-author">
-                            — {item.author}
+                        <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', borderRadius: '14px', overflow: 'hidden', background: '#000000', marginBottom: '0.85rem' }}>
+                          <video
+                            src={item.videoSrc}
+                            controls
+                            playsInline
+                            preload="metadata"
+                            onPlay={() => setIsPlayingVideo(true)}
+                            onPause={() => setIsPlayingVideo(false)}
+                            onEnded={() => setIsPlayingVideo(false)}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          />
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.4rem', marginBottom: '0.55rem', flexWrap: 'wrap' }}>
+                          <div style={{ display: 'flex', gap: '3px', flexShrink: 0 }}>
+                            {Array.from({ length: item.stars }).map((_, j) => (
+                              <svg key={j} width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                              </svg>
+                            ))}
+                          </div>
+                          <span style={{ fontSize: '0.70rem', fontWeight: 600, background: '#24E0E1', color: '#350d58', padding: '0.2rem 0.55rem', borderRadius: '50px', whiteSpace: 'nowrap', maxWidth: '100%', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                            {item.tag}
                           </span>
-                          <span className="testimonials-v3__card-location">
+                        </div>
+                        <div>
+                          <div style={{ fontFamily: 'Comfortaa', fontWeight: 700, color: '#ffffff', fontSize: '0.95rem' }}>
+                            {item.name}
+                          </div>
+                          <div style={{ fontFamily: 'Comfortaa', fontSize: '0.78rem', color: '#24E0E1', marginTop: '2px' }}>
                             {item.location}
-                          </span>
+                          </div>
                         </div>
                       </motion.div>
                     );
@@ -599,7 +758,7 @@ const HomePage: React.FC = () => {
 
               {/* Slider Dots */}
               <div className="testimonials-v3__dots">
-                {HOME_TESTIMONIALS.map((_, i) => (
+                {HOME_VIDEOS.map((_, i) => (
                   <button
                     key={i}
                     className={`testimonials-v3__dot ${i === activeTestimonialIdx ? 'testimonials-v3__dot--active' : ''}`}
@@ -623,7 +782,7 @@ const HomePage: React.FC = () => {
             <h2 className="section-title" style={{ color: '#451271', fontSize: 'clamp(30px, 3.5vw, 42px)', fontWeight: 800 }}>
               Your Dental Vacation in 4 Simple Steps
             </h2>
-            <p style={{ color: 'var(--gray-600)', fontSize: '18px', maxWidth: '750px', margin: '0.75rem auto 0', lineHeight: 1.6 }}>
+            <p className="section-subtitle" style={{ color: 'var(--gray-600)', maxWidth: '750px', margin: '0.75rem auto 0', lineHeight: 1.6 }}>
               Relax while our dedicated international team manages your visa invitation, private airport pickup, hotel stay, and guided sightseeing.
             </p>
           </div>
@@ -641,7 +800,7 @@ const HomePage: React.FC = () => {
               onClick={() => navigate('/online-consultation')}
             >
               <div className="travel-step-card__img-header">
-                <img src="/assets/travel-step-1-evisa.png" alt="Online Consultation & E-Visa" className="travel-step-card__top-img" />
+                <img src="/assets/travel-step-1-evisa.png" alt="Online Consultation & E-Visa" className="travel-step-card__top-img" loading="lazy" decoding="async" />
                 <div className="travel-step-card__num">01</div>
               </div>
               <div className="travel-step-card__content">
@@ -664,13 +823,13 @@ const HomePage: React.FC = () => {
               onClick={() => navigate('/patient-resources#pickup')}
             >
               <div className="travel-step-card__img-header">
-                <img src="/assets/travel-step-2-airport.jpg" alt="VIP Airport Pickup & Hotel Stay" className="travel-step-card__top-img" />
+                <img src="/assets/travel-step-2-airport.jpg" alt="VIP Airport Pickup & Hotel Stay" className="travel-step-card__top-img" loading="lazy" decoding="async" />
                 <div className="travel-step-card__num">02</div>
               </div>
               <div className="travel-step-card__content">
                 <h3 className="travel-step-card__title">2. Airport Pickup &amp; Hotel</h3>
                 <p className="travel-step-card__desc">
-                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to <span style={{ whiteSpace: 'nowrap' }}>partner 3★–5★ hotels.</span>
+                  Complimentary private AC chauffeur greets you at airport &amp; escorts you to <span style={{ whiteSpace: 'nowrap' }}>partner 3★ - 5★ hotels.</span>
                 </p>
                 <span className="travel-step-card__tag">100% Free Transfer</span>
               </div>
@@ -687,7 +846,7 @@ const HomePage: React.FC = () => {
               onClick={() => navigate('/services')}
             >
               <div className="travel-step-card__img-header">
-                <img src="/assets/travel-step-3-care.png" alt="World-Class Dental Care" className="travel-step-card__top-img" />
+                <img src="/assets/travel-step-3-care.png" alt="World-Class Dental Care" className="travel-step-card__top-img" loading="lazy" decoding="async" />
                 <div className="travel-step-card__num">03</div>
               </div>
               <div className="travel-step-card__content">
@@ -710,7 +869,7 @@ const HomePage: React.FC = () => {
               onClick={() => navigate('/patient-resources#tips')}
             >
               <div className="travel-step-card__img-header">
-                <img src="/assets/travel-step-4-adiyogi.png" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" />
+                <img src="/assets/travel-step-4-adiyogi.png" alt="Vacation & Sightseeing Recovery" className="travel-step-card__top-img" loading="lazy" decoding="async" />
                 <div className="travel-step-card__num">04</div>
               </div>
               <div className="travel-step-card__content">
@@ -727,7 +886,7 @@ const HomePage: React.FC = () => {
           <div className="travel-concierge-banner" style={{ marginTop: '3.5rem' }}>
             <div className="travel-concierge-banner__inner">
               <div className="travel-concierge-banner__text">
-                <h3 className="travel-concierge-banner__title">Need Assistance Planning Your Dental Trip?</h3>
+                <h3 className="travel-concierge-banner__title">Need Assistance Planning<br className="need-title-br" /> Your Dental Trip?</h3>
                 <p className="travel-concierge-banner__desc">Our dedicated Patient Concierge handles flight dates, hotel bookings, and custom treatment schedules for free.</p>
               </div>
               <div className="travel-concierge-banner__actions">

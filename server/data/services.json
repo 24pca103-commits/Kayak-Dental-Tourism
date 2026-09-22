@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "_id": "1",
+    "name": "Teeth Alignment",
+    "slug": "teeth-alignment",
+    "shortDescription": "Correct misaligned teeth with braces or modern orthodontic solutions.",
+    "description": "Teeth alignment treatments help correct misaligned, crowded, or spaced teeth to improve both dental health and aesthetics. We offer traditional metal braces, ceramic braces, and invisible aligners tailored to each patient's needs.",
+    "benefits": [
+      "Improved bite function",
+      "Enhanced smile aesthetics",
+      "Better oral hygiene",
+      "Boosted self-confidence",
+      "Reduced risk of dental decay"
+    ],
+    "treatmentProcess": "Consultation → X-ray & Dental Scan → Custom Treatment Plan → Brace/Aligner Fitting → Regular Adjustments → Retainer Phase",
+    "whoNeeds": "Suitable for patients with crowded, spaced, or misaligned teeth of all ages.",
+    "duration": "12–24 months depending on severity",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 2,
+    "_id": "2",
+    "name": "Teeth Replacement",
+    "slug": "teeth-replacement",
+    "shortDescription": "Restore missing teeth with comfortable and natural-looking solutions.",
+    "description": "We provide comprehensive teeth replacement options including dental implants, bridges, and dentures. Our specialists recommend the best solution based on your dental health, bone structure, and lifestyle.",
+    "benefits": [
+      "Restore chewing ability",
+      "Prevent bone loss",
+      "Improve speech",
+      "Natural appearance",
+      "Long-lasting results"
+    ],
+    "treatmentProcess": "Assessment → Treatment Selection → Preparation → Placement → Healing & Adjustment",
+    "whoNeeds": "Patients with one or more missing teeth due to injury, decay, or gum disease.",
+    "duration": "Varies: Implants 3–6 months, Bridges 2–3 weeks",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 3,
+    "_id": "3",
+    "name": "Smile Designing",
+    "slug": "smile-designing",
+    "shortDescription": "Enhance your smile with personalized cosmetic dental treatments.",
+    "description": "Smile designing is a comprehensive cosmetic dental process that combines multiple treatments like veneers, teeth whitening, bonding, and reshaping to create your perfect smile tailored to your facial features.",
+    "benefits": [
+      "Complete smile transformation",
+      "Boosts confidence",
+      "Personalized results",
+      "Minimal invasive options",
+      "Long-lasting aesthetic improvement"
+    ],
+    "treatmentProcess": "Smile Analysis → Digital Preview → Treatment Planning → Execution → Final Reveal",
+    "whoNeeds": "Anyone unhappy with the color, shape, size, or alignment of their teeth.",
+    "duration": "2–8 weeks depending on treatments involved",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 4,
+    "_id": "4",
+    "name": "Dental Implants",
+    "slug": "dental-implants",
+    "shortDescription": "Restore missing teeth with permanent titanium implants.",
+    "description": "Dental implants are titanium posts surgically placed into the jawbone to act as artificial tooth roots. They provide a strong foundation for fixed or removable replacement teeth that match your natural teeth.",
+    "benefits": [
+      "Permanent solution",
+      "Looks and feels natural",
+      "Preserves jawbone",
+      "No impact on adjacent teeth",
+      "Easy maintenance"
+    ],
+    "treatmentProcess": "Consultation → X-ray & Scan → Implant Placement → Healing Period (osseointegration) → Crown Placement",
+    "whoNeeds": "Adults with one or more missing teeth who have sufficient jawbone density.",
+    "duration": "3–6 months total treatment",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 5,
+    "_id": "5",
+    "name": "Root Canal Treatment",
+    "slug": "root-canal-treatment",
+    "shortDescription": "Save infected teeth with painless root canal therapy.",
+    "description": "Root canal treatment removes infected or damaged pulp from inside the tooth, cleans and disinfects the root canals, and seals the tooth to prevent future infection. Modern techniques make the procedure virtually painless.",
+    "benefits": [
+      "Saves natural tooth",
+      "Eliminates severe toothache",
+      "Prevents infection spread",
+      "Cost-effective vs extraction",
+      "Quick recovery"
+    ],
+    "treatmentProcess": "Diagnosis → Local Anesthesia → Pulp Removal → Canal Cleaning → Filling & Sealing → Crown Placement",
+    "whoNeeds": "Patients with severe tooth pain, deep decay, cracked teeth, or infected pulp.",
+    "duration": "1–3 appointments over 1–2 weeks",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 6,
+    "_id": "6",
+    "name": "Teeth Whitening",
+    "slug": "teeth-whitening",
+    "shortDescription": "Brighten your smile with professional whitening treatments.",
+    "description": "Professional teeth whitening uses medical-grade bleaching agents to remove stains and discoloration, making your teeth several shades whiter. We offer in-office and take-home whitening options.",
+    "benefits": [
+      "Noticeably whiter teeth",
+      "Safe & supervised",
+      "Quick results",
+      "Boosts confidence",
+      "Long-lasting with care"
+    ],
+    "treatmentProcess": "Shade Assessment → Gum Protection → Whitening Gel Application → Light Activation → Results Evaluation",
+    "whoNeeds": "Anyone with stained or discolored teeth due to coffee, tea, tobacco, or aging.",
+    "duration": "1 hour in-office or 2 weeks take-home",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 7,
+    "_id": "7",
+    "name": "Braces",
+    "slug": "braces",
+    "shortDescription": "Traditional and ceramic braces for effective teeth straightening.",
+    "description": "Braces are orthodontic devices that correct misaligned teeth and bite issues. We offer metal braces and aesthetic ceramic braces that blend with your tooth color for a discreet appearance.",
+    "benefits": [
+      "Proven effective",
+      "Works for complex cases",
+      "Durable",
+      "Customizable",
+      "Cost-effective orthodontic option"
+    ],
+    "treatmentProcess": "Orthodontic Assessment → Brace Selection → Fitting → Monthly Adjustments → Removal & Retainer",
+    "whoNeeds": "Children, teens, and adults with crowded, gapped, or misaligned teeth.",
+    "duration": "12–24 months",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 8,
+    "_id": "8",
+    "name": "Pediatric Dentistry",
+    "slug": "pediatric-dentistry",
+    "shortDescription": "Gentle, fun dental care specially designed for children.",
+    "description": "Our pediatric dental services focus on preventive care and early intervention for children from 1 year of age. We create a positive, fun dental experience to help children build healthy oral habits for life.",
+    "benefits": [
+      "Child-friendly environment",
+      "Pain-free approach",
+      "Preventive focus",
+      "Builds positive dental habits",
+      "Early problem detection"
+    ],
+    "treatmentProcess": "Friendly Introduction → Gentle Examination → Preventive Cleaning/Treatment → Education & Tips → Reward & Praise",
+    "whoNeeds": "Children and teens from age 1 to 18 years.",
+    "duration": "30–45 minutes per visit",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  },
+  {
+    "id": 9,
+    "_id": "9",
+    "name": "Emergency Dental Care",
+    "slug": "emergency-dental-care",
+    "shortDescription": "Prompt care for dental emergencies including toothache, trauma, and broken teeth.",
+    "description": "Immediate compassionate dental care for severe toothaches, chipped or knocked-out teeth, broken restorations, and dental trauma.",
+    "benefits": [
+      "Same-day consultation",
+      "Rapid pain relief",
+      "Emergency extractions",
+      "Fractured tooth repair",
+      "Infection management"
+    ],
+    "treatmentProcess": "Immediate Triage → Digital X-Ray → Pain Relief Anesthesia → Emergency Intervention → Aftercare Plan",
+    "whoNeeds": "Anyone experiencing sudden unbearable toothache, oral trauma, broken teeth, or dental emergencies.",
+    "duration": "Immediate same-day care (45–60 mins)",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:38.199Z"
+  }
+]

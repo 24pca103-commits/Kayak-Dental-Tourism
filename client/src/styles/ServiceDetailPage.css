@@ -1,45 +1,450 @@
 /* ServiceDetailPage responsive layout */
-.service-detail-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 3rem;
-  align-items: start;
+.service-detail-page {
+  padding-top: 70px;
+  overflow-x: hidden;
+  width: 100%;
 }
 
+.service-detail-hero {
+  position: relative;
+  background-color: #240840;
+  background-image: 
+    linear-gradient(90deg, 
+      #240840 0%, 
+      #240840 25%, 
+      rgba(36, 8, 64, 0.92) 38%, 
+      rgba(69, 18, 113, 0.50) 58%, 
+      rgba(69, 18, 113, 0.15) 80%, 
+      transparent 95%
+    ),
+    url('/assets/banner-tourism-collage.jpg');
+  background-size: auto 130%;
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  min-height: 360px;
+  padding: 4.5rem 0 3.5rem;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  border-bottom: 2px solid #24E0E1;
+  box-sizing: border-box;
+}
+
+.service-detail-hero-bg {
+  display: none !important;
+}
+
+.service-detail-hero .container {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.service-detail-hero .section-title {
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.service-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 2.75rem;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.service-detail-main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.service-detail-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Section headings */
+.service-detail__heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--purple-700);
+  margin-bottom: 0.85rem;
+}
+
+/* Description - Justify text */
+.service-detail__desc {
+  text-align: justify !important;
+  text-justify: inter-word;
+  line-height: 1.8;
+  color: var(--gray-600);
+  margin-bottom: 0;
+}
+
+/* Benefits list */
+.service-detail__benefits-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.service-detail__benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--gray-700);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* Treatment steps */
+.service-detail__steps-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.service-detail__step-card {
+  background: var(--purple-50);
+  border: 1.5px solid var(--purple-100);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  text-align: start;
+  width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+}
+
+.service-detail__step-badge {
+  font-weight: 800;
+  color: var(--purple-700);
+  flex-shrink: 0;
+  font-size: 0.95rem;
+}
+
+.service-detail__step-text {
+  color: var(--gray-700);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* Who Needs */
+.service-detail__who-needs {
+  background: var(--purple-50);
+  border: 1.5px solid var(--purple-100);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* FAQs - Prevent overflow and wrap lines cleanly with safe distance from arrow */
+.service-detail__faqs-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.service-detail__faq-card {
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-detail__faq-card:hover {
+  border-color: var(--purple-200);
+}
+
+.service-detail__faq-btn {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 30px !important;
+  align-items: center !important;
+  gap: 0.85rem !important;
+  padding: 0.95rem 1.15rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+  background: none !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.service-detail__faq-btn.active {
+  background: var(--purple-50) !important;
+  color: var(--purple-700) !important;
+}
+
+.service-detail__faq-title {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: break-word !important;
+  line-height: 1.45 !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.service-detail__faq-icon {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  border-radius: 50% !important;
+  background: rgba(69, 18, 113, 0.08) !important;
+  color: var(--purple-700) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  justify-self: end !important;
+  flex-shrink: 0 !important;
+}
+
+.service-detail__faq-answer {
+  padding: 0 1.25rem 1.1rem;
+  font-size: 0.88rem;
+  color: var(--gray-600);
+  line-height: 1.7;
+  text-align: justify;
+  text-justify: inter-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Sidebar Book Card */
+.service-detail__book-card {
+  background: linear-gradient(135deg, var(--purple-700), var(--purple-800));
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  color: white;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.service-detail__book-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  text-align: center;
+  width: 100%;
+}
+
+.service-detail__book-text {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 1.25rem;
+  line-height: 1.65;
+  text-align: justify;
+  text-indent: 1.5rem;
+  text-justify: inter-word;
+}
+
+.service-detail__book-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* WhatsApp Card & Button centered */
+.service-detail__whatsapp-card {
+  background: var(--cyan-50);
+  border: 1.5px solid var(--cyan-100);
+  border-radius: var(--radius-lg);
+  padding: 1.35rem 1.25rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.service-detail__whatsapp-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--cyan-700);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.service-detail__whatsapp-text {
+  font-size: 0.85rem;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.6;
+  text-align: justify;
+  text-indent: 1.5rem;
+  text-justify: inter-word;
+}
+
+.service-detail__whatsapp-btn {
+  margin-top: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25D366;
+  border-color: #25D366;
+  color: #ffffff !important;
+  font-weight: 700;
+  border-radius: 50px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  text-decoration: none;
+  padding: 0.55rem 1.5rem;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-detail__whatsapp-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+/* Book appointment buttons - Arrow icon matches text color */
+.service-detail-page .btn-primary svg {
+  color: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* Mobile responsive styles (< 768px) */
 @media (max-width: 768px) {
   .service-detail-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    width: 100% !important;
+    padding: 0 !important;
   }
 
   .service-detail-hero {
-    text-align: center !important;
+    min-height: auto !important;
+    padding: 2.75rem 0 2.25rem !important;
+    background-image: 
+      linear-gradient(90deg, 
+        rgba(36, 8, 64, 0.95) 0%, 
+        rgba(36, 8, 64, 0.82) 48%, 
+        rgba(69, 18, 113, 0.35) 80%, 
+        rgba(69, 18, 113, 0.10) 100%
+      ),
+      url('/assets/banner-tourism-collage.jpg') !important;
+    background-position: left bottom !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
   }
 
   .service-detail-hero .container {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
+    padding: 0 1.25rem !important;
   }
 
-  .service-detail-hero .service-detail-back-btn {
-    margin: 0 auto 1.25rem auto !important;
+  .service-detail-hero button:first-child {
+    margin-top: 0.35rem !important;
+    margin-bottom: 0.95rem !important;
   }
 
+  .service-detail-hero h1,
   .service-detail-hero .section-title {
-    text-align: center !important;
-    margin: 0 auto !important;
+    font-size: clamp(1.45rem, 5.5vw, 1.85rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.65rem !important;
+    white-space: normal !important;
   }
 
   .service-detail-hero p {
-    text-align: center !important;
-    margin: 0.75rem auto 0 !important;
+    font-size: 0.85rem !important;
+    line-height: 1.55 !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+    margin-top: 0.4rem !important;
+  }
+
+  .service-detail__benefits-list {
+    grid-template-columns: 1fr !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+  }
+
+  .service-detail__step-card {
+    padding: 0.8rem 0.95rem !important;
+    border-radius: 10px !important;
+  }
+
+  .service-detail__who-needs {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .service-detail-sidebar {
+    width: 100% !important;
   }
 
   .service-detail__desc {
+    text-align: justify !important;
+    text-justify: inter-word !important;
+  }
+
+  .service-detail__faq-btn {
+    padding: 0.9rem 1.1rem !important;
+    gap: 1rem !important;
+  }
+
+  .service-detail__faq-title {
+    padding-right: 0.5rem !important;
+    font-size: 0.92rem !important;
+  }
+
+  .service-detail__faq-answer {
+    padding: 0 1.1rem 0.95rem !important;
+    text-align: justify !important;
+    text-justify: inter-word !important;
+  }
+
+  .service-detail__book-text {
+    text-align: justify !important;
     text-indent: 1.5rem !important;
-    text-align: start !important;
-    text-align: left !important;
+    text-justify: inter-word !important;
+  }
+
+  .service-detail__whatsapp-text {
+    text-align: justify !important;
+    text-indent: 1.5rem !important;
+    text-justify: inter-word !important;
   }
 }

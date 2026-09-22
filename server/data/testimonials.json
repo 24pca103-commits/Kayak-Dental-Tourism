@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "_id": "1",
+    "patientName": "Kavitha Sundaram",
+    "review": "Dr. Priya and the entire KAYAL Dental team made my smile designing experience truly wonderful. The results exceeded all my expectations. Highly recommended!",
+    "rating": 5,
+    "image": "",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:39.698Z"
+  },
+  {
+    "id": 2,
+    "_id": "2",
+    "patientName": "Rajesh Venkat",
+    "review": "Got my dental implants done here. Absolutely pain-free procedure with state-of-the-art facilities. The doctors explain every step clearly. Very happy with the outcome.",
+    "rating": 5,
+    "image": "",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:39.698Z"
+  },
+  {
+    "id": 3,
+    "_id": "3",
+    "patientName": "Meenakshi Krishnan",
+    "review": "My son was terrified of dentists until we visited KAYAL. Dr. Karthik is amazing with kids! Now my son actually looks forward to dental check-ups.",
+    "rating": 5,
+    "image": "",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:39.698Z"
+  },
+  {
+    "id": 4,
+    "_id": "4",
+    "patientName": "Suresh Babu",
+    "review": "Excellent orthodontic treatment with clear aligners. My teeth are perfectly aligned now in just 14 months. Transparent pricing and no hidden costs.",
+    "rating": 5,
+    "image": "",
+    "status": "active",
+    "createdAt": "2026-09-21T12:41:39.698Z"
+  }
+]

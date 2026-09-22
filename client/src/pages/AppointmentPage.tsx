@@ -35,6 +35,7 @@ const AppointmentPage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const countryConfig = getCountryConfig(selectedCountry);
+  const maxPhoneDigits = Math.max(...(countryConfig.digitLengths || [10]));
 
   const validateAll = () => {
     const errs: Record<string, string> = {};
@@ -74,6 +75,18 @@ const AppointmentPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    // Strict digit restriction for phone field
+    if (name === 'phone') {
+      const digitsOnly = value.replace(/\D/g, '').slice(0, maxPhoneDigits);
+      setForm(prev => ({ ...prev, phone: digitsOnly }));
+      if (touched.phone || errors.phone) {
+        const err = validateSingleField('phone', digitsOnly, selectedCountry);
+        setErrors(prev => ({ ...prev, phone: err }));
+      }
+      return;
+    }
+
     setForm(prev => ({ ...prev, [name]: value }));
 
     // Instant validation if already touched or has error
@@ -93,8 +106,12 @@ const AppointmentPage: React.FC = () => {
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCountry = e.target.value;
     setSelectedCountry(newCountry);
-    if (form.phone.trim()) {
-      const err = validateSingleField('phone', form.phone, newCountry);
+    const newConfig = getCountryConfig(newCountry);
+    const newMaxDigits = Math.max(...(newConfig.digitLengths || [10]));
+    const truncatedPhone = form.phone.slice(0, newMaxDigits);
+    setForm(prev => ({ ...prev, phone: truncatedPhone }));
+    if (truncatedPhone.trim()) {
+      const err = validateSingleField('phone', truncatedPhone, newCountry);
       setErrors(prev => ({ ...prev, phone: err }));
     }
   };
@@ -239,14 +256,15 @@ const AppointmentPage: React.FC = () => {
       try {
         const stored = JSON.parse(localStorage.getItem('kayal_local_appointments') || '[]');
         localStorage.setItem('kayal_local_appointments', JSON.stringify([newBooking, ...stored]));
-      } catch {}
+        window.dispatchEvent(new Event('storage'));
+      } catch { }
 
       // 3. Broadcast instant sync to all open admin tabs/windows
       try {
         const bc = new BroadcastChannel('kayal_live_sync');
         bc.postMessage({ type: 'NEW_APPOINTMENT', patientName: form.name, timestamp: Date.now() });
         bc.close();
-      } catch {}
+      } catch { }
 
       // 4. Send real-time confirmation email to user in background (non-blocking)
       sendRealtimeEmail({
@@ -279,7 +297,7 @@ const AppointmentPage: React.FC = () => {
       <section className="consultation-hero">
         <div className="container" style={{ textAlign: 'left' }}>
           <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <Video size={13} /> Free Video Consultation
+            <Video size={13} /> Free Online Consultation
           </div>
           <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Book Free Online Consultation</h1>
           <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', fontSize: '1.1rem', lineHeight: 1.6, textAlign: 'left' }}>
@@ -352,13 +370,11 @@ const AppointmentPage: React.FC = () => {
                           value={form.phone}
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          maxLength={maxPhoneDigits}
                           required
                           style={{ flex: 1, minWidth: 0 }}
                         />
                       </div>
-                      <span className="form-hint" style={{ fontSize: '0.76rem', color: '#6b7280', marginTop: '0.3rem', display: 'block' }}>
-                        {countryConfig.flag} Expected format for {countryConfig.country}: {countryConfig.hint}
-                      </span>
                       {errors.phone && <span className="form-error" style={{ marginTop: '0.2rem', display: 'block' }}>{errors.phone}</span>}
                     </div>
 
@@ -435,7 +451,7 @@ const AppointmentPage: React.FC = () => {
                     </div>
 
                     <button type="submit" className="btn btn-primary btn-lg w-full" disabled={loading}>
-                      {loading ? 'Submitting...' : <><Send size={18} /> Submit Consultation Request</>}
+                      {loading ? 'Submitting...' : <><Send size={18} /> Get Consultation</>}
                     </button>
 
                     <p className="consultation-note">
@@ -468,8 +484,8 @@ const AppointmentPage: React.FC = () => {
                   <div className="consultation-step">
                     <span className="consultation-step-num">3</span>
                     <div>
-                      <strong>Video Consultation</strong>
-                      <p>Schedule a free video call to discuss your treatment plan.</p>
+                      <strong>Online Consultation</strong>
+                      <p>Schedule a free Online consultation to discuss your treatment plan.</p>
                     </div>
                   </div>
                   <div className="consultation-step">
@@ -482,25 +498,28 @@ const AppointmentPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="consultation-side-card consultation-side-card--accent">
-                <h4 style={{ color: '#451271' }}>Need Immediate Help?</h4>
-                <p style={{ color: '#000000' }}>Chat with us on WhatsApp for instant assistance.</p>
+              <div className="consultation-side-card consultation-side-card--accent" style={{ textAlign: 'center' }}>
+                <h4 style={{ color: '#451271', textAlign: 'center', marginBottom: '0.6rem' }}>Need Immediate Help?</h4>
+                <p style={{ color: '#000000', textAlign: 'justify', textJustify: 'inter-word', textIndent: '1.5rem', lineHeight: 1.6, margin: '0 0 0.85rem 0' }}>Chat with us on WhatsApp for instant assistance.</p>
                 <a
                   href="https://wa.me/917867926159"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn"
                   style={{
-                    marginTop: '0.75rem',
+                    margin: '0.75rem auto 0 auto',
                     background: '#25D366',
                     borderColor: '#25D366',
                     color: '#ffffff',
                     display: 'inline-flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '8px',
                     fontWeight: 700,
                     borderRadius: '50px',
                     boxShadow: '0 4px 14px rgba(37, 211, 102, 0.35)',
+                    width: 'fit-content',
+                    padding: '0.6rem 1.6rem',
                   }}
                 >
                   <WhatsAppIcon size={18} color="#ffffff" /> WhatsApp Us
@@ -539,7 +558,7 @@ const AppointmentPage: React.FC = () => {
       <section className="consultation-cta">
         <div className="container text-center" style={{ textAlign: 'center' }}>
           <h2 className="section-title text-white" style={{ textAlign: 'center' }}>Questions Before Booking?</h2>
-          <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: '0.75rem', marginBottom: '1.5rem', fontSize: '18px', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p className="section-subtitle" style={{ color: 'rgba(255,255,255,0.85)', marginTop: '0.75rem', marginBottom: '1.5rem', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             Explore our dental tourism page or patient resources for more information.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>

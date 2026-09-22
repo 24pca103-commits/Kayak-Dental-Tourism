@@ -306,7 +306,7 @@ html, body {
 
 .admin-content {
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.25rem;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;

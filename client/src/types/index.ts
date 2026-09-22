@@ -45,6 +45,22 @@ export interface Appointment {
   updatedAt: string;
 }
 
+export const ALLOWED_STATUS_TRANSITIONS: Record<string, string[]> = {
+  pending: ['rescheduled', 'confirmed', 'cancelled'],
+  rescheduled: ['confirmed', 'cancelled'],
+  confirmed: ['completed', 'cancelled'],
+  completed: [],
+  cancelled: ['pending'],
+};
+
+export const STATUS_LABELS: Record<string, string> = {
+  pending: 'Pending Review',
+  rescheduled: 'Rescheduled',
+  confirmed: 'Confirmed',
+  completed: 'Completed Care',
+  cancelled: 'Cancelled',
+};
+
 export interface Testimonial {
   _id: string;
   patientName: string;

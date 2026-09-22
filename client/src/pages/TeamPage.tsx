@@ -4,8 +4,6 @@ import { doctorsAPI } from '../services/api';
 import type { Doctor } from '../types';
 import AppointmentModal from '../components/AppointmentModal/AppointmentModal';
 
-const ALL_WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
 const DEMO: Doctor[] = [
   { _id: '0', name: 'Dr. V.Sahaana', qualification: 'BDS., FDS., FMC.', specialization: 'Dental Surgeon Certified & Root Canal Specialist', experience: 10, image: '/assets/dr-kayal-anandhi.jpg', description: 'Dental surgeon certified and root canal specialist dedicated to advanced painless endodontic treatments and comprehensive dental care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
   { _id: '1', name: 'Dr. Priya Sharma', qualification: 'BDS, MDS', specialization: 'General & Cosmetic Dentist', experience: 12, image: '', description: 'Dr. Priya is a highly experienced general and cosmetic dentist passionate about creating beautiful smiles with personalized patient care.', availability: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], status: 'active', createdAt: '' },
@@ -17,6 +15,7 @@ const DEMO: Doctor[] = [
 const TeamPage: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [preselectedDoctor, setPreselectedDoctor] = useState('');
 
   useEffect(() => {
     document.title = 'Our Team | KAYAL Dental Care';
@@ -25,23 +24,15 @@ const TeamPage: React.FC = () => {
 
   const list = doctors.length > 0 ? doctors : DEMO;
 
+  const handleBookDoctor = (docName: string) => {
+    setPreselectedDoctor(docName);
+    setShowModal(true);
+  };
+
   return (
     <div style={{ paddingTop: '70px' }}>
-      <section className="team-hero" style={{
-        position: 'relative',
-        backgroundColor: '#240840',
-        backgroundImage: "linear-gradient(90deg, #240840 0%, #240840 28%, rgba(36, 8, 64, 0.92) 42%, rgba(69, 18, 113, 0.5) 65%, rgba(69, 18, 113, 0.1) 85%, transparent 100%), url('/assets/banner-team-collage.jpg')",
-        backgroundSize: 'auto 100%',
-        backgroundPosition: 'right center',
-        backgroundRepeat: 'no-repeat',
-        minHeight: '360px',
-        padding: '4.5rem 0 3.5rem',
-        display: 'flex',
-        alignItems: 'center',
-        textAlign: 'left',
-        borderBottom: '2px solid #24E0E1'
-      }}>
-        <div className="container" style={{ textAlign: 'left' }}>
+      <section className="team-hero">
+        <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'left' }}>
           <div className="badge badge-white" style={{ marginBottom: '1rem', display: 'inline-flex' }}>Our Specialists</div>
           <h1 className="section-title text-white" style={{ textAlign: 'left', margin: '0 0 0.75rem 0', fontSize: 'clamp(2.2rem, 4vw, 3.2rem)' }}>Meet Our Expert Dental Team</h1>
           <p style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0', maxWidth: '620px', textAlign: 'left', fontSize: '1.1rem', lineHeight: 1.6 }}>Experienced, caring professionals dedicated to your oral health and confidence</p>
@@ -65,61 +56,17 @@ const TeamPage: React.FC = () => {
                 </div>
                 <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                   <div style={{ flexGrow: 1 }}>
-                    <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)' }}>{doc.name}</h2>
+                    <h2 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--gray-800)' }}>
+                      {doc.name}{doc.qualification && !doc.name.includes(doc.qualification) ? `, ${doc.qualification}` : ''}
+                    </h2>
                     <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--purple-600)', margin: '0.2rem 0' }}>{doc.specialization}</p>
-                    <p style={{ fontSize: '0.775rem', color: 'var(--gray-500)', marginBottom: '0.75rem' }}>{doc.qualification}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.775rem', color: 'var(--cyan-600)', fontWeight: 600, marginBottom: '0.75rem' }}>
                       <Award size={13} />{doc.experience} years experience
                     </div>
                     {doc.description && <p style={{ fontSize: '0.825rem', color: 'var(--gray-600)', lineHeight: 1.6, marginBottom: '1rem' }}>{doc.description}</p>}
-                    <div style={{ marginBottom: '1.25rem' }}>
-                      <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', marginBottom: '0.4rem' }}>Available:</p>
-                      <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                        {ALL_WEEK_DAYS.map(day => {
-                          const isAvailable = (doc.availability || []).some(
-                            d => d.toLowerCase().startsWith(day.toLowerCase().slice(0, 3))
-                          );
-                          return isAvailable ? (
-                            <span
-                              key={day}
-                              title="Available"
-                              style={{
-                                padding: '0.2rem 0.5rem',
-                                background: 'var(--purple-50)',
-                                color: 'var(--purple-600)',
-                                fontSize: '0.7rem',
-                                fontWeight: 700,
-                                borderRadius: '4px',
-                                border: '1px solid var(--purple-200)',
-                              }}
-                            >
-                              {day}
-                            </span>
-                          ) : (
-                            <span
-                              key={day}
-                              title="Unavailable"
-                              style={{
-                                padding: '0.2rem 0.5rem',
-                                background: '#f3f4f6',
-                                color: '#9ca3af',
-                                fontSize: '0.7rem',
-                                fontWeight: 500,
-                                borderRadius: '4px',
-                                border: '1px dashed #d1d5db',
-                                opacity: 0.65,
-                                textDecoration: 'line-through',
-                              }}
-                            >
-                              {day}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
                   </div>
-                  <button className="btn btn-primary btn-sm w-full" style={{ marginTop: 'auto' }} onClick={() => setShowModal(true)}>
-                    Book a Consultation
+                  <button className="btn btn-primary btn-sm w-full" style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: '#ffffff' }} onClick={() => handleBookDoctor(doc.name)}>
+                    Book a Consultation <ArrowRight size={15} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor' }} />
                   </button>
                 </div>
               </div>
@@ -149,12 +96,12 @@ const TeamPage: React.FC = () => {
             ))}
           </div>
           <button className="btn btn-purple btn-lg" style={{ marginTop: '2.5rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }} onClick={() => setShowModal(true)}>
-            Book an Appointment <ArrowRight size={18} color="#ffffff" style={{ color: '#ffffff', stroke: '#ffffff', flexShrink: 0 }} />
+            Book an Appointment <ArrowRight size={18} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0 }} />
           </button>
         </div>
       </section>
 
-      {showModal && <AppointmentModal onClose={() => setShowModal(false)} services={[]} doctors={list} />}
+      {showModal && <AppointmentModal onClose={() => { setShowModal(false); setPreselectedDoctor(''); }} services={[]} doctors={list} preselectedDoctor={preselectedDoctor} />}
     </div>
   );
 };

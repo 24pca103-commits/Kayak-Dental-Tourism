@@ -165,6 +165,17 @@ export const seedInitialData = async () => {
           duration: '30–45 minutes per visit',
           status: 'active' as const,
         },
+        {
+          name: 'Emergency Dental Care',
+          slug: 'emergency-dental-care',
+          shortDescription: 'Prompt care for dental emergencies including toothache, trauma, and broken teeth.',
+          description: 'Immediate compassionate dental care for severe toothaches, chipped or knocked-out teeth, broken restorations, and dental trauma.',
+          benefits: JSON.stringify(['Same-day consultation', 'Rapid pain relief', 'Emergency extractions', 'Fractured tooth repair', 'Infection management']),
+          treatmentProcess: 'Immediate Triage → Digital X-Ray → Pain Relief Anesthesia → Emergency Intervention → Aftercare Plan',
+          whoNeeds: 'Anyone experiencing sudden unbearable toothache, oral trauma, broken teeth, or dental emergencies.',
+          duration: 'Immediate same-day care (45–60 mins)',
+          status: 'active' as const,
+        },
       ];
 
       for (const s of services) {

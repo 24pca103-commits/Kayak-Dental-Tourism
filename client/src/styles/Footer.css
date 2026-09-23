@@ -94,12 +94,12 @@
   flex-shrink: 0;
 }
 
-/* Columns Grid (Desktop default: 5 clean balanced columns) */
+/* Columns Grid (Desktop default: 6 clean balanced columns including Brand) */
 .footer__columns-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1.5rem 1.75rem;
-  margin-bottom: 1.15rem;
+  grid-template-columns: 1.4fr repeat(5, minmax(0, 1fr));
+  gap: 1.5rem 1.25rem;
+  margin-bottom: 1.5rem;
   align-items: start;
 }
 
@@ -107,20 +107,25 @@
   display: contents;
 }
 
-.footer__col--quick {
+.footer__col--brand {
   order: 1;
+  min-width: 0;
+  padding-right: 0.75rem;
 }
-.footer__col--treatments {
+.footer__col--quick {
   order: 2;
 }
-.footer__col--tourism {
+.footer__col--treatments {
   order: 3;
 }
-.footer__col--resources {
+.footer__col--tourism {
   order: 4;
 }
-.footer__col--reach {
+.footer__col--resources {
   order: 5;
+}
+.footer__col--reach {
+  order: 6;
 }
 
 .footer__col {
@@ -380,13 +385,23 @@
     gap: 0.5rem !important;
   }
 
-  /* Two-column seamless flex layout on Mobile: Left column (Quick, Tourism, Reach Us), Right column (Treatments, Resources) */
+  /* Mobile layout: Brand section full width on top, followed by 2-column links */
   .footer__columns-grid {
     display: flex !important;
+    flex-wrap: wrap !important;
     flex-direction: row !important;
     align-items: flex-start !important;
     gap: 1.25rem !important;
     margin-bottom: 1.25rem !important;
+  }
+
+  .footer__col--brand {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 1.25rem !important;
+    padding-right: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
 
   .footer__mobile-col {

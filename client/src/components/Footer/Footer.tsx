@@ -24,17 +24,17 @@ const Footer: React.FC = () => {
   return (
     <footer className="footer">
       <div className="footer__inner">
-        {/* Brand Section at Top */}
-        <div className="footer__brand-header">
-          <div className="footer__brand-info">
+        {/* Footer Navigation & Brand Columns (6 Clean Columns in Desktop View) */}
+        <div className="footer__columns-grid">
+          {/* 1. Brand Column */}
+          <div className="footer__col footer__col--brand">
             <Link to="/" className="footer__logo" onClick={() => handleLinkClick('/')}>
-              <img src="/assets/kayal-brand-logo.png" alt="KAYAL Dental Care" style={{ height: '56px', width: 'auto', objectFit: 'contain' }} />
+              <img src="/assets/kayal-brand-logo.png" alt="KAYAL Dental Care" style={{ height: '52px', width: 'auto', objectFit: 'contain' }} />
             </Link>
 
-            {/* Clinic Address & Contact info right beneath brand logo - stacked line by line in order */}
             <div className="footer__brand-contact">
               <div className="footer__brand-contact-item">
-                <MapPin size={16} className="footer__brand-icon" />
+                <MapPin size={15} className="footer__brand-icon" />
                 <span>123, Seaside Road, Coimbatore, Tamil Nadu</span>
               </div>
               <div className="footer__brand-contact-item">
@@ -51,7 +51,6 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* Social Icons right below address */}
             <div className="footer__social">
               <a
                 href="https://wa.me/917867926159?text=Hello%20Kayal%20Dental%20Care"
@@ -79,13 +78,10 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-        </div>
 
-        {/* Footer Navigation Columns (5 Clean, Single-Line Groups) */}
-        <div className="footer__columns-grid">
           {/* Mobile Left Column */}
           <div className="footer__mobile-col footer__mobile-col--left">
-            {/* 1. Quick Links */}
+            {/* 2. Quick Links */}
             <div className="footer__col footer__col--quick">
               <h4 className="footer__heading">Quick Links</h4>
               <ul className="footer__links">
@@ -97,7 +93,7 @@ const Footer: React.FC = () => {
               </ul>
             </div>
 
-            {/* 3. Dental Tourism */}
+            {/* 4. Dental Tourism */}
             <div className="footer__col footer__col--tourism">
               <h4 className="footer__heading">Dental Tourism</h4>
               <ul className="footer__links">
@@ -110,7 +106,7 @@ const Footer: React.FC = () => {
               </ul>
             </div>
 
-            {/* 5. Reach Us (Strictly in Left Column on Mobile) */}
+            {/* 6. Reach Us */}
             <div className="footer__col footer__col--reach">
               <h4 className="footer__heading">Reach Us</h4>
               <ul className="footer__links">
@@ -135,7 +131,7 @@ const Footer: React.FC = () => {
 
           {/* Mobile Right Column */}
           <div className="footer__mobile-col footer__mobile-col--right">
-            {/* 2. Treatments */}
+            {/* 3. Treatments */}
             <div className="footer__col footer__col--treatments">
               <h4 className="footer__heading">Treatments</h4>
               <ul className="footer__links">
@@ -150,7 +146,7 @@ const Footer: React.FC = () => {
               </ul>
             </div>
 
-            {/* 4. Patient Resources */}
+            {/* 5. Patient Resources */}
             <div className="footer__col footer__col--resources">
               <h4 className="footer__heading">Patient Resources</h4>
               <ul className="footer__links">

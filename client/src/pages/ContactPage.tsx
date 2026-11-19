@@ -395,7 +395,7 @@ const ContactPage: React.FC = () => {
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1.5rem' }}>Clinic Information</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 {[
-                  { icon: <MapPin size={20} />, title: 'Address', info: 'XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore, Tamil Nadu 641045' },
+                  { icon: <MapPin size={20} />, title: 'Address', info: 'Kayal Dental Care, XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore, Tamil Nadu 641045' },
                   { icon: <Phone size={20} />, title: 'Phone', info: '+91 78679 26159', href: 'tel:+917867926159' },
                   { icon: <Mail size={20} />, title: 'Email', info: 'hello@kayaldental.com', href: 'mailto:hello@kayaldental.com' },
                   { icon: <Clock size={20} />, title: 'Working Hours', info: 'All Days Available: 9:00 AM – 7:00 PM\n(Monday – Sunday)' },
@@ -419,22 +419,22 @@ const ContactPage: React.FC = () => {
               {/* Live Interactive Google Map */}
               <div id="map" className="contact-map-card" style={{ scrollMarginTop: '110px' }}>
                 <iframe
-                  title="Kayal Dental Clinic Location"
+                  title="Kayal Dental Care Ramanathapuram Clinic Location"
                   width="100%"
                   height="220"
                   style={{ border: 0, display: 'block' }}
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
-                  src="https://maps.google.com/maps?q=XXXV%2B3RW,%20Olymbus,%20Ramanathapuram,%20Coimbatore,%20Tamil%20Nadu%20641045&t=&z=16&ie=UTF8&iwloc=&output=embed"
+                  src="https://maps.google.com/maps?q=Kayal%20Dental%20Care%20Ramanathapuram&t=&z=17&ie=UTF8&iwloc=&output=embed"
                 />
                 <div className="contact-map-footer">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--gray-700)', fontWeight: 600 }}>
                     <MapPin size={16} color="#451271" style={{ color: '#451271', flexShrink: 0 }} />
-                    <span>XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore - 641045</span>
+                    <span>Kayal Dental Care, Ramanathapuram, Coimbatore - 641045</span>
                   </div>
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=XXXV%2B3RW,+Olymbus,+Ramanathapuram,+Coimbatore,+Tamil+Nadu+641045"
+                    href="https://www.google.com/maps/place/Kayal+Dental+Care+Ramanathapuram/@10.9977286,76.9920011,17z/data=!4m6!3m5!1s0x3ba8590003ed3fd7:0x3a4217cf87d888b9!8m2!3d10.9977286!4d76.994576!16s%2Fg%2F11z_fty_5h"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-outline-purple btn-sm"

@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
             <div className="footer__brand-contact">
               <div className="footer__brand-contact-item">
                 <MapPin size={15} className="footer__brand-icon" />
-                <span>XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore, Tamil Nadu - 641045</span>
+                <span>Kayal Dental Care, Ramanathapuram, Coimbatore, Tamil Nadu - 641045</span>
               </div>
               <div className="footer__brand-contact-item">
                 <a href="tel:+917867926159" className="footer__brand-contact-link">

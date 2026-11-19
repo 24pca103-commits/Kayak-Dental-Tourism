@@ -395,7 +395,7 @@ const ContactPage: React.FC = () => {
               <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1.5rem' }}>Clinic Information</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                 {[
-                  { icon: <MapPin size={20} />, title: 'Address', info: '123 Seaside Road, Coimbatore, Tamil Nadu - 641001' },
+                  { icon: <MapPin size={20} />, title: 'Address', info: 'XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore, Tamil Nadu 641045' },
                   { icon: <Phone size={20} />, title: 'Phone', info: '+91 78679 26159', href: 'tel:+917867926159' },
                   { icon: <Mail size={20} />, title: 'Email', info: 'hello@kayaldental.com', href: 'mailto:hello@kayaldental.com' },
                   { icon: <Clock size={20} />, title: 'Working Hours', info: 'All Days Available: 9:00 AM – 7:00 PM\n(Monday – Sunday)' },
@@ -426,15 +426,15 @@ const ContactPage: React.FC = () => {
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
-                  src="https://maps.google.com/maps?q=123%20Seaside%20Road,%20Coimbatore,%20Tamil%20Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                  src="https://maps.google.com/maps?q=XXXV%2B3RW,%20Olymbus,%20Ramanathapuram,%20Coimbatore,%20Tamil%20Nadu%20641045&t=&z=16&ie=UTF8&iwloc=&output=embed"
                 />
                 <div className="contact-map-footer">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--gray-700)', fontWeight: 600 }}>
                     <MapPin size={16} color="#451271" style={{ color: '#451271', flexShrink: 0 }} />
-                    <span>123 Seaside Road, Coimbatore</span>
+                    <span>XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore - 641045</span>
                   </div>
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=123+Seaside+Road,+Coimbatore,+Tamil+Nadu+-+600001"
+                    href="https://www.google.com/maps/search/?api=1&query=XXXV%2B3RW,+Olymbus,+Ramanathapuram,+Coimbatore,+Tamil+Nadu+641045"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-outline-purple btn-sm"

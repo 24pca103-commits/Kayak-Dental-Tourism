@@ -9,19 +9,6 @@
 .contact-hero {
   position: relative;
   background-color: #240840;
-  background-image: 
-    linear-gradient(90deg, 
-      #240840 0%, 
-      #240840 25%, 
-      rgba(36, 8, 64, 0.92) 38%, 
-      rgba(69, 18, 113, 0.50) 58%, 
-      rgba(69, 18, 113, 0.15) 80%, 
-      transparent 95%
-    ),
-    url('/assets/banner-contact-collage.jpg');
-  background-size: auto 130%;
-  background-position: right bottom;
-  background-repeat: no-repeat;
   min-height: 360px;
   padding: 4.5rem 0 3.5rem;
   display: flex;
@@ -29,6 +16,27 @@
   text-align: left;
   border-bottom: 2px solid #24E0E1;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.contact-hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: max(0px, calc(50% - 672px));
+  width: min(760px, 55vw);
+  background: url('/assets/banner-contact-collage.jpg') no-repeat right bottom;
+  background-size: cover;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contact-hero .container {
+  position: relative;
+  z-index: 2;
 }
 
 .contact-hero-bg {
@@ -166,6 +174,10 @@
     background-position: left bottom !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;
+  }
+
+  .contact-hero::after {
+    display: none !important;
   }
 
   .contact-hero .badge {

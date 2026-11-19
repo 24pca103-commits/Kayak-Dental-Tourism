@@ -834,7 +834,7 @@ select {
 }
 
 /* ================================================================
-   PAGE HERO SECTIONS: MATCH NAVBAR LOGO LEFT ALIGNMENT PRECISELY
+   PAGE HERO SECTIONS: UNIVERSAL CONTAINER-LOCKED COLLAGE SYSTEM
    ================================================================ */
 .about-hero,
 .consultation-hero,
@@ -856,49 +856,62 @@ select {
   text-align: left;
   border-bottom: 2px solid #24E0E1;
   box-sizing: border-box;
-  background-size: auto 130%;
-  background-position: right bottom;
+  overflow: hidden;
+}
+
+.about-hero::after,
+.consultation-hero::after,
+.travel-hero::after,
+.resources-hero::after,
+.service-detail-hero::after,
+.treatment-hero::after,
+.testimonials-hero::after,
+.team-hero::after,
+.contact-hero::after,
+.faqs-hero::after,
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: max(0px, calc(50% - 672px));
+  width: min(760px, 55vw);
   background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: cover;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
-.testimonials-hero,
-.faqs-hero {
-  background-image: 
-    linear-gradient(90deg, 
-      #240840 0%, 
-      #240840 25%, 
-      rgba(36, 8, 64, 0.92) 38%, 
-      rgba(69, 18, 113, 0.50) 58%, 
-      rgba(69, 18, 113, 0.15) 80%, 
-      transparent 95%
-    ),
-    url('/assets/banner-about-collage.jpg');
+.about-hero::after,
+.testimonials-hero::after,
+.faqs-hero::after {
+  background-image: url('/assets/banner-about-collage.jpg');
 }
 
-.treatment-hero {
-  background-image: 
-    linear-gradient(90deg, 
-      #240840 0%, 
-      #240840 25%, 
-      rgba(36, 8, 64, 0.92) 38%, 
-      rgba(69, 18, 113, 0.50) 58%, 
-      rgba(69, 18, 113, 0.15) 80%, 
-      transparent 95%
-    ),
-    url('/assets/banner-tourism-collage.jpg');
+.consultation-hero::after {
+  background-image: url('/assets/banner-foreign-blonde.jpg');
 }
 
-.team-hero {
-  background-image: 
-    linear-gradient(90deg, 
-      #240840 0%, 
-      #240840 25%, 
-      rgba(36, 8, 64, 0.92) 38%, 
-      rgba(69, 18, 113, 0.50) 58%, 
-      rgba(69, 18, 113, 0.15) 80%, 
-      transparent 95%
-    ),
-    url('/assets/banner-team-collage.jpg');
+.travel-hero::after,
+.treatment-hero::after,
+.service-detail-hero::after,
+.hero-section::after {
+  background-image: url('/assets/banner-tourism-collage.jpg');
+}
+
+.resources-hero::after {
+  background-image: url('/assets/banner-resources-collage.jpg');
+}
+
+.team-hero::after {
+  background-image: url('/assets/banner-team-collage.jpg');
+}
+
+.contact-hero::after {
+  background-image: url('/assets/banner-contact-collage.jpg');
 }
 
 .about-hero .container,
@@ -918,6 +931,8 @@ select {
   padding: 0 clamp(16px, 3vw, 48px) !important;
   box-sizing: border-box !important;
   text-align: left !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
 .about-hero .container > *,
@@ -1090,7 +1105,18 @@ select {
   .team-hero::before,
   .contact-hero::before,
   .faqs-hero::before,
-  .service-detail-hero::before {
+  .service-detail-hero::before,
+  .about-hero::after,
+  .consultation-hero::after,
+  .hero-section::after,
+  .travel-hero::after,
+  .resources-hero::after,
+  .treatment-hero::after,
+  .testimonials-hero::after,
+  .team-hero::after,
+  .contact-hero::after,
+  .faqs-hero::after,
+  .service-detail-hero::after {
     display: none !important;
   }
 

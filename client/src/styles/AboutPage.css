@@ -58,19 +58,6 @@
 .about-hero {
   position: relative;
   background-color: #240840;
-  background-image: 
-    linear-gradient(90deg, 
-      #240840 0%, 
-      #240840 25%, 
-      rgba(36, 8, 64, 0.92) 38%, 
-      rgba(69, 18, 113, 0.50) 58%, 
-      rgba(69, 18, 113, 0.15) 80%, 
-      transparent 95%
-    ),
-    url('/assets/banner-about-collage.jpg');
-  background-size: auto 130%;
-  background-position: right bottom;
-  background-repeat: no-repeat;
   color: white;
   min-height: 360px;
   padding: 4.5rem 0 3.5rem;
@@ -78,6 +65,7 @@
   align-items: center;
   text-align: left;
   border-bottom: 2px solid #24E0E1;
+  overflow: hidden;
 }
 
 .about-hero::before {

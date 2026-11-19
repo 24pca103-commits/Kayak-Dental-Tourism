@@ -2,7 +2,7 @@
 
 .consultation-hero {
   position: relative;
-  background-color: #240840;
+  background: linear-gradient(105deg, #591995 0%, #451271 52%, #350d58 100%);
   color: white;
   min-height: 360px;
   padding: 4.5rem 0 3.5rem;

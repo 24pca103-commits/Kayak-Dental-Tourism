@@ -849,14 +849,16 @@ select {
 .hero-section {
   position: relative;
   background: linear-gradient(105deg, #591995 0%, #451271 52%, #350d58 100%);
-  min-height: 330px;
-  padding: 4.5rem 0 3.5rem;
-  display: flex;
-  align-items: center;
-  text-align: left;
-  border-bottom: 2px solid #24E0E1;
-  box-sizing: border-box;
-  overflow: hidden;
+  height: 380px !important;
+  min-height: 380px !important;
+  max-height: 380px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  text-align: left !important;
+  border-bottom: 2px solid #24E0E1 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 .about-hero::after,
@@ -874,16 +876,17 @@ select {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: max(0px, calc(50% - 672px));
-  width: min(760px, 55vw);
-  background-image: url('/assets/banner-contact-collage.jpg');
-  background-repeat: no-repeat;
-  background-position: right bottom;
-  background-size: cover;
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
-  pointer-events: none;
-  z-index: 1;
+  height: 100% !important;
+  right: max(0px, calc(50% - 672px)) !important;
+  width: min(760px, 55vw) !important;
+  background-image: url('/assets/banner-contact-collage.jpg') !important;
+  background-repeat: no-repeat !important;
+  background-position: right center !important;
+  background-size: cover !important;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%) !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }
 
 .about-hero .container,
@@ -899,12 +902,17 @@ select {
 .hero-section .container {
   width: 100% !important;
   max-width: 1344px !important;
+  height: 100% !important;
   margin: 0 auto !important;
   padding: 0 clamp(16px, 3vw, 48px) !important;
   box-sizing: border-box !important;
   text-align: left !important;
   position: relative !important;
   z-index: 2 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
 }
 
 .about-hero .container > *,
@@ -1103,7 +1111,9 @@ select {
   .contact-hero,
   .faqs-hero,
   .service-detail-hero {
+    height: auto !important;
     min-height: auto !important;
+    max-height: none !important;
     padding: 2.75rem 0 2.25rem !important;
     background-image: 
       linear-gradient(90deg, 

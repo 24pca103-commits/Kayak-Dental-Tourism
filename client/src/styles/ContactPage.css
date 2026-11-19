@@ -9,8 +9,10 @@
 .contact-hero {
   position: relative;
   background: linear-gradient(105deg, #591995 0%, #451271 52%, #350d58 100%);
-  min-height: 360px;
-  padding: 4.5rem 0 3.5rem;
+  height: 380px;
+  min-height: 380px;
+  max-height: 380px;
+  padding: 0;
   display: flex;
   align-items: center;
   text-align: left;
@@ -24,9 +26,10 @@
   position: absolute;
   top: 0;
   bottom: 0;
+  height: 100%;
   right: max(0px, calc(50% - 672px));
   width: min(760px, 55vw);
-  background: url('/assets/banner-contact-collage.jpg') no-repeat right bottom;
+  background: url('/assets/banner-contact-collage.jpg') no-repeat right center;
   background-size: cover;
   mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);

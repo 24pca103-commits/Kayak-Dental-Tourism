@@ -876,6 +876,7 @@ select {
   bottom: 0;
   right: max(0px, calc(50% - 672px));
   width: min(760px, 55vw);
+  background-image: url('/assets/banner-contact-collage.jpg');
   background-repeat: no-repeat;
   background-position: right bottom;
   background-size: cover;
@@ -883,35 +884,6 @@ select {
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
   pointer-events: none;
   z-index: 1;
-}
-
-.about-hero::after,
-.testimonials-hero::after,
-.faqs-hero::after {
-  background-image: url('/assets/banner-about-collage.jpg');
-}
-
-.consultation-hero::after {
-  background-image: url('/assets/banner-foreign-blonde.jpg');
-}
-
-.travel-hero::after,
-.treatment-hero::after,
-.service-detail-hero::after,
-.hero-section::after {
-  background-image: url('/assets/banner-tourism-collage.jpg');
-}
-
-.resources-hero::after {
-  background-image: url('/assets/banner-resources-collage.jpg');
-}
-
-.team-hero::after {
-  background-image: url('/assets/banner-team-collage.jpg');
-}
-
-.contact-hero::after {
-  background-image: url('/assets/banner-contact-collage.jpg');
 }
 
 .about-hero .container,
@@ -1140,7 +1112,7 @@ select {
         rgba(69, 18, 113, 0.35) 80%, 
         rgba(69, 18, 113, 0.10) 100%
       ), 
-      url('/assets/banner-about-collage.jpg') !important;
+      url('/assets/banner-contact-collage.jpg') !important;
     background-position: left bottom !important;
     background-size: cover !important;
     background-repeat: no-repeat !important;

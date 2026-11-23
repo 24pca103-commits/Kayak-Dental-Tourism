@@ -502,7 +502,7 @@ const AppointmentPage: React.FC = () => {
                 <h4 style={{ color: '#451271', textAlign: 'center', marginBottom: '0.6rem' }}>Need Immediate Help?</h4>
                 <p style={{ color: '#000000', textAlign: 'justify', textJustify: 'inter-word', textIndent: '1.5rem', lineHeight: 1.6, margin: '0 0 0.85rem 0' }}>Chat with us on WhatsApp for instant assistance.</p>
                 <a
-                  href="https://wa.me/917867926159"
+                  href="https://wa.me/919361196419"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn"

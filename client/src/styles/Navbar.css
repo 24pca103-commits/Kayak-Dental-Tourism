@@ -664,7 +664,7 @@
 
 .navbar-search-modal {
   width: 100%;
-  max-width: 680px;
+  max-width: 730px;
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(69, 18, 113, 0.12);
@@ -782,36 +782,58 @@
 .navbar-search-categories {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 0.65rem 1rem;
   background: #ffffff;
   border-bottom: 1px solid #f0f0f5;
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(69, 18, 113, 0.25) #f8f6fb;
   width: 100%;
   box-sizing: border-box;
 }
 
 .navbar-search-categories::-webkit-scrollbar {
-  display: none;
+  height: 4px;
+  display: block;
+}
+
+.navbar-search-categories::-webkit-scrollbar-track {
+  background: #f8f6fb;
+  border-radius: 4px;
+}
+
+.navbar-search-categories::-webkit-scrollbar-thumb {
+  background: rgba(69, 18, 113, 0.25);
+  border-radius: 4px;
+}
+
+.navbar-search-categories::-webkit-scrollbar-thumb:hover {
+  background: #451271;
 }
 
 .navbar-search-cat-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: #f4f2f8;
   border: 1.5px solid transparent;
-  padding: 6px 13px;
+  padding: 5px 11px;
   border-radius: 30px;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: #554466;
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
   transition: all 0.2s ease;
+}
+
+.navbar-search-cat-btn:last-child {
+  margin-right: 6px;
 }
 
 .navbar-search-cat-btn svg {
@@ -987,12 +1009,13 @@
 
   .navbar-search-categories {
     padding: 0.5rem 0.85rem;
+    padding-right: 1.5rem;
     gap: 6px;
   }
 
   .navbar-search-cat-btn {
-    padding: 5px 11px;
-    font-size: 0.75rem;
+    padding: 5px 10px;
+    font-size: 0.74rem;
   }
 
   .navbar-search-results {

@@ -19,8 +19,8 @@ export interface StatusEmailParams {
  */
 export const sendStatusEmailNotification = async (params: StatusEmailParams): Promise<boolean> => {
   const clinicName = 'Kayal Dental Tourism';
-  const clinicPhone = '+91 78679 26159';
-  const whatsappUrl = 'https://wa.me/917867926159';
+  const clinicPhone = '+91 93611 96419 / +91 94864 22933';
+  const whatsappUrl = 'https://wa.me/919361196419';
 
   const dateFormatted = params.appointmentDate
     ? new Date(params.appointmentDate).toLocaleDateString('en-US', {

@@ -578,7 +578,7 @@ const DentalTourismPage: React.FC = () => {
                 Book Online Consultation <ArrowRight size={18} color="currentColor" style={{ color: 'currentColor', stroke: 'currentColor', flexShrink: 0 }} />
               </Link>
               <a
-                href="https://wa.me/917867926159"
+                href="https://wa.me/919361196419"
                 target="_blank"
                 rel="noreferrer"
                 className="btn btn-whatsapp-cta"

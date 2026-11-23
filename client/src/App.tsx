@@ -108,7 +108,7 @@ const PublicLayout: React.FC = () => {
 
         {/* WhatsApp Button */}
         <a
-          href="https://wa.me/917867926159?text=Hello%20Kayal%20Dental%20Care"
+          href="https://wa.me/919361196419?text=Hello%20Kayal%20Dental%20Care"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"

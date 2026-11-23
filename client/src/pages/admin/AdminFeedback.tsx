@@ -6,7 +6,6 @@ import {
 import AdminLayout from '../../components/AdminLayout/AdminLayout';
 import { testimonialsAPI, feedbackAPI } from '../../services/api';
 import {
-  saveVideoBlob,
   getVideoBlobUrl,
   publishVideo,
   unpublishVideo,
@@ -272,64 +271,6 @@ const AdminFeedback: React.FC = () => {
     }
   };
 
-  const adminVideoInputRef = React.useRef<HTMLInputElement>(null);
-  const [uploadingForId, setUploadingForId] = useState<string | null>(null);
-
-  const triggerAdminVideoUpload = (item: FeedbackItem) => {
-    setUploadingForId(item._id);
-    adminVideoInputRef.current?.click();
-  };
-
-  const handleAdminVideoFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !uploadingForId) return;
-
-    const targetItem = feedbacks.find(f => f._id === uploadingForId);
-    if (!targetItem) return;
-
-    const videoKey = 'vid_' + Date.now();
-    await saveVideoBlob(videoKey, file);
-
-    let uploadedUrl = '';
-    try {
-      const uploadFd = new FormData();
-      uploadFd.append('files', file);
-      const apiRes = await fetch('/api/appointments/upload', {
-        method: 'POST',
-        body: uploadFd,
-      });
-      const data = await apiRes.json();
-      if (data?.files?.[0]?.url) {
-        uploadedUrl = data.files[0].url;
-      }
-    } catch (err) {
-      console.warn('Server upload notice (using local blob):', err);
-    }
-
-    const videoSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
-
-    // Update local feedbacks
-    const updated = feedbacks.map(f => {
-      if (f._id === uploadingForId) {
-        return {
-          ...f,
-          hasVideo: true,
-          videoKey,
-          videoUrl: uploadedUrl || f.videoUrl,
-          videoName: file.name,
-          videoSize,
-        };
-      }
-      return f;
-    });
-    setFeedbacks(updated);
-    localStorage.setItem('kayal_feedbacks', JSON.stringify(updated));
-
-    if (adminVideoInputRef.current) adminVideoInputRef.current.value = '';
-    setUploadingForId(null);
-    showToast(`Video attached to ${targetItem.name}'s review successfully!`);
-  };
-
   const filteredFeedbacks = feedbacks.filter(f =>
     f.name.toLowerCase().includes(search.toLowerCase()) ||
     f.email.toLowerCase().includes(search.toLowerCase()) ||
@@ -366,15 +307,6 @@ const AdminFeedback: React.FC = () => {
       )}
 
       <div style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
-        {/* Hidden Admin Video Upload Input */}
-        <input
-          ref={adminVideoInputRef}
-          type="file"
-          accept="video/mp4,video/webm,video/quicktime,video/*"
-          style={{ display: 'none' }}
-          onChange={handleAdminVideoFileSelected}
-        />
-
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
@@ -513,29 +445,9 @@ const AdminFeedback: React.FC = () => {
                               </span>
                             </div>
                           ) : (
-                            <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-                              <button
-                                type="button"
-                                onClick={() => triggerAdminVideoUpload(item)}
-                                style={{
-                                  background: '#f8fafc',
-                                  color: '#475569',
-                                  border: '1.5px dashed #94a3b8',
-                                  borderRadius: '6px',
-                                  padding: '0.35rem 0.65rem',
-                                  fontSize: '0.75rem',
-                                  fontWeight: 600,
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '4px',
-                                  cursor: 'pointer',
-                                }}
-                                title="Click to attach / upload a video for this patient"
-                              >
-                                <UploadCloud size={13} color="#64748b" /> + Upload Video
-                              </button>
-                              <span style={{ fontSize: '0.68rem', color: '#94a3b8' }}>No video attached</span>
-                            </div>
+                            <span style={{ fontSize: '0.78rem', color: '#94a3b8', fontStyle: 'italic' }}>
+                              No video attached
+                            </span>
                           )}
                         </td>
 
@@ -671,12 +583,12 @@ const AdminFeedback: React.FC = () => {
                       <div style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', color: '#334155' }}>&ldquo;{item.message}&rdquo;</div>
                     </div>
 
-                    {/* Feedback Video Row */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem 0.75rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', flexWrap: 'wrap', gap: '6px' }}>
-                      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                        <Video size={14} color="#7c3aed" /> Feedback Video:
-                      </span>
-                      {item.hasVideo ? (
+                    {/* Feedback Video Row - only if user uploaded a video */}
+                    {item.hasVideo && (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.5rem 0.75rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', flexWrap: 'wrap', gap: '6px' }}>
+                        <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <Video size={14} color="#7c3aed" /> Feedback Video:
+                        </span>
                         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                           <button
                             type="button"
@@ -701,28 +613,8 @@ const AdminFeedback: React.FC = () => {
                             <CheckCircle size={10} /> Attached
                           </span>
                         </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => triggerAdminVideoUpload(item)}
-                          style={{
-                            background: '#ffffff',
-                            color: '#475569',
-                            border: '1.5px dashed #94a3b8',
-                            borderRadius: '6px',
-                            padding: '0.3rem 0.6rem',
-                            fontSize: '0.74rem',
-                            fontWeight: 600,
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          <UploadCloud size={12} color="#64748b" /> + Upload Video
-                        </button>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     {/* Footer Actions: Publish to Testimonials, Mark Read, Delete */}
                     <div className="admin-mobile-card__footer" style={{ flexWrap: 'wrap', gap: '0.5rem' }}>

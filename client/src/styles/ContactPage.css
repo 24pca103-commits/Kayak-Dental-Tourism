@@ -27,12 +27,12 @@
   top: 0;
   bottom: 0;
   height: 100%;
-  right: max(0px, calc(50% - 672px));
-  width: min(760px, 55vw);
-  background: url('/assets/banner-contact-collage.jpg') no-repeat right center;
+  right: 0;
+  width: min(850px, 58vw);
+  background: url('/assets/banner-contact-collage.jpg') no-repeat right bottom;
   background-size: cover;
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 35%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 35%, black 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -242,3 +242,126 @@
   }
 }
 
+
+/* ── Branch Tabs & Clinic Details ── */
+.contact-branch-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--purple-50, #f8f5fc);
+  padding: 0.35rem;
+  border-radius: 12px;
+  border: 1px solid var(--purple-100, #ede9fe);
+  margin-bottom: 1.25rem;
+}
+
+.contact-branch-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: var(--gray-600, #4b5563);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.contact-branch-tab:hover {
+  color: var(--purple-700, #451271);
+}
+
+.contact-branch-tab.active {
+  background: white;
+  color: var(--purple-700, #451271);
+  box-shadow: 0 2px 8px rgba(69, 18, 113, 0.08);
+}
+
+.contact-branch-pill {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  background: #ede9fe;
+  color: #591995;
+  font-weight: 700;
+}
+
+.contact-branch-card {
+  background: #ffffff;
+  border: 1.5px solid var(--purple-100, #ede9fe);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 10px rgba(69, 18, 113, 0.04);
+}
+
+.contact-branch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--gray-100, #f3f4f6);
+}
+
+.contact-branch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+/* ── Social Channels Grid (Linktree, Instagram, WhatsApp) ── */
+.contact-social-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1.5px solid var(--gray-200, #e5e7eb);
+}
+
+.contact-social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.contact-social-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem;
+  border-radius: 12px;
+  text-decoration: none;
+  border: 1.5px solid var(--gray-200, #e5e7eb);
+  background: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.contact-social-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+.contact-tagline-card {
+  margin-top: 1.25rem;
+  background: linear-gradient(135deg, rgba(89, 25, 149, 0.06) 0%, rgba(36, 224, 225, 0.1) 100%);
+  border: 1.5px dashed rgba(89, 25, 149, 0.25);
+  border-radius: 14px;
+  padding: 0.95rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--purple-800, #350d58);
+  font-weight: 600;
+  line-height: 1.5;
+}

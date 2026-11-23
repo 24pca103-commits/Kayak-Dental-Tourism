@@ -531,7 +531,7 @@ const ServiceDetailPage: React.FC = () => {
                 <p className="service-detail__whatsapp-title">Need help deciding?</p>
                 <p className="service-detail__whatsapp-text">Chat with us on WhatsApp to speak to a dental expert.</p>
                 <a
-                  href="https://wa.me/917867926159?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20more%20information%20about%20dental%20treatments."
+                  href="https://wa.me/919361196419?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20more%20information%20about%20dental%20treatments."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="service-detail__whatsapp-btn"

@@ -894,7 +894,7 @@ const HomePage: React.FC = () => {
                   Plan My Dental Trip <ArrowRight size={16} />
                 </button>
                 <a
-                  href="https://wa.me/917867926159?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20to%20plan%20my%20dental%20trip."
+                  href="https://wa.me/919361196419?text=Hi%20Kayal%20Dental%20Care%2C%20I%20would%20like%20to%20plan%20my%20dental%20trip."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-purple"

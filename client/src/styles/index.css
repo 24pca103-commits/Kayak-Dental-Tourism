@@ -877,14 +877,14 @@ select {
   top: 0;
   bottom: 0;
   height: 100% !important;
-  right: max(0px, calc(50% - 672px)) !important;
-  width: min(760px, 55vw) !important;
+  right: 0 !important;
+  width: min(850px, 58vw) !important;
   background-image: url('/assets/banner-contact-collage.jpg') !important;
   background-repeat: no-repeat !important;
-  background-position: right center !important;
+  background-position: right bottom !important;
   background-size: cover !important;
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%) !important;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 30%, black 84%, transparent 100%) !important;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 35%, black 100%) !important;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.4) 15%, black 35%, black 100%) !important;
   pointer-events: none !important;
   z-index: 1 !important;
 }

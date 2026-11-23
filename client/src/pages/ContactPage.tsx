@@ -1,5 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Video, X, Star, Loader2, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Video, X, Star, Loader2, CheckCircle2, ExternalLink, Globe, Sparkles } from 'lucide-react';
+import WhatsAppIcon from '../components/icons/WhatsAppIcon';
+import InstagramIcon from '../components/icons/InstagramIcon';
+import LinktreeIcon from '../components/icons/LinktreeIcon';
 import { appointmentsAPI, feedbackAPI } from '../services/api';
 import { sendRealtimeEmail } from '../services/emailService';
 import { saveVideoBlob } from '../utils/videoStorage';
@@ -21,6 +24,38 @@ const ContactPage: React.FC = () => {
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [activeBranch, setActiveBranch] = useState<'ramanathapuram' | 'thudiyalur'>('ramanathapuram');
+
+  const branches = [
+    {
+      id: 'ramanathapuram' as const,
+      name: 'Ramanathapuram Clinic',
+      badge: 'Main Road Branch',
+      phone: '+91 93611 96419',
+      phoneHref: 'tel:+919361196419',
+      address: 'Kayal Dental Care, XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore, Tamil Nadu 641045',
+      shortAddress: 'XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore - 641045',
+      mapEmbedUrl: 'https://maps.google.com/maps?q=Kayal%20Dental%20Care%20Ramanathapuram&t=&z=17&ie=UTF8&iwloc=&output=embed',
+      googleMapsUrl: 'https://www.google.com/maps/place/Kayal+Dental+Care+Ramanathapuram/@10.9977286,76.9920011,17z/data=!4m6!3m5!1s0x3ba8590003ed3fd7:0x3a4217cf87d888b9!8m2!3d10.9977286!4d76.994576!16s%2Fg%2F11z_fty_5h',
+      googlePageUrl: 'https://www.google.com/search?q=Kayal+Dental+Care+Ramanathapuram',
+      whatsappUrl: 'https://wa.me/919361196419?text=Hello%20Kayal%20Dental%20Care%20Ramanathapuram',
+    },
+    {
+      id: 'thudiyalur' as const,
+      name: 'Thudiyalur Clinic',
+      badge: 'Thudiyalur Branch',
+      phone: '+91 94864 22933',
+      phoneHref: 'tel:+919486422933',
+      address: 'Bus stop, 3/555 R, Harish Complex 1st floor, Gandhi Nagar, NGGO Colony Rd, Bharathiyar Nagar, K. Vadamadurai, Kurudampalayam, Coimbatore, Tamil Nadu 641017',
+      shortAddress: 'Harish Complex 1st Floor, NGGO Colony Rd, Thudiyalur, Coimbatore - 641017',
+      mapEmbedUrl: 'https://maps.google.com/maps?q=Harish%20Complex%2C%20Gandhi%20Nagar%2C%20NGGO%20Colony%20Rd%2C%20Thudiyalur%2C%20Coimbatore%20641017&t=&z=17&ie=UTF8&iwloc=&output=embed',
+      googleMapsUrl: 'https://maps.app.goo.gl/GPBrH5RUoKgdUdGX7',
+      googlePageUrl: 'https://share.google/vdzMnyvpsG2FB8kp5',
+      whatsappUrl: 'https://wa.me/919486422933?text=Hello%20Kayal%20Dental%20Care%20Thudiyalur',
+    },
+  ];
+
+  const currentBranch = branches.find(b => b.id === activeBranch) || branches[0];
 
   // Video upload & progress states
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -392,49 +427,142 @@ const ContactPage: React.FC = () => {
           <div className="contact-grid">
             {/* Info */}
             <div id="details" className="contact-info-col" style={{ scrollMarginTop: '110px' }}>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', marginBottom: '1.5rem' }}>Clinic Information</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {[
-                  { icon: <MapPin size={20} />, title: 'Address', info: 'Kayal Dental Care, XXXV+3RW, Olymbus, Ramanathapuram, Coimbatore, Tamil Nadu 641045' },
-                  { icon: <Phone size={20} />, title: 'Phone', info: '+91 78679 26159', href: 'tel:+917867926159' },
-                  { icon: <Mail size={20} />, title: 'Email', info: 'hello@kayaldental.com', href: 'mailto:hello@kayaldental.com' },
-                  { icon: <Clock size={20} />, title: 'Working Hours', info: 'All Days Available: 9:00 AM – 7:00 PM\n(Monday – Sunday)' },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                    <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--purple-50)', border: '1.5px solid var(--purple-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--purple-600)', flexShrink: 0 }}>{item.icon}</div>
-                    <div>
-                      <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-500)', marginBottom: '0.2rem' }}>{item.title}</p>
-                      {item.href ? (
-                        <a href={item.href} style={{ fontSize: '0.9rem', color: 'var(--gray-800)', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}
-                          onMouseEnter={e => (e.currentTarget.style.color = 'var(--purple-600)')}
-                          onMouseLeave={e => (e.currentTarget.style.color = 'var(--gray-800)')}>{item.info}</a>
-                      ) : (
-                        <p style={{ fontSize: '0.9rem', color: 'var(--gray-700)', whiteSpace: 'pre-line', lineHeight: 1.6 }}>{item.info}</p>
-                      )}
-                    </div>
-                  </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.25rem' }}>
+                <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--purple-700)', margin: 0 }}>Clinic Locations &amp; Contacts</h2>
+                <span className="contact-branch-pill">2 Coimbatore Branches</span>
+              </div>
+
+              {/* Branch Selector Tabs */}
+              <div id="locations" className="contact-branch-tabs" style={{ scrollMarginTop: '110px' }}>
+                {branches.map((b) => (
+                  <button
+                    key={b.id}
+                    type="button"
+                    className={`contact-branch-tab ${activeBranch === b.id ? 'active' : ''}`}
+                    onClick={() => setActiveBranch(b.id)}
+                  >
+                    <MapPin size={15} color={activeBranch === b.id ? 'var(--purple-700)' : 'var(--gray-500)'} />
+                    <span>{b.name.replace(' Clinic', '')}</span>
+                  </button>
                 ))}
               </div>
 
-              {/* Live Interactive Google Map */}
+              {/* Active Branch Info Card */}
+              <div className="contact-branch-card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--purple-800)', margin: '0 0 0.25rem 0' }}>
+                      {currentBranch.name}
+                    </h3>
+                    <span style={{ fontSize: '0.78rem', color: 'var(--purple-600)', background: 'var(--purple-50)', padding: '0.15rem 0.5rem', borderRadius: '6px', fontWeight: 600 }}>
+                      {currentBranch.badge}
+                    </span>
+                  </div>
+                  <a
+                    href={currentBranch.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-sm"
+                    style={{ background: '#25D366', color: '#fff', borderColor: '#25D366', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', padding: '0.35rem 0.75rem' }}
+                  >
+                    <WhatsAppIcon size={14} color="#fff" /> WhatsApp Branch
+                  </a>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginTop: '0.9rem' }}>
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--purple-50)', border: '1px solid var(--purple-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--purple-600)', flexShrink: 0 }}>
+                      <MapPin size={17} />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', margin: '0 0 0.15rem 0' }}>Address</p>
+                      <p style={{ fontSize: '0.86rem', color: 'var(--gray-800)', margin: 0, lineHeight: 1.5 }}>{currentBranch.address}</p>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--purple-50)', border: '1px solid var(--purple-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--purple-600)', flexShrink: 0 }}>
+                      <Phone size={17} />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', margin: '0 0 0.15rem 0' }}>Phone / Appointment Call</p>
+                      <a href={currentBranch.phoneHref} style={{ fontSize: '0.9rem', color: 'var(--purple-700)', fontWeight: 700, textDecoration: 'none' }}>
+                        {currentBranch.phone}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="contact-branch-actions">
+                  <a
+                    href={currentBranch.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-branch-btn btn-outline-purple"
+                    style={{ background: 'var(--purple-50)', color: 'var(--purple-700)', border: '1px solid var(--purple-200)' }}
+                  >
+                    <ExternalLink size={13} /> Open in Google Maps ↗
+                  </a>
+                  <a
+                    href={currentBranch.googlePageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-branch-btn"
+                    style={{ background: 'var(--gray-50)', color: 'var(--gray-700)', border: '1px solid var(--gray-200)' }}
+                  >
+                    <Globe size={13} /> Google Business Profile ↗
+                  </a>
+                </div>
+              </div>
+
+              {/* Working Hours & Email */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem', marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', background: '#fafafa', border: '1px solid var(--gray-200)', borderRadius: 12, padding: '0.85rem' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--cyan-50)', border: '1px solid var(--cyan-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--cyan-600)', flexShrink: 0 }}>
+                    <Clock size={17} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', margin: '0 0 0.15rem 0' }}>Working Hours</p>
+                    <p style={{ fontSize: '0.84rem', color: 'var(--gray-800)', margin: 0, fontWeight: 500, lineHeight: 1.4 }}>
+                      Mon – Sun: 9:00 AM – 7:00 PM<br />
+                      <span style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: 600 }}>All 7 Days Open</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', background: '#fafafa', border: '1px solid var(--gray-200)', borderRadius: 12, padding: '0.85rem' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--purple-50)', border: '1px solid var(--purple-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--purple-600)', flexShrink: 0 }}>
+                    <Mail size={17} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--gray-500)', margin: '0 0 0.15rem 0' }}>Email Us</p>
+                    <a href="mailto:hello@kayaldental.com" style={{ fontSize: '0.85rem', color: 'var(--purple-700)', margin: 0, fontWeight: 600, textDecoration: 'none' }}>
+                      hello@kayaldental.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Live Interactive Google Map for Selected Branch */}
               <div id="map" className="contact-map-card" style={{ scrollMarginTop: '110px' }}>
                 <iframe
-                  title="Kayal Dental Care Ramanathapuram Clinic Location"
+                  key={currentBranch.id}
+                  title={`Kayal Dental Care ${currentBranch.name} Location`}
                   width="100%"
                   height="220"
                   style={{ border: 0, display: 'block' }}
                   loading="lazy"
                   allowFullScreen
                   referrerPolicy="no-referrer-when-downgrade"
-                  src="https://maps.google.com/maps?q=Kayal%20Dental%20Care%20Ramanathapuram&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                  src={currentBranch.mapEmbedUrl}
                 />
                 <div className="contact-map-footer">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--gray-700)', fontWeight: 600 }}>
-                    <MapPin size={16} color="#451271" style={{ color: '#451271', flexShrink: 0 }} />
-                    <span>Kayal Dental Care, Ramanathapuram, Coimbatore - 641045</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--gray-700)', fontWeight: 600 }}>
+                    <MapPin size={15} color="#451271" style={{ color: '#451271', flexShrink: 0 }} />
+                    <span>{currentBranch.shortAddress}</span>
                   </div>
                   <a
-                    href="https://www.google.com/maps/place/Kayal+Dental+Care+Ramanathapuram/@10.9977286,76.9920011,17z/data=!4m6!3m5!1s0x3ba8590003ed3fd7:0x3a4217cf87d888b9!8m2!3d10.9977286!4d76.994576!16s%2Fg%2F11z_fty_5h"
+                    href={currentBranch.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-outline-purple btn-sm"
@@ -442,6 +570,83 @@ const ContactPage: React.FC = () => {
                   >
                     Open in Google Maps ↗
                   </a>
+                </div>
+              </div>
+
+              {/* Official Social Media & Linktree Hub */}
+              <div className="contact-social-section">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.4rem' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--purple-800)', margin: 0 }}>
+                    Connect &amp; Follow Us
+                  </h3>
+                  <a
+                    href="https://linktr.ee/kayaldental"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: '0.78rem', color: '#10b981', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                  >
+                    linktr.ee/kayaldental ↗
+                  </a>
+                </div>
+
+                <div className="contact-social-grid">
+                  <a
+                    href="https://wa.me/9361196419"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-social-card"
+                    style={{ borderColor: '#bbf7d0', background: '#f0fdf4' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.3rem' }}>
+                      <WhatsAppIcon size={20} color="#25D366" />
+                      <strong style={{ fontSize: '0.85rem', color: '#15803d' }}>WhatsApp</strong>
+                    </div>
+                    <span style={{ fontSize: '0.78rem', color: '#166534', fontWeight: 600 }}>+91 93611 96419</span>
+                    <span style={{ fontSize: '0.72rem', color: '#4b5563', marginTop: '0.2rem' }}>Direct Chat &amp; Booking</span>
+                  </a>
+
+                  <a
+                    href="https://instagram.com/kayal_dentalcare"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-social-card"
+                    style={{ borderColor: '#fbcfe8', background: '#fdf2f8' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.3rem' }}>
+                      <InstagramIcon size={18} color="#E1306C" />
+                      <strong style={{ fontSize: '0.85rem', color: '#be185d' }}>Instagram</strong>
+                    </div>
+                    <span style={{ fontSize: '0.78rem', color: '#9d174d', fontWeight: 600 }}>@kayal_dentalcare</span>
+                    <span style={{ fontSize: '0.72rem', color: '#4b5563', marginTop: '0.2rem' }}>Reels &amp; Smile Stories</span>
+                  </a>
+
+                  <a
+                    href="https://linktr.ee/kayaldental"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="contact-social-card"
+                    style={{ borderColor: '#a7f3d0', background: '#ecfdf5' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.3rem' }}>
+                      <LinktreeIcon size={18} color="#10b981" />
+                      <strong style={{ fontSize: '0.85rem', color: '#047857' }}>Linktree Hub</strong>
+                    </div>
+                    <span style={{ fontSize: '0.78rem', color: '#065f46', fontWeight: 600 }}>kayaldental</span>
+                    <span style={{ fontSize: '0.72rem', color: '#4b5563', marginTop: '0.2rem' }}>All Links &amp; Profiles</span>
+                  </a>
+                </div>
+
+                {/* Slogan & Dental Tourism Badge from Linktree */}
+                <div className="contact-tagline-card">
+                  <Sparkles size={20} color="#591995" style={{ flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: '0.82rem', color: '#451271', fontWeight: 700 }}>
+                      ✈️ Dental Tourism • 🌎 Creating Smiles Across the World
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#6b7280', fontWeight: 500, marginTop: '2px' }}>
+                      ✨ Your Smile, Our Happiness
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

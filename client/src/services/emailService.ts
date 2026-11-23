@@ -26,8 +26,8 @@ export const sendRealtimeEmail = async (params: EmailParams): Promise<boolean> =
     subject: params.subject || 'Kayal Dental Tourism Inquiry',
     message: params.message,
     logo_url: 'https://raw.githubusercontent.com/24pca103-commits/Kayak-Dental-Tourism/main/client/public/assets/kayal-brand-logo.png',
-    clinic_phone: '+91 78679 26159',
-    whatsapp_url: 'https://wa.me/917867926159',
+    clinic_phone: '+91 93611 96419 / +91 94864 22933',
+    whatsapp_url: 'https://wa.me/919361196419',
     current_year: new Date().getFullYear().toString(),
   };
 
@@ -90,8 +90,8 @@ export interface StatusEmailParams {
  */
 export const sendStatusEmailNotification = async (params: StatusEmailParams): Promise<boolean> => {
   const clinicName = 'Kayal Dental Tourism';
-  const clinicPhone = '+91 78679 26159';
-  const whatsappUrl = 'https://wa.me/917867926159';
+  const clinicPhone = '+91 93611 96419 / +91 94864 22933';
+  const whatsappUrl = 'https://wa.me/919361196419';
 
   const dateFormatted = params.appointmentDate
     ? new Date(params.appointmentDate).toLocaleDateString('en-US', {

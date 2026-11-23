@@ -219,9 +219,9 @@ export default function Navbar() {
 
   const contactSubItems: SubMenuItem[] = [
     { label: 'Enquiry Form', path: '/contact#enquiry', icon: <Mail size={15} /> },
-    { label: 'WhatsApp', path: 'https://wa.me/917867926159', isExternal: true },
+    { label: 'WhatsApp', path: 'https://wa.me/919361196419', isExternal: true },
     { label: 'Phone & Email', path: '/contact#details', icon: <PhoneCall size={15} /> },
-    { label: 'Map / Location', path: '/contact#map', icon: <MapPin size={15} /> },
+    { label: 'Map / Locations', path: '/contact#map', icon: <MapPin size={15} /> },
   ];
 
   if (isAdmin) return null;
@@ -615,7 +615,7 @@ export default function Navbar() {
               <Link to="/contact" className="navbar__mobile-contact-btn" onClick={() => setMenuOpen(false)}>
                 <PhoneCall size={15} /> <span>Contact Us</span>
               </Link>
-              <a href="https://wa.me/917867926159" target="_blank" rel="noopener noreferrer" className="navbar__mobile-whatsapp-btn">
+              <a href="https://wa.me/919361196419" target="_blank" rel="noopener noreferrer" className="navbar__mobile-whatsapp-btn">
                 <WhatsAppIcon size={16} color="#ffffff" /> <span>WhatsApp</span>
               </a>
             </div>
@@ -658,13 +658,23 @@ export default function Navbar() {
             </div>
 
             {/* Category Filter Pills */}
-            <div className="navbar-search-categories">
+            <div
+              className="navbar-search-categories"
+              onWheel={(e) => {
+                if (e.deltaY !== 0) {
+                  e.currentTarget.scrollLeft += e.deltaY;
+                }
+              }}
+            >
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   type="button"
                   className={`navbar-search-cat-btn ${selectedCategory === cat.id ? 'navbar-search-cat-btn--active' : ''}`}
-                  onClick={() => setSelectedCategory(cat.id)}
+                  onClick={(e) => {
+                    setSelectedCategory(cat.id);
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                  }}
                 >
                   {cat.icon}
                   <span>{cat.label}</span>

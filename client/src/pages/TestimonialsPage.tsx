@@ -246,6 +246,7 @@ const TestimonialsPage: React.FC = () => {
     setShowReviewLeft(true);
     setShowReviewRight(false);
     if (reviewLeftTimer.current) clearTimeout(reviewLeftTimer.current);
+    if (reviewRightTimer.current) clearTimeout(reviewRightTimer.current);
     reviewLeftTimer.current = setTimeout(() => setShowReviewLeft(false), 1800);
   };
 
@@ -253,6 +254,7 @@ const TestimonialsPage: React.FC = () => {
     setShowReviewRight(true);
     setShowReviewLeft(false);
     if (reviewRightTimer.current) clearTimeout(reviewRightTimer.current);
+    if (reviewLeftTimer.current) clearTimeout(reviewLeftTimer.current);
     reviewRightTimer.current = setTimeout(() => setShowReviewRight(false), 1800);
   };
 
@@ -266,12 +268,25 @@ const TestimonialsPage: React.FC = () => {
     triggerReviewRight();
   };
 
+  const reviewWheelThrottleRef = useRef<number>(0);
   const handleReviewWheel = (e: React.WheelEvent) => {
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (delta > 12) {
+    const isHorizontal = Math.abs(e.deltaX) >= Math.abs(e.deltaY);
+    const delta = isHorizontal ? e.deltaX : e.deltaY;
+    if (Math.abs(delta) < 12) return;
+
+    const now = Date.now();
+    if (delta > 0) {
       triggerReviewRight();
-    } else if (delta < -12) {
+      if (now - reviewWheelThrottleRef.current > 450) {
+        reviewWheelThrottleRef.current = now;
+        handleReviewNext();
+      }
+    } else {
       triggerReviewLeft();
+      if (now - reviewWheelThrottleRef.current > 450) {
+        reviewWheelThrottleRef.current = now;
+        handleReviewPrev();
+      }
     }
   };
 
@@ -293,13 +308,56 @@ const TestimonialsPage: React.FC = () => {
     }
   };
 
+  // Section 4 Mouse Drag & Tracking
+  const [isReviewMouseDown, setIsReviewMouseDown] = useState(false);
+  const [reviewDragStartX, setReviewDragStartX] = useState<number | null>(null);
+  const [reviewDragOffset, setReviewDragOffset] = useState(0);
+
+  const handleReviewMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return;
+    setReviewDragStartX(e.clientX);
+    setIsReviewMouseDown(true);
+    setReviewDragOffset(0);
+  };
+
+  const handleReviewMouseMove = (e: React.MouseEvent) => {
+    if (!isReviewMouseDown || reviewDragStartX === null) return;
+    const diff = reviewDragStartX - e.clientX;
+    setReviewDragOffset(diff);
+    if (diff > 12) {
+      triggerReviewRight();
+    } else if (diff < -12) {
+      triggerReviewLeft();
+    }
+  };
+
+  const handleReviewMouseUp = () => {
+    if (isReviewMouseDown && reviewDragStartX !== null) {
+      if (reviewDragOffset > 45) {
+        handleReviewNext();
+      } else if (reviewDragOffset < -45) {
+        handleReviewPrev();
+      }
+    }
+    setIsReviewMouseDown(false);
+    setReviewDragStartX(null);
+    setReviewDragOffset(0);
+  };
+
+  const handleReviewMouseLeave = () => {
+    if (isReviewMouseDown) {
+      handleReviewMouseUp();
+    }
+    setIsReviewHovered(false);
+  };
+
   const handleReviewTouchEnd = () => {
     if (reviewTouchStart !== null && reviewTouchEnd !== null) {
       const distance = reviewTouchStart - reviewTouchEnd;
       if (distance > 40) {
-        setReviewSlide((prev) => (prev >= maxReviewSlide ? 0 : prev + 1));
+        handleReviewNext();
       } else if (distance < -40) {
-        setReviewSlide((prev) => (prev <= 0 ? maxReviewSlide : prev - 1));
+        handleReviewPrev();
       }
     }
   };
@@ -321,10 +379,14 @@ const TestimonialsPage: React.FC = () => {
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
+  const [isSection2Dragging, setIsSection2Dragging] = useState(false);
+  const section2DragStartXRef = useRef<number | null>(null);
+
   const triggerLeftIcon = () => {
     setShowLeftIcon(true);
     setShowRightIcon(false);
     if (leftTimerRef.current) clearTimeout(leftTimerRef.current);
+    if (rightTimerRef.current) clearTimeout(rightTimerRef.current);
     leftTimerRef.current = setTimeout(() => setShowLeftIcon(false), 1800);
   };
 
@@ -332,6 +394,7 @@ const TestimonialsPage: React.FC = () => {
     setShowRightIcon(true);
     setShowLeftIcon(false);
     if (rightTimerRef.current) clearTimeout(rightTimerRef.current);
+    if (leftTimerRef.current) clearTimeout(leftTimerRef.current);
     rightTimerRef.current = setTimeout(() => setShowRightIcon(false), 1800);
   };
 
@@ -345,12 +408,25 @@ const TestimonialsPage: React.FC = () => {
     triggerRightIcon();
   };
 
+  const wheelThrottleRef = useRef<number>(0);
   const handleWheel = (e: React.WheelEvent) => {
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (delta > 12) {
+    const isHorizontal = Math.abs(e.deltaX) >= Math.abs(e.deltaY);
+    const delta = isHorizontal ? e.deltaX : e.deltaY;
+    if (Math.abs(delta) < 12) return;
+
+    const now = Date.now();
+    if (delta > 0) {
       triggerRightIcon();
-    } else if (delta < -12) {
+      if (now - wheelThrottleRef.current > 450) {
+        wheelThrottleRef.current = now;
+        handleNextSlide();
+      }
+    } else {
       triggerLeftIcon();
+      if (now - wheelThrottleRef.current > 450) {
+        wheelThrottleRef.current = now;
+        handlePrevSlide();
+      }
     }
   };
 
@@ -376,11 +452,40 @@ const TestimonialsPage: React.FC = () => {
     if (touchStartX !== null && touchEndX !== null) {
       const distance = touchStartX - touchEndX;
       if (distance > 40) {
-        setActiveVideoIdx((prev) => (prev + 1) % videoList.length);
+        handleNextSlide();
       } else if (distance < -40) {
-        setActiveVideoIdx((prev) => (prev - 1 + videoList.length) % videoList.length);
+        handlePrevSlide();
       }
     }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return;
+    section2DragStartXRef.current = e.clientX;
+    setIsSection2Dragging(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isSection2Dragging || section2DragStartXRef.current === null) return;
+    const diff = section2DragStartXRef.current - e.clientX;
+    if (diff > 15) {
+      triggerRightIcon();
+    } else if (diff < -15) {
+      triggerLeftIcon();
+    }
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (isSection2Dragging && section2DragStartXRef.current !== null) {
+      const distance = section2DragStartXRef.current - e.clientX;
+      if (distance > 45) {
+        handleNextSlide();
+      } else if (distance < -45) {
+        handlePrevSlide();
+      }
+    }
+    setIsSection2Dragging(false);
+    section2DragStartXRef.current = null;
   };
 
   // Auto-scroll for Video Reviews (pauses on hover or video play)
@@ -427,6 +532,15 @@ const TestimonialsPage: React.FC = () => {
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={() => {
+                if (isSection2Dragging) {
+                  setIsSection2Dragging(false);
+                  section2DragStartXRef.current = null;
+                }
+              }}
             >
               {/* Left Arrow Button – visible strictly on manual swipe/scroll */}
               <button
@@ -578,30 +692,45 @@ const TestimonialsPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Auto-sliding Carousel Container */}
+          {/* Auto-sliding Carousel Container with Mouse Drag & Tracking */}
           <div
-            className="video-auto-slider-container"
+            className={`video-auto-slider-container ${isReviewMouseDown ? 'is-dragging' : ''}`}
             onMouseEnter={() => setIsReviewHovered(true)}
-            onMouseLeave={() => setIsReviewHovered(false)}
+            onMouseLeave={handleReviewMouseLeave}
+            onMouseDown={handleReviewMouseDown}
+            onMouseMove={handleReviewMouseMove}
+            onMouseUp={handleReviewMouseUp}
             onWheel={handleReviewWheel}
             onTouchStart={handleReviewTouchStart}
             onTouchMove={handleReviewTouchMove}
             onTouchEnd={handleReviewTouchEnd}
+            style={{
+              cursor: isReviewMouseDown ? 'grabbing' : 'grab',
+              userSelect: isReviewMouseDown ? 'none' : 'auto',
+            }}
           >
-            {/* Left Sliding Icon – shows strictly on manual left scroll/swipe */}
+            {/* Left Sliding Icon – shows strictly on manual left scroll/swipe/drag */}
             <button
               type="button"
-              onClick={handleReviewPrev}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleReviewPrev();
+                e.currentTarget.blur();
+              }}
               className={`slider-nav-btn slider-nav-btn--prev ${showReviewLeft ? 'is-visible' : ''}`}
               aria-label="Previous Review Video"
             >
               <ChevronLeft size={25} strokeWidth={2.8} />
             </button>
 
-            {/* Right Sliding Icon – shows strictly on manual right scroll/swipe */}
+            {/* Right Sliding Icon – shows strictly on manual right scroll/swipe/drag */}
             <button
               type="button"
-              onClick={handleReviewNext}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleReviewNext();
+                e.currentTarget.blur();
+              }}
               className={`slider-nav-btn slider-nav-btn--next ${showReviewRight ? 'is-visible' : ''}`}
               aria-label="Next Review Video"
             >
@@ -613,7 +742,12 @@ const TestimonialsPage: React.FC = () => {
               <div
                 className="video-auto-slider-track"
                 style={{
-                  transform: `translateX(-${reviewSlide * (100 / visibleCount)}%)`,
+                  transform: (isReviewMouseDown && reviewDragOffset !== 0)
+                    ? `translateX(calc(-${reviewSlide * (100 / visibleCount)}% - ${reviewDragOffset}px))`
+                    : `translateX(-${reviewSlide * (100 / visibleCount)}%)`,
+                  transition: (isReviewMouseDown && reviewDragOffset !== 0)
+                    ? 'none'
+                    : 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
                 }}
               >
                 {videoList.map((v, i) => (

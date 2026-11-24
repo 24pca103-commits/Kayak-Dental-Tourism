@@ -212,6 +212,7 @@ const DentalTourismPage: React.FC = () => {
     setShowLeftIcon(true);
     setShowRightIcon(false);
     if (leftTimerRef.current) clearTimeout(leftTimerRef.current);
+    if (rightTimerRef.current) clearTimeout(rightTimerRef.current);
     leftTimerRef.current = setTimeout(() => setShowLeftIcon(false), 1800);
   };
 
@@ -219,6 +220,7 @@ const DentalTourismPage: React.FC = () => {
     setShowRightIcon(true);
     setShowLeftIcon(false);
     if (rightTimerRef.current) clearTimeout(rightTimerRef.current);
+    if (leftTimerRef.current) clearTimeout(leftTimerRef.current);
     rightTimerRef.current = setTimeout(() => setShowRightIcon(false), 1800);
   };
 
@@ -232,15 +234,76 @@ const DentalTourismPage: React.FC = () => {
     triggerRightIcon();
   };
 
+  const wheelThrottleRef = useRef<number>(0);
   const handleWheel = (e: React.WheelEvent) => {
-    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    if (delta > 12) {
-      // User manual scrolling Right
+    const isHorizontal = Math.abs(e.deltaX) >= Math.abs(e.deltaY);
+    const delta = isHorizontal ? e.deltaX : e.deltaY;
+    if (Math.abs(delta) < 12) return;
+
+    const now = Date.now();
+    if (delta > 0) {
+      // User manual scrolling Right -> show ONLY right icon
       triggerRightIcon();
-    } else if (delta < -12) {
-      // User manual scrolling Left
+      if (now - wheelThrottleRef.current > 450) {
+        wheelThrottleRef.current = now;
+        handleNextSlide();
+      }
+    } else {
+      // User manual scrolling Left -> show ONLY left icon
+      triggerLeftIcon();
+      if (now - wheelThrottleRef.current > 450) {
+        wheelThrottleRef.current = now;
+        handlePrevSlide();
+      }
+    }
+  };
+
+  // Mouse Drag / Tracking State for Manual Sliding
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    // Only respond to left click
+    if (e.button !== 0) return;
+    setDragStartX(e.clientX);
+    setIsMouseDown(true);
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDown || dragStartX === null) return;
+    const diff = dragStartX - e.clientX;
+    setDragOffset(diff);
+    if (diff > 12) {
+      // Tracking/dragging with mouse to the left (viewing content to the right)
+      // View ONLY right sliding icon, left must NOT view!
+      triggerRightIcon();
+    } else if (diff < -12) {
+      // Tracking/dragging with mouse to the right (viewing content to the left)
+      // View ONLY left sliding icon, right must NOT view!
       triggerLeftIcon();
     }
+  };
+
+  const handleMouseUp = () => {
+    if (isMouseDown && dragStartX !== null) {
+      if (dragOffset > 45) {
+        handleNextSlide();
+      } else if (dragOffset < -45) {
+        handlePrevSlide();
+      }
+    }
+    setIsMouseDown(false);
+    setDragStartX(null);
+    setDragOffset(0);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMouseDown) {
+      handleMouseUp();
+    }
+    setIsHovered(false);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -253,11 +316,12 @@ const DentalTourismPage: React.FC = () => {
     setTouchEndX(currentX);
     if (touchStartX !== null) {
       const diff = touchStartX - currentX;
+      setDragOffset(diff);
       if (diff > 15) {
-        // Swiping Left (moving to next slide on right)
+        // Swiping Left (moving to next slide on right) -> ONLY right icon
         triggerRightIcon();
       } else if (diff < -15) {
-        // Swiping Right (moving to prev slide on left)
+        // Swiping Right (moving to prev slide on left) -> ONLY left icon
         triggerLeftIcon();
       }
     }
@@ -267,11 +331,12 @@ const DentalTourismPage: React.FC = () => {
     if (touchStartX !== null && touchEndX !== null) {
       const distance = touchStartX - touchEndX;
       if (distance > 40) {
-        setCurrentSlide((prev) => (prev >= maxSlide ? 0 : prev + 1));
+        handleNextSlide();
       } else if (distance < -40) {
-        setCurrentSlide((prev) => (prev <= 0 ? maxSlide : prev - 1));
+        handlePrevSlide();
       }
     }
+    setDragOffset(0);
   };
 
   // Auto sliding option every 3.5 seconds
@@ -476,30 +541,45 @@ const DentalTourismPage: React.FC = () => {
             <p className="section-subtitle" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>Hear directly from our international patients who flew for their smile transformation</p>
           </div>
 
-          {/* Auto-sliding Carousel Container */}
+          {/* Auto-sliding Carousel Container with Mouse Tracking / Drag support */}
           <div
-            className="video-auto-slider-container"
+            className={`video-auto-slider-container ${isMouseDown ? 'is-dragging' : ''}`}
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={handleMouseLeave}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
             onWheel={handleWheel}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            style={{
+              cursor: isMouseDown ? 'grabbing' : 'grab',
+              userSelect: isMouseDown ? 'none' : 'auto',
+            }}
           >
-            {/* Left Sliding Icon – shows strictly on manual left scroll/swipe */}
+            {/* Left Sliding Icon – shows strictly on manual left scroll/swipe/drag */}
             <button
               type="button"
-              onClick={handlePrevSlide}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrevSlide();
+                e.currentTarget.blur();
+              }}
               className={`slider-nav-btn slider-nav-btn--prev ${showLeftIcon ? 'is-visible' : ''}`}
               aria-label="Previous Review Video"
             >
               <ChevronLeft size={25} strokeWidth={2.8} />
             </button>
 
-            {/* Right Sliding Icon – shows strictly on manual right scroll/swipe */}
+            {/* Right Sliding Icon – shows strictly on manual right scroll/swipe/drag */}
             <button
               type="button"
-              onClick={handleNextSlide}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNextSlide();
+                e.currentTarget.blur();
+              }}
               className={`slider-nav-btn slider-nav-btn--next ${showRightIcon ? 'is-visible' : ''}`}
               aria-label="Next Review Video"
             >
@@ -511,7 +591,12 @@ const DentalTourismPage: React.FC = () => {
               <div
                 className="video-auto-slider-track"
                 style={{
-                  transform: `translateX(-${currentSlide * (100 / visibleCount)}%)`,
+                  transform: (isMouseDown || dragOffset !== 0)
+                    ? `translateX(calc(-${currentSlide * (100 / visibleCount)}% - ${dragOffset}px))`
+                    : `translateX(-${currentSlide * (100 / visibleCount)}%)`,
+                  transition: (isMouseDown || dragOffset !== 0)
+                    ? 'none'
+                    : 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
                 }}
               >
                 {videoTestimonials.map((v, i) => (

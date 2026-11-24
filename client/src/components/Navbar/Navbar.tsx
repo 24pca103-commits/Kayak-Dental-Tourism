@@ -633,7 +633,7 @@ export default function Navbar() {
                 ref={searchInputRef}
                 type="text"
                 className="navbar-search-input"
-                placeholder="Search treatments, doctors, services, FAQs, tourism info..."
+                placeholder="Search Treatments, Doctors, Services, FAQs, Tourism Info..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -673,7 +673,12 @@ export default function Navbar() {
                   className={`navbar-search-cat-btn ${selectedCategory === cat.id ? 'navbar-search-cat-btn--active' : ''}`}
                   onClick={(e) => {
                     setSelectedCategory(cat.id);
-                    e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    const container = e.currentTarget.parentElement;
+                    if (container) {
+                      const btn = e.currentTarget;
+                      const targetScroll = btn.offsetLeft - (container.clientWidth / 2) + (btn.clientWidth / 2);
+                      container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+                    }
                   }}
                 >
                   {cat.icon}

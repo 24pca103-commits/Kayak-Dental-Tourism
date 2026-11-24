@@ -782,10 +782,10 @@
 .navbar-search-categories {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0.65rem 1rem;
+  gap: 8px;
+  padding: 0.75rem 1.15rem;
   background: #ffffff;
-  border-bottom: 1px solid #f0f0f5;
+  border-bottom: 1.5px solid #f1f3f7;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -818,10 +818,10 @@
 .navbar-search-cat-btn {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   background: #f4f2f8;
   border: 1.5px solid transparent;
-  padding: 5px 11px;
+  padding: 6px 12px;
   border-radius: 30px;
   font-size: 0.76rem;
   font-weight: 600;
@@ -833,7 +833,7 @@
 }
 
 .navbar-search-cat-btn:last-child {
-  margin-right: 6px;
+  margin-right: 1.15rem;
 }
 
 .navbar-search-cat-btn svg {
@@ -1008,9 +1008,12 @@
   }
 
   .navbar-search-categories {
-    padding: 0.5rem 0.85rem;
-    padding-right: 1.5rem;
+    padding: 0.6rem 0.85rem;
     gap: 6px;
+  }
+
+  .navbar-search-cat-btn:last-child {
+    margin-right: 0.85rem;
   }
 
   .navbar-search-cat-btn {
